@@ -24,7 +24,7 @@ export default class Home extends Component<{}> {
           Welcome to React Native!
         </Text>
           <Text style={styles.instructions}>
-          To get started, edit App.js
+          To get started, edit src/ui/Home.js
         </Text>
           <Text style={styles.instructions}>
           {instructions}
