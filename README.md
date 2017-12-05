@@ -28,7 +28,7 @@ Now you are ready to run the app. You should be able to run the app using `react
 
     react-native run-ios
 
-For Android simulator (or connected device):
+For Android, connect a device or boot a simulator, then:
 
     react-native run-android
 
