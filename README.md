@@ -24,7 +24,7 @@ To get started, clone this repository, and [install dependencies](https://facebo
 
 4. Make sure you have Xcode and Android Studio installed to run the app using simulators or devices. Follow [React Native setup instructions](https://facebook.github.io/react-native/docs/getting-started.html) per platform
 
-Now you are ready to run the app. You should be able to run the app using `react-native`. For iOS simulator:
+Now you are ready to run the app. You should be able to run the app using the `react-native` CLI. For iOS simulator:
 
     react-native run-ios
 
@@ -32,7 +32,10 @@ For Android, connect a device or boot a simulator, then:
 
     react-native run-android
 
-Sometimes the `react-native` runner can't navigate your setup, and you need to run the project using Xcode or Android Studio. To run using Xcode,
+Sometimes the `react-native` runner can't navigate your setup, and you need to run the project using Xcode or Android Studio. To run using Xcode:
 
-- Open the project file `ios/Tag.xcodeproj` with Xcode. Run in the simulator as usual.
-- Open the `android` directory with Android Studio. Run in the simulator as usual.
+- Open the project file `ios/Tag.xcodeproj` with Xcode. Run on a device or in the simulator as usual.
+
+To run using Android Studio:
+
+- Open the `android` directory with Android Studio. Run on a device or in the simulator as usual.
