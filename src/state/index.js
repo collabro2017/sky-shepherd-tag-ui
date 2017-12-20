@@ -1,16 +1,13 @@
-import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './reducers'
+import { createStore, applyMiddleware } from "redux"
+import rootReducer from "./reducers"
 
-function configureStore (initialState = {}) {
+function configureStore(initialState = {}) {
   return createStore(
     rootReducer,
     initialState,
-    applyMiddleware(
-      // TODO: Add middleware (thunk, logger)
-    )
+    applyMiddleware()
+    // TODO: Add middleware (thunk, logger)
   )
 }
 
-export {
-  configureStore
-}
+export { configureStore }
