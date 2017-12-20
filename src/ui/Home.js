@@ -13,13 +13,13 @@ export default class Home extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.welcome}>SkyShepherd Tag</Text>
         <Text style={styles.instructions}>
           To get started, edit src/ui/Home.js
         </Text>
         <Text style={styles.instructions}>{instructions}</Text>
 
-        <Button title="Tap me" onPress={this.sayHello} />
+        <Button title="Say Hello" onPress={this.sayHello} />
       </View>
     )
   }
