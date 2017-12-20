@@ -39,3 +39,23 @@ Sometimes the `react-native` runner can't navigate your setup, and you need to r
 To run using Android Studio:
 
 - Open the `android` directory with Android Studio. Run on a device or in the simulator as usual.
+
+## Style
+
+This project uses [prettier](https://prettier.io/) for code formatting. We use the default prettier rules, with the addition of "--no-semi" for no semicolons. To see any code that needs formatting:
+
+    yarn run prettier
+
+To make the formatting changes:
+
+    yarn run prettier --write
+
+To make prettier run in a pre-commit hook:
+
+    cd .git/hooks
+    ln -s -f pre-commit ../../.hooks/pre-commit.sh
+
+Now, if you commit code whose style doesn't match, the file will be prettified. You can update your commit with the formatting changes:
+
+    git add pretty-file.js
+    git commit --amend
