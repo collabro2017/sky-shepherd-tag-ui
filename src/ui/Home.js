@@ -1,6 +1,16 @@
 import React, { Component } from "react"
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native"
+import {
+  Alert,
+  Button,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Text,
+  View
+} from "react-native"
 import styles from "../styles"
+import Map from "./Map"
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
@@ -9,8 +19,15 @@ const instructions = Platform.select({
     "Shake or press menu button for dev menu"
 })
 
-export default class Home extends Component<{}> {
+export default class Home extends Component {
   render() {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Text>Map</Text>
+        <Map />
+      </SafeAreaView>
+    )
+    /*
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>SkyShepherd Tag</Text>
@@ -22,6 +39,7 @@ export default class Home extends Component<{}> {
         <Button title="Say Hello" onPress={this.sayHello} />
       </View>
     )
+    */
   }
 
   sayHello() {
