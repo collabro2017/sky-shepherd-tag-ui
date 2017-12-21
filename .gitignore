@@ -139,6 +139,9 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
+## Custom
+Pods/
+
 ### ReactNative.Android Stack ###
 # Built application files
 *.apk
