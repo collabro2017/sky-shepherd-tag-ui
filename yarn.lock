@@ -3790,6 +3790,10 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-logger@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-logger/-/react-native-logger-1.0.3.tgz#8402b2a05ca5254d1c89a62b47140f6f9cd9c80b"
+
 react-native-maps@^0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.19.0.tgz#ce94fad1cf360e335cb4338a68c95f791e869074"
