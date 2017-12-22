@@ -30,6 +30,8 @@
 		077CF1281FEC53DD00B922DE /* AIRGoogleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 077CF1141FEC53DD00B922DE /* AIRGoogleMap.m */; };
 		077CF1291FEC53DD00B922DE /* AIRGoogleMapPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 077CF1181FEC53DD00B922DE /* AIRGoogleMapPolygon.m */; };
 		077CF12A1FEC53DD00B922DE /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 077CF1191FEC53DD00B922DE /* AIRGMSMarker.m */; };
+		077CF12D1FEC751500B922DE /* RCTConvert+GMSMapViewType.m in Sources */ = {isa = PBXBuildFile; fileRef = 077CF12C1FEC751400B922DE /* RCTConvert+GMSMapViewType.m */; };
+		077CF1301FEC786400B922DE /* DummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 077CF12E1FEC786300B922DE /* DummyView.m */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -321,6 +323,10 @@
 		077CF1171FEC53DD00B922DE /* AIRGoogleMapCircleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCircleManager.h; sourceTree = "<group>"; };
 		077CF1181FEC53DD00B922DE /* AIRGoogleMapPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolygon.m; sourceTree = "<group>"; };
 		077CF1191FEC53DD00B922DE /* AIRGMSMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
+		077CF12B1FEC751400B922DE /* RCTConvert+GMSMapViewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+GMSMapViewType.h"; sourceTree = "<group>"; };
+		077CF12C1FEC751400B922DE /* RCTConvert+GMSMapViewType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+GMSMapViewType.m"; sourceTree = "<group>"; };
+		077CF12E1FEC786300B922DE /* DummyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyView.m; sourceTree = "<group>"; };
+		077CF12F1FEC786300B922DE /* DummyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyView.h; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Tag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tag.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -459,6 +465,10 @@
 		077CF0F71FEC53DC00B922DE /* AirGoogleMaps */ = {
 			isa = PBXGroup;
 			children = (
+				077CF12B1FEC751400B922DE /* RCTConvert+GMSMapViewType.h */,
+				077CF12C1FEC751400B922DE /* RCTConvert+GMSMapViewType.m */,
+				077CF12F1FEC786300B922DE /* DummyView.h */,
+				077CF12E1FEC786300B922DE /* DummyView.m */,
 				077CF0F81FEC53DC00B922DE /* AIRGoogleMapPolyline.h */,
 				077CF0F91FEC53DC00B922DE /* AIRGoogleMapUrlTile.m */,
 				077CF0FA1FEC53DC00B922DE /* AIRGoogleMapMarkerManager.h */,
@@ -1168,9 +1178,11 @@
 				077CF1261FEC53DD00B922DE /* AIRGoogleMapManager.m in Sources */,
 				077CF11E1FEC53DD00B922DE /* AIRGoogleMapURLTileManager.m in Sources */,
 				077CF11B1FEC53DD00B922DE /* AIRGoogleMapPolygonManager.m in Sources */,
+				077CF1301FEC786400B922DE /* DummyView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				077CF11D1FEC53DD00B922DE /* AIRGMSPolygon.m in Sources */,
 				077CF1241FEC53DD00B922DE /* AIRGMSPolyline.m in Sources */,
+				077CF12D1FEC751500B922DE /* RCTConvert+GMSMapViewType.m in Sources */,
 				077CF1271FEC53DD00B922DE /* AIRGoogleMapCallout.m in Sources */,
 				077CF11A1FEC53DD00B922DE /* AIRGoogleMapUrlTile.m in Sources */,
 				077CF1201FEC53DD00B922DE /* AIRGoogleMapCircleManager.m in Sources */,
