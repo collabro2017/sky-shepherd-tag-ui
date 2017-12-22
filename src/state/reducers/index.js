@@ -1,12 +1,10 @@
+import map from "./map"
 import { combineReducers } from "redux"
 
-// TODO: Add real reducers
-const noop = function(state = {}) {
-  return state
-}
+export { default as map } from "./map"
 
 const rootReducer = combineReducers({
-  noop
+  map
 })
 
 export default rootReducer
