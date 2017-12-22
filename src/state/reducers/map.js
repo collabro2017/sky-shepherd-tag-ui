@@ -1,22 +1,31 @@
+import console from "reactotron-react-native"
+
 // TYPES
-const typePrefix = "tag/map"
-const types = { MOVE_TO_LOCATION: `${typePrefix}/MOVE_TO_LOCATION` }
+const createType = name => `tag/map/${name}`
+const types = {
+  MOVE_TO_LOCATION: createType("MOVE_TO_LOCATION"),
+  CREATE_BOUNDARY: createType("CREATE_BOUNDARY")
+}
 
 // ACTIONS
 const moveToLocationAction = location => {
   return { type: types.MOVE_TO_LOCATION, payload: { location } }
 }
 
-// OPERATIONS
-const moveToLocationOperation = moveToLocationAction
-
-const operations = {
-  moveToLocation: moveToLocationOperation
+const createBoundaryAction = () => {
+  return { type: types.CREATE_BOUNDARY, payload: {} }
 }
+
+// OPERATIONS
+const moveToLocation = moveToLocationAction
+const createBoundary = createBoundaryAction
+
+const operations = { moveToLocation, createBoundary }
 
 // SELECTORS
 const selectors = {
-  getRegion: ({ map }) => map.region
+  getRegion: ({ map }) => map.region,
+  getMode: ({ map }) => map.mode
 }
 
 // REDUCERS
@@ -28,15 +37,22 @@ const updateRegion = (region, newLocation) => {
   }
 }
 
+const modes = {
+  VIEW_MODE: "view",
+  CREATE_MODE: "create"
+}
+
 const reducer = (state = {}, { type, payload }) => {
   switch (type) {
     case types.MOVE_TO_LOCATION:
       return {
         ...state,
-        map: {
-          ...state.maps,
-          region: updateRegion(state.maps.region, payload.location)
-        }
+        region: updateRegion(state.maps.region, payload.location)
+      }
+    case types.CREATE_BOUNDARY:
+      return {
+        ...state,
+        mode: modes.CREATE_MODE
       }
     default:
       return state
@@ -46,4 +62,5 @@ const reducer = (state = {}, { type, payload }) => {
 // INTERFACE
 export { selectors as mapSelectors }
 export { operations as mapOperations }
+export { modes as mapModes }
 export default reducer

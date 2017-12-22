@@ -9,6 +9,11 @@ import { Dimensions } from "react-native"
 import { Provider } from "react-redux"
 import Home from "./Home"
 import { configureStore } from "../state"
+import { mapModes } from "../state/reducers/map"
+
+// Setup Reactotron for debugging in dev mode
+import setupReactotron from "../utils/reactotronSetup"
+setupReactotron()
 
 const calculateLongitudeDelta = latitudeDelta => {
   const { width, height } = Dimensions.get("window")
@@ -23,7 +28,9 @@ const defaultRegion = {
   longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
 }
 
-const store = configureStore({ map: { region: defaultRegion } })
+const store = configureStore({
+  map: { region: defaultRegion, mode: mapModes.VIEW_MODE }
+})
 
 export default class App extends Component {
   render() {

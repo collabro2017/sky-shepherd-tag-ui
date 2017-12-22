@@ -1,5 +1,15 @@
 import { StyleSheet } from "react-native"
 
+export const colors = {
+  logoGray: "#505050"
+}
+
+const navigationBar = {
+  width: "100%",
+  height: 44,
+  backgroundColor: colors.logoGray
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -19,7 +29,9 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1
-  }
+  },
+  navigationBarAndroid: { ...navigationBar },
+  navigationBarIos: { ...navigationBar, height: 64 }
 })
 
 export default styles
