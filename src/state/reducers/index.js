@@ -1,10 +1,11 @@
 import map from "./map"
+import nav from "./nav"
 import { combineReducers } from "redux"
 
-export { default as map } from "./map"
-
 const rootReducer = combineReducers({
-  map
+  map,
+  nav
 })
 
 export default rootReducer
+export { map, nav }

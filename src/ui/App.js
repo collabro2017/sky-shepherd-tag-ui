@@ -6,8 +6,10 @@
 
 import React, { Component } from "react"
 import { Dimensions } from "react-native"
-import { Provider } from "react-redux"
-import Home from "./Home"
+import { addNavigationHelpers } from "react-navigation"
+import { PropTypes } from "prop-types"
+import { Provider, connect } from "react-redux"
+import Drawer from "./Drawer"
 import { configureStore } from "../state"
 import { mapModes } from "../state/reducers/map"
 
@@ -32,12 +34,38 @@ const store = configureStore({
   map: { region: defaultRegion, mode: mapModes.VIEW_MODE }
 })
 
-export default class App extends Component {
+const mapStateToProps = state => ({
+  nav: state.nav
+})
+
+class App extends Component {
+  render() {
+    return (
+      <Drawer
+        navigation={addNavigationHelpers({
+          dispatch: this.props.dispatch,
+          state: this.props.nav
+        })}
+      />
+    )
+  }
+}
+
+App.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  nav: PropTypes.object.isRequired
+}
+
+const AppWithNavigationState = connect(mapStateToProps)(App)
+
+class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Home />
+        <AppWithNavigationState />
       </Provider>
     )
   }
 }
+
+export default Root
