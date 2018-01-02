@@ -31,7 +31,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   navigationBarAndroid: { ...navigationBar },
-  navigationBarIos: { ...navigationBar, height: 64 }
+  navigationBarIos: { ...navigationBar, height: 64 },
+  drawer: {
+    flex: 1
+  },
+  drawerHeader: {
+    backgroundColor: "#333333",
+    height: 100
+  }
 })
 
 export default styles
