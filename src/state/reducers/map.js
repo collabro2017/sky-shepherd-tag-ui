@@ -4,6 +4,7 @@ import console from "reactotron-react-native"
 const createType = name => `tag/map/${name}`
 const types = {
   MOVE_TO_LOCATION: createType("MOVE_TO_LOCATION"),
+  REGION_CHANGED: createType("REGION_CHANGED"),
   CREATE_BOUNDARY: createType("CREATE_BOUNDARY")
 }
 
@@ -12,19 +13,25 @@ const moveToLocationAction = location => {
   return { type: types.MOVE_TO_LOCATION, payload: { location } }
 }
 
+const regionChangedAction = region => {
+  return { type: types.REGION_CHANGED, payload: { region } }
+}
+
 const createBoundaryAction = () => {
   return { type: types.CREATE_BOUNDARY, payload: {} }
 }
 
 // OPERATIONS
 const moveToLocation = moveToLocationAction
+const regionChanged = regionChangedAction
 const createBoundary = createBoundaryAction
 
-const operations = { moveToLocation, createBoundary }
+const operations = { moveToLocation, regionChanged, createBoundary }
 
 // SELECTORS
 const selectors = {
   getRegion: ({ map }) => map.region,
+  getLastRegion: ({ map }) => map.lastRegion,
   getMode: ({ map }) => map.mode
 }
 
@@ -47,7 +54,12 @@ const reducer = (state = {}, { type, payload }) => {
     case types.MOVE_TO_LOCATION:
       return {
         ...state,
-        region: updateRegion(state.maps.region, payload.location)
+        region: updateRegion(state.region, payload.location)
+      }
+    case types.REGION_CHANGED:
+      return {
+        ...state,
+        lastRegion: payload.region
       }
     case types.CREATE_BOUNDARY:
       return {

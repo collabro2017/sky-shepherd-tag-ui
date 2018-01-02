@@ -1,5 +1,3 @@
-// @flow
-
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Alert, View } from "react-native"
@@ -31,12 +29,28 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLongPress: () => dispatch(mapOperations.createBoundary())
+    onLongPress: () => dispatch(mapOperations.createBoundary()),
+    onRegionChangeComplete: function(region) {
+      dispatch(mapOperations.regionChanged(region))
+    }
   }
 }
 
 class Map extends Component {
+  // Only update if the region or mode changes. Otherwise we get jitter from recording
+  // region updates
+  shouldComponentUpdate(nextProps) {
+    if (
+      nextProps.region != this.props.region ||
+      nextProps.mode != this.props.mode
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
   componentWillReceiveProps(newProps) {
+    console.log({ received: newProps })
     const modeChanged = newProps.mode != this.props.mode
     const isCreateMode = newProps.mode == mapModes.CREATE_MODE
     if (modeChanged && isCreateMode) {
@@ -55,7 +69,9 @@ class Map extends Component {
 
 Map.propTypes = {
   style: View.propTypes.style,
+  lastRegion: MapView.propTypes.initialRegion,
   region: MapView.propTypes.initialRegion,
+  onRegionChange: MapView.propTypes.onRegionChange,
   mode: PropTypes.string
 }
 

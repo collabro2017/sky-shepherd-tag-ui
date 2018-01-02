@@ -30,6 +30,8 @@ const defaultRegion = {
   longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
 }
 
+// TODO: Prefer to load last region from storage instead or current location, if available,
+// instead of using a default region
 const store = configureStore({
   map: { region: defaultRegion, mode: mapModes.VIEW_MODE }
 })
