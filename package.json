@@ -33,8 +33,7 @@
     "jest": "21.2.1",
     "prettier": "^1.9.2",
     "react-test-renderer": "16.0.0",
-    "reactotron-react-native": "^1.14.0",
-    "reactotron-redux": "^1.13.0"
+    "redux-devtools-extension": "^2.13.2"
   },
   "jest": {
     "preset": "react-native"

@@ -1,10 +1,12 @@
-import React, { ScrollView, View } from "react"
-import { DrawerItems, DrawerNavigator, SafeAreaView } from "react-navigation"
 import Home from "./Home"
-import styles from "../styles"
+import { DrawerNavigator } from "react-navigation"
+// import React, { ScrollView, View } from "react"
+// import { DrawerItems, DrawerNavigator, SafeAreaView } from "react-navigation"
+// import styles from "../styles"
 
 // Custom drawer component.
 // TODO: Passing it to the navigator breaks routes. Seems like a library bug?
+/*
 const DrawerContent = props => (
   <ScrollView>
     <SafeAreaView
@@ -16,6 +18,7 @@ const DrawerContent = props => (
     </SafeAreaView>
   </ScrollView>
 )
+*/
 
 const Drawer = DrawerNavigator(
   {

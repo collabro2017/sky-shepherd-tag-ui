@@ -8,19 +8,19 @@ To get started, clone this repository, and [install dependencies](https://facebo
 
 1. Install `nodejs`, `watchman`, `yarn`, and `react-native-cli`. You may install nodejs however you like (e.g. using [asdf version manager](https://github.com/asdf-vm/asdf)). If you already have a version of nodejs installed, you can use that (current version is 8.9.1). Here are instructions for using Homebrew:
 
-        brew install nodejs
-        brew install watchman
-        brew install yarn --without-node
-        npm install -g react-native-cli
+   brew install nodejs
+   brew install watchman
+   brew install yarn --without-node
+   npm install -g react-native-cli
 
 2. Get this project
 
-        git clone https://gitlab.com/safe-retrieve/sky-shepherd-tag-ui
-        cd sky-shepherd-tag-ui
+   git clone https://gitlab.com/safe-retrieve/sky-shepherd-tag-ui
+   cd sky-shepherd-tag-ui
 
 3. Install project dependencies
 
-        yarn install
+   yarn install
 
 4. Make sure you have Xcode and Android Studio installed to run the app using simulators or devices. Follow [React Native setup instructions](https://facebook.github.io/react-native/docs/getting-started.html) per platform
 
@@ -34,11 +34,15 @@ For Android, connect a device or boot a simulator, then:
 
 Sometimes the `react-native` runner can't navigate your setup, and you need to run the project using Xcode or Android Studio. To run using Xcode:
 
-- Open the project file `ios/Tag.xcodeproj` with Xcode. Run on a device or in the simulator as usual.
+* Open the project file `ios/Tag.xcodeproj` with Xcode. Run on a device or in the simulator as usual.
 
 To run using Android Studio:
 
-- Open the `android` directory with Android Studio. Run on a device or in the simulator as usual.
+* Open the `android` directory with Android Studio. Run on a device or in the simulator as usual.
+
+## Debugging
+
+The [React Native Debugger](https://github.com/jhen0409/react-native-debugger) is really handy.
 
 ## Style
 
@@ -49,6 +53,17 @@ This project uses [prettier](https://prettier.io/) for code formatting. We use t
 To make the formatting changes:
 
     yarn run prettier --write
+
+You can set up your editor to run prettier on save, to autoformat your code. For VSCode
+
+* Install the ESLint and Prettier extensions
+* In Settings, enable autosave
+
+```javascript
+{
+  "editor.formatonsave": true,
+}
+```
 
 To make prettier run in a pre-commit hook:
 

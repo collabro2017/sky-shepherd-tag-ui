@@ -1,5 +1,3 @@
-import console from "reactotron-react-native"
-
 // TYPES
 const createType = name => `tag/map/${name}`
 const types = {
