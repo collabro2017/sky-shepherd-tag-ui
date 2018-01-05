@@ -1,4 +1,5 @@
-import Home from "./Home"
+/*
+import HomeStack from "./HomeStack"
 import { DrawerNavigator } from "react-navigation"
 // import React, { ScrollView, View } from "react"
 // import { DrawerItems, DrawerNavigator, SafeAreaView } from "react-navigation"
@@ -6,24 +7,22 @@ import { DrawerNavigator } from "react-navigation"
 
 // Custom drawer component.
 // TODO: Passing it to the navigator breaks routes. Seems like a library bug?
-/*
-const DrawerContent = props => (
-  <ScrollView>
-    <SafeAreaView
-      style={styles.drawer}
-      forceInset={{ top: "always", horizontal: "never" }}
-    >
-      <View style={styles.drawerHeader} />
-      <DrawerItems {...props} />
-    </SafeAreaView>
-  </ScrollView>
-)
-*/
+// const DrawerContent = props => (
+//   <ScrollView>
+//     <SafeAreaView
+//       style={styles.drawer}
+//       forceInset={{ top: "always", horizontal: "never" }}
+//     >
+//       <View style={styles.drawerHeader} />
+//       <DrawerItems {...props} />
+//     </SafeAreaView>
+//   </ScrollView>
+// )
 
 const Drawer = DrawerNavigator(
   {
     Map: {
-      screen: Home
+      screen: HomeStack
     }
   }
   // TODO: Get drawer styling to work. Adding this options object causes the routes to go null
@@ -34,3 +33,4 @@ const Drawer = DrawerNavigator(
 )
 
 export default Drawer
+*/

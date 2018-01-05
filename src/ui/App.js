@@ -1,55 +1,26 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
+// @flow
 import React, { Component } from "react"
-import { addNavigationHelpers } from "react-navigation"
+import ReduxNav from "../nav/ReduxNav"
 import { PersistGate } from "redux-persist/es/integration/react"
-import { PropTypes } from "prop-types"
-import { Provider, connect } from "react-redux"
-import Drawer from "./Drawer"
+import { Provider } from "react-redux"
+import Icon from "react-native-vector-icons/Feather"
 import { configureStore } from "../state"
+import type { State } from "../state"
 
-const mapStateToProps = state => ({
-  nav: state.nav
-})
-
-class App extends Component {
-  render() {
-    return (
-      <Drawer
-        navigation={addNavigationHelpers({
-          dispatch: this.props.dispatch,
-          state: this.props.nav
-        })}
-      />
-    )
-  }
-}
-
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired
-}
-
-const AppWithNavigationState = connect(mapStateToProps)(App)
+// Load font dynamically for iOS. See
+//   https://github.com/oblador/react-native-vector-icons#option-with-cocoapods
+Icon.loadFont()
 
 const { store, persistor } = configureStore()
 
-class Root extends Component {
-  componentDidMount() {}
-
-  render() {
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <AppWithNavigationState />
-        </PersistGate>
-      </Provider>
-    )
-  }
+const Root = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ReduxNav />
+      </PersistGate>
+    </Provider>
+  )
 }
 
 export default Root

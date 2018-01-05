@@ -1,13 +1,8 @@
 import { StyleSheet } from "react-native"
 
 export const colors = {
-  logoGray: "#505050"
-}
-
-const navigationBar = {
-  width: "100%",
-  height: 44,
-  backgroundColor: colors.logoGray
+  logoGray: "#505050",
+  white: "#ffffff"
 }
 
 const styles = StyleSheet.create({
@@ -30,10 +25,11 @@ const styles = StyleSheet.create({
   map: {
     flex: 1
   },
-  navigationBarAndroid: { ...navigationBar },
-  navigationBarIos: { ...navigationBar, height: 64 },
-  drawer: {
-    flex: 1
+  drawerButton: {
+    paddingLeft: 12
+  },
+  navigationHeader: {
+    backgroundColor: colors.logoGray
   },
   drawerHeader: {
     backgroundColor: "#333333",

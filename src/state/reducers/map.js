@@ -42,9 +42,12 @@ const updateRegion = (region, newLocation) => {
   }
 }
 
+const VIEW_MODE = "view"
+const CREATE_MODE = "create"
+
 const modes = {
-  VIEW_MODE: "view",
-  CREATE_MODE: "create"
+  VIEW_MODE,
+  CREATE_MODE
 }
 
 const reducer = (state = {}, { type, payload }) => {
@@ -73,4 +76,5 @@ const reducer = (state = {}, { type, payload }) => {
 export { selectors as mapSelectors }
 export { operations as mapOperations }
 export { modes as mapModes }
+export { types as mapTypes }
 export default reducer

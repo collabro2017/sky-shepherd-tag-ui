@@ -1,3 +1,4 @@
+// @flow
 import { createStore, applyMiddleware, compose } from "redux"
 import { persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/es/storage"
@@ -5,11 +6,33 @@ import thunk from "redux-thunk"
 import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
 import rootReducer from "./reducers"
-import { mapModes } from "../state/reducers/map"
+import { mapModes, mapTypes } from "../state/reducers/map"
 import { calculateLongitudeDelta } from "../utils/map"
 
+import type { Store, StoreCreator } from "redux"
+
+type Region = {
+  latitude: number,
+  longitude: number,
+  latitudeDelta: number,
+  longitudeDelta: number
+}
+
+export type State = {
+  map: {
+    lastRegion: Region,
+    mode: mapTypes.MapMode
+  },
+  nav: ?Object
+}
+
+type StoreWithPersistor = {
+  store: Store,
+  persistor: Object
+}
+
 const defaultLatitudeDelta = 0.00922
-const defaultRegion = {
+const defaultRegion: Region = {
   latitude: 44.906005,
   longitude: -93.198442,
   latitudeDelta: defaultLatitudeDelta,
@@ -18,8 +41,10 @@ const defaultRegion = {
 
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
-const defaultState = {
-  map: { lastRegion: defaultRegion, mode: mapModes.VIEW_MODE }
+const viewMode: mapTypes.MapMode = mapModes.VIEW_MODE
+const defaultState: State = {
+  map: { lastRegion: defaultRegion, mode: viewMode },
+  nav: null
 }
 
 const persistConfig = {
@@ -33,14 +58,14 @@ const reducer = persistReducer(persistConfig, rootReducer)
 const composeEnhancers = composeWithDevTools || compose
 const enhancer = composeEnhancers(applyMiddleware(thunk, logger))
 
-function createTagStore(initialState = {}) {
+function createTagStore(initialState = {}): StoreCreator {
   const state = { ...defaultState, ...initialState }
   return createStore(reducer, state, enhancer)
 }
 
-function configureStore() {
+function configureStore(): StoreWithPersistor {
   const store = createTagStore()
-  const persistor = persistStore(store)
+  const persistor: Object = persistStore(store)
   return { store, persistor }
 }
 
