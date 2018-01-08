@@ -3,7 +3,7 @@ import { StatusBar, View } from "react-native"
 import Map from "./Map"
 import { colors } from "../styles"
 
-export default class Home extends Component {
+export default class MapScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>

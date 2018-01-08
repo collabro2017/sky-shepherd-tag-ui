@@ -1,6 +1,6 @@
 import React from "react"
 import { DrawerNavigator, StackNavigator } from "react-navigation"
-import Home from "../ui/Home"
+import MapScreen from "../ui/MapScreen"
 import DrawerButton from "../ui/DrawerButton"
 import styles, { colors } from "../styles"
 
@@ -11,7 +11,7 @@ const drawerButton = navigation => {
 const MapStack = StackNavigator(
   {
     map: {
-      screen: Home
+      screen: MapScreen
     }
   },
   {
