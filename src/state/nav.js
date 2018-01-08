@@ -18,7 +18,7 @@ const actions = {
 // Init the main router. See
 //   https://github.com/react-navigation/react-navigation/issues/1919
 const router = AppNav.router
-let initialNavState = router.getStateForAction(NavigationActions.init())
+const initialNavState = router.getStateForAction(NavigationActions.init())
 
 const reducer = (state = initialNavState, action) => {
   // Only handle navigation actions
@@ -33,3 +33,4 @@ const reducer = (state = initialNavState, action) => {
 // INTERFACE
 export default reducer
 export { actions as navActions }
+export { initialNavState }

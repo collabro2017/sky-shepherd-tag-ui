@@ -7,7 +7,7 @@ import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
 import { calculateLongitudeDelta } from "../utils/map"
 import map, { mapModes, mapTypes } from "./map"
-import nav from "./nav"
+import nav, { initialNavState } from "./nav"
 
 import type { Store, StoreCreator } from "redux"
 
@@ -49,9 +49,10 @@ const defaultRegion: Region = {
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
 const viewMode: mapTypes.MapMode = mapModes.VIEW_MODE
+
 const defaultState: State = {
   map: { lastRegion: defaultRegion, mode: viewMode },
-  nav: null
+  nav: initialNavState
 }
 
 const persistConfig = {
