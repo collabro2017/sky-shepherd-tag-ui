@@ -1,4 +1,4 @@
-import AppNav from "../../nav/AppNav"
+import AppNav from "../nav/AppNav"
 import { NavigationActions } from "react-navigation"
 
 // TYPES

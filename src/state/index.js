@@ -5,11 +5,18 @@ import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
 import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
-import rootReducer from "./reducers"
-import { mapModes, mapTypes } from "../state/reducers/map"
 import { calculateLongitudeDelta } from "../utils/map"
+import map, { mapModes, mapTypes } from "./map"
+import nav from "./nav"
 
 import type { Store, StoreCreator } from "redux"
+
+import { combineReducers } from "redux"
+
+const rootReducer = combineReducers({
+  map,
+  nav
+})
 
 type Region = {
   latitude: number,

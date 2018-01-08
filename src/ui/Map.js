@@ -5,7 +5,7 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
 import PropTypes from "prop-types"
 import styles from "../styles"
 
-import { mapSelectors, mapOperations, mapModes } from "../state/reducers/map"
+import { mapSelectors, mapOperations, mapModes } from "../state/map"
 
 const mapStateToProps = state => {
   const props = {
