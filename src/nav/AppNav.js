@@ -25,6 +25,7 @@ const MapStack = StackNavigator(
   }
 )
 
+// TODO: Add custom DrawerContent
 const DrawerNav = DrawerNavigator({
   mapStack: {
     screen: MapStack
