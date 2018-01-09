@@ -1,13 +1,13 @@
 import React, { Component } from "react"
-import { StatusBar, View } from "react-native"
+import { View } from "react-native"
 import Map from "./Map"
-import { colors } from "../styles"
+import StatusBar from "../StatusBar"
 
 export default class MapScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar backgroundColor={colors.logoGray} barStyle="light-content" />
+        <StatusBar />
         <Map />
       </View>
     )

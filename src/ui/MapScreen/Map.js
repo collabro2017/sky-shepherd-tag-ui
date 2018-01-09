@@ -3,9 +3,9 @@ import { connect } from "react-redux"
 import { Alert, View } from "react-native"
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
 import PropTypes from "prop-types"
-import styles from "../styles"
+import styles from "../../styles"
 
-import { mapSelectors, mapOperations, mapModes } from "../state/map"
+import { mapSelectors, mapOperations, mapModes } from "../../state/map"
 
 const mapStateToProps = state => {
   const props = {
