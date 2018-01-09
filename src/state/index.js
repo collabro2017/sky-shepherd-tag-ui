@@ -9,11 +9,11 @@ import { calculateLongitudeDelta } from "../utils/map"
 import map, { mapModes, mapTypes } from "./map"
 import nav, { initialNavState } from "./nav"
 
-import type { Store, StoreCreator } from "redux"
+import type { Reducer, Store, StoreCreator } from "redux"
 
 import { combineReducers } from "redux"
 
-const rootReducer = combineReducers({
+const rootReducer: Reducer = combineReducers({
   map,
   nav
 })
