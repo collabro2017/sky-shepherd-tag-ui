@@ -1,8 +1,8 @@
 import React from "react"
 import { DrawerNavigator, StackNavigator } from "react-navigation"
-import AreasScreen from "../ui/AreasScreen"
+import AreaScreen from "../ui/AreaScreen"
 import MapScreen from "../ui/MapScreen"
-import TagsScreen from "../ui/TagsScreen"
+import TagScreen from "../ui/TagScreen"
 import DrawerButton from "../ui/DrawerButton"
 import styles, { colors } from "../styles"
 
@@ -35,22 +35,22 @@ const MapStack = StackNavigator(
   drawerItemStackOptions({ title: "Map" })
 )
 
-const AreasStack = StackNavigator(
+const AreaStack = StackNavigator(
   {
     areas: {
-      screen: AreasScreen
+      screen: AreaScreen
     }
   },
-  drawerItemStackOptions({ title: "Areas" })
+  drawerItemStackOptions({ title: "Area" })
 )
 
-const TagsStack = StackNavigator(
+const TagStack = StackNavigator(
   {
     tags: {
-      screen: TagsScreen
+      screen: TagScreen
     }
   },
-  drawerItemStackOptions({ title: "Tags" })
+  drawerItemStackOptions({ title: "Tag" })
 )
 
 // TODO: Add custom DrawerContent
@@ -59,10 +59,10 @@ const DrawerNav = DrawerNavigator({
     screen: MapStack
   },
   areasStack: {
-    screen: AreasStack
+    screen: AreaStack
   },
   tags: {
-    screen: TagsStack
+    screen: TagStack
   }
 })
 
