@@ -8,7 +8,7 @@ type AreaAction = { type: "tag/area/DUMMY_ACTION", payload: string }
 
 // SELECTORS
 const selectors = {
-  getAreas: ({ area }: { area: AreaState }): Area[] => area.areas
+  getAreas: (state: State): Area[] => state.area.areas
 }
 
 const initialState: AreaState = {
