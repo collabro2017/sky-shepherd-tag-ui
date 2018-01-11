@@ -21,6 +21,18 @@ To get started, clone this repository, and [install dependencies](https://facebo
 3. Install project dependencies
 
         yarn install
+        
+        # if needing to run iOS app
+        # NOTE: requires Xcode 9 or above
+        brew install cocoapods
+        cd ios
+        pod install --repo-update
+        
+        # if needing to run Android app
+        echo "sdk.dir = $HOME/Library/Android/sdk" >> android/local.properties
+
+        
+        
 
 4. Make sure you have Xcode and Android Studio installed to run the app using simulators or devices. Follow [React Native setup instructions](https://facebook.github.io/react-native/docs/getting-started.html) per platform
 
