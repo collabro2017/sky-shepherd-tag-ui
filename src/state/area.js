@@ -2,10 +2,7 @@
 import { Cloud } from "../data"
 import type { Reducer } from "redux"
 import type { Area } from "../data/types"
-
-type AreaState = {
-  areas: Area[]
-}
+import type { AreaState, State } from "./types"
 
 type AreaAction = { type: "tag/area/DUMMY_ACTION", payload: string }
 
