@@ -26,7 +26,6 @@ const reducer: Reducer<TagState, TagAction> = (
       // Handle action
       return state
     default:
-      ;(action: empty)
       return state
   }
 }
