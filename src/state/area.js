@@ -1,5 +1,4 @@
 // @flow
-
 import { Cloud } from "../data"
 import type { Reducer } from "redux"
 import type { Area } from "../data/types"

@@ -1,11 +1,15 @@
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { Area } from "./area"
+import type { Area, Tag } from "../data"
 
 export type Region = {
   latitude: number,
   longitude: number,
   latitudeDelta: number,
   longitudeDelta: number
+}
+
+export type TagState = {
+  tags: Tag[]
 }
 
 export type State = {
@@ -16,7 +20,8 @@ export type State = {
   +nav: NavigationState,
   +area: {
     areas: Area[]
-  }
+  },
+  +tag: TagState
 }
 
 export type Action = NavigationAction

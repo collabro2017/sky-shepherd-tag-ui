@@ -7,7 +7,7 @@ import AreaListItem from "./AreaListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
 import type { Area } from "../../data/types"
-import type { AreaState } from "../../state"
+import type { AreaState } from "../../state/types"
 
 type Props = {
   data: Area[]

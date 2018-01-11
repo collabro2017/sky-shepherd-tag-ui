@@ -1,7 +1,7 @@
 // @flow
 import frontPlusJson from "../data/stubs/boundary_OIIFTEBB9A.json"
 import black39Json from "../data/stubs/boundary_YYGoMnkP0V.json"
-import type { Area } from "./types"
+import type { Area, Tag } from "./types"
 
 type JsonObject = { [string]: mixed }
 
@@ -44,14 +44,20 @@ const areaStubs = (): Area[] => {
   return areas
 }
 
+const tagStubs = (): Tag[] => {
+  return [{ objectId: "1", name: "Andy" }, { objectId: "2", name: "Griff" }]
+}
+
 interface Cloud {
   areaFromJson(json: JsonObject, key: string): ?Area;
   areaStubs(): Area[];
+  tagStubs(): Tag[];
 }
 
 const cloud: Cloud = {
   areaFromJson,
-  areaStubs
+  areaStubs,
+  tagStubs
 }
 
 export default cloud

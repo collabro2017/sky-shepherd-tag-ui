@@ -2,22 +2,20 @@
 import React from "react"
 import { connect } from "react-redux"
 import { FlatList, View } from "react-native"
+import { tagSelectors } from "../../state/tag"
 import TagListItem from "./TagListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
 import type { Tag } from "../../data/types"
+import type { State } from "../../state/types"
 
 type Props = {
-  data: [Tag]
+  data: Tag[]
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state: State): Props => {
   return {
-    data: [
-      { objectId: "1", name: "Andy" },
-      { objectId: "2", name: "Wallet" },
-      { objectId: "3", name: "Backpack" }
-    ]
+    data: tagSelectors.getTags(state)
   }
 }
 
