@@ -2,22 +2,20 @@
 import React from "react"
 import { connect } from "react-redux"
 import { FlatList, View } from "react-native"
+import { areaSelectors } from "../../state/area"
 import AreaListItem from "./AreaListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
 import type { Area } from "../../data/types"
+import type { AreaState } from "../../state"
 
 type Props = {
-  data: [Area]
+  data: Area[]
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state: { area: AreaState }): Props => {
   return {
-    data: [
-      { objectId: "1", title: "Backyard" },
-      { objectId: "2", title: "Naomi's" },
-      { objectId: "3", title: "Dog Park" }
-    ]
+    data: areaSelectors.getAreas(state)
   }
 }
 

@@ -14,9 +14,9 @@ type Props = {
 const mapStateToProps = () => {
   return {
     data: [
-      { objectId: "1", title: "Andy" },
-      { objectId: "2", title: "Wallet" },
-      { objectId: "3", title: "Backpack" }
+      { objectId: "1", name: "Andy" },
+      { objectId: "2", name: "Wallet" },
+      { objectId: "3", name: "Backpack" }
     ]
   }
 }

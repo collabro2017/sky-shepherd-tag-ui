@@ -11,7 +11,7 @@ type Props = {
 const TagListItem = ({ tag }: Props) => {
   return (
     <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{tag.title}</Text>
+      <Text style={styles.listItemText}>{tag.name}</Text>
     </View>
   )
 }

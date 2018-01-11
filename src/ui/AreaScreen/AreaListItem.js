@@ -11,7 +11,7 @@ type Props = {
 const AreaListItem = ({ area }: Props) => {
   return (
     <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{area.title}</Text>
+      <Text style={styles.listItemText}>{area.name}</Text>
     </View>
   )
 }
