@@ -14,12 +14,14 @@ import type { Reducer } from "redux"
 //   https://github.com/react-navigation/react-navigation/issues/1919
 const router: NavigationRouter<NavigationState, *> = AppNav.router
 const initAction: NavigationAction = NavigationActions.init()
-const initialNavState: ?NavigationState = router.getStateForAction(initAction)
+const initialNavState: NavigationState = router.getStateForAction(
+  initAction
+) || { index: 0, routes: [] }
 
 const reducer: Reducer<NavigationState, NavigationAction> = (
-  maybeState: ?NavigationState,
+  maybeState: NavigationState,
   action: NavigationAction
-): ?NavigationState => {
+): NavigationState => {
   const state = maybeState || initialNavState
 
   // Only handle navigation actions

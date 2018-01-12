@@ -7,13 +7,13 @@ import AreaListItem from "./AreaListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
 import type { Area } from "../../data/types"
-import type { AreaState } from "../../state/types"
+import type { State } from "../../state/types"
 
 type Props = {
   data: Area[]
 }
 
-const mapStateToProps = (state: { area: AreaState }): Props => {
+const mapStateToProps = (state: State): Props => {
   return {
     data: areaSelectors.getAreas(state)
   }

@@ -1,10 +1,9 @@
 // @flow
 import frontPlusJson from "../../data/stubs/boundary_OIIFTEBB9A.json"
 import black39Json from "../../data/stubs/boundary_YYGoMnkP0V.json"
-import Backend from "./parse"
+import ParseBackend from "./parse"
 import type { Area, Tag } from "../types"
-
-type JsonObject = { [string]: mixed }
+import type { Cloud, JsonObject } from "./types"
 
 // Parse string from object
 const getString = (jsonObject: JsonObject, key: string): ?string => {
@@ -49,16 +48,11 @@ const tagStubs = (): Tag[] => {
   return [{ objectId: "1", name: "Andy" }, { objectId: "2", name: "Griff" }]
 }
 
-interface Cloud {
-  areaFromJson(json: JsonObject, key: string): ?Area;
-  areaStubs(): Area[];
-  tagStubs(): Tag[];
-}
-
 const cloud: Cloud = {
   areaFromJson,
   areaStubs,
-  tagStubs
+  tagStubs,
+  ...ParseBackend
 }
 
 export default cloud

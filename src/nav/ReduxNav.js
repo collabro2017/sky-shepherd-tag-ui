@@ -1,22 +1,36 @@
+// @flow
 import React from "react"
 import { connect } from "react-redux"
 import { addNavigationHelpers } from "react-navigation"
-import PropTypes from "prop-types"
 import AppNav from "./AppNav"
+import Cloud from "../data/cloud"
+import type { Dispatch } from "redux"
+import type { NavigationState } from "react-navigation"
 
 const mapStateToProps = state => ({
   nav: state.nav
 })
 
-const ReduxNav = props => {
-  const { dispatch, nav } = props
-  const navigation = addNavigationHelpers({ dispatch, state: nav })
-  return <AppNav navigation={navigation} />
+type Props = {
+  dispatch: Dispatch,
+  nav: NavigationState
 }
 
-ReduxNav.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired
+class ReduxNav extends React.Component<Props> {
+  constructor(props: Props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(Cloud.authenticate())
+  }
+
+  render() {
+    const { dispatch, nav } = this.props
+    const navigation = addNavigationHelpers({ dispatch, state: nav })
+    return <AppNav navigation={navigation} />
+  }
 }
 
 export default connect(mapStateToProps)(ReduxNav)

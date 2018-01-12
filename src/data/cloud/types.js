@@ -1,9 +1,14 @@
 // @flow
+import type { ThunkAction } from "../../state/types"
 import type { Area, Tag } from "../types"
 
-interface Backend {
-  getAreas(): Area[];
-  getTags(): Tag[];
+export interface Cloud {
+  areaFromJson(json: JsonObject): ?Area;
+  areaStubs(): Area[];
+  tagStubs(): Tag[];
+  getAreas(): ThunkAction;
+  getTags(): ThunkAction;
+  authenticate(): ThunkAction;
 }
 
-export type { Backend }
+export type JsonObject = { [string]: mixed }

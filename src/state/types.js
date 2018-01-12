@@ -1,4 +1,5 @@
 // @flow
+import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
 import type { Area, Tag } from "../data"
 
@@ -30,3 +31,10 @@ export type State = {
 }
 
 export type Action = NavigationAction
+
+export type Dispatch = (
+  action: Action | ThunkAction | PromiseAction | Array<Action>
+) => any
+export type GetState = () => Object
+export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any
+export type PromiseAction = Promise<Action>
