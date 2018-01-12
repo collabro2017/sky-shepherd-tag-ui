@@ -1,8 +1,8 @@
 // @flow
-import Parse from "parse/react-native"
-import frontPlusJson from "../data/stubs/boundary_OIIFTEBB9A.json"
-import black39Json from "../data/stubs/boundary_YYGoMnkP0V.json"
-import type { Area, Tag } from "./types"
+import frontPlusJson from "../../data/stubs/boundary_OIIFTEBB9A.json"
+import black39Json from "../../data/stubs/boundary_YYGoMnkP0V.json"
+import Backend from "./parse"
+import type { Area, Tag } from "../types"
 
 type JsonObject = { [string]: mixed }
 
