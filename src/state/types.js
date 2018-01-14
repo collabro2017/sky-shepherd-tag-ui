@@ -1,7 +1,7 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { Area, Tag } from "../data"
+import type { ActiveBoundary, Area, Tag } from "../data"
 
 export type Region = {
   latitude: number,
@@ -30,11 +30,16 @@ export type State = {
   +tag: TagState
 }
 
-export type Action = NavigationAction
+export type Action =
+  | NavigationAction
+  | { type: "tag/activeBoundary/CREATED", payload: ActiveBoundary }
+  | { type: "tag/activeBoundary/UPDATED", payload: ActiveBoundary }
+  | { type: "tag/activeBoundary/SUBSCRIBED" }
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
 ) => any
+
 export type GetState = () => Object
 export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any
 export type PromiseAction = Promise<Action>
