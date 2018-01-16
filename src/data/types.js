@@ -1,17 +1,34 @@
 // @flow
 export type ActiveBoundary = {
-  objectId: string,
-  createdAt: Date,
-  updatedAt: Date,
+  boundaryId: string,
+  coreId: number,
+  id: string,
   position: Coordinate,
   region: number,
-  coreId: number,
-  boundaryId: string
+  createdAt: Date,
+  updatedAt: Date
 }
 
 export type Area = {
-  objectId: string,
-  name: string
+  centroid: Coordinate,
+  id: string,
+  identifier: number,
+  maxIdx: Point,
+  maxPos: Point,
+  minPos: Point,
+  name: string,
+  points: {
+    pointsArray: Point[]
+  },
+  ptCnt: number,
+  scale: number,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export type Point = {
+  x: number,
+  y: number
 }
 
 export type Coordinate = {

@@ -30,11 +30,14 @@ export type State = {
   +tag: TagState
 }
 
-export type Action =
-  | NavigationAction
+export type ActiveBoundaryAction =
   | { type: "tag/activeBoundary/CREATED", payload: ActiveBoundary }
   | { type: "tag/activeBoundary/UPDATED", payload: ActiveBoundary }
   | { type: "tag/activeBoundary/SUBSCRIBED" }
+
+export type AreaAction = { type: "tag/area/LOADED_AREAS", payload: Area[] }
+
+export type Action = NavigationAction | ActiveBoundaryAction | AreaAction
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

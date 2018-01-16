@@ -1,10 +1,7 @@
 // @flow
-import { Cloud } from "../data"
 import type { Reducer } from "redux"
 import type { Area } from "../data/types"
-import type { AreaState, State } from "./types"
-
-type AreaAction = { type: "tag/area/DUMMY_ACTION", payload: string }
+import type { AreaAction, AreaState, State } from "./types"
 
 // SELECTORS
 const selectors = {
@@ -12,7 +9,7 @@ const selectors = {
 }
 
 const initialState: AreaState = {
-  areas: Cloud.areaStubs()
+  areas: []
 }
 
 // REDUCERS
@@ -21,9 +18,11 @@ const reducer: Reducer<AreaState, AreaAction> = (
   state: AreaState = initialState,
   action: AreaAction
 ): AreaState => {
-  if (action.type === "tag/area/DUMMY_ACTION") {
-    // Handle action
-    return state
+  if (
+    action.type === "tag/area/LOADED_AREAS" &&
+    action.payload instanceof Array
+  ) {
+    return { ...state, areas: (action.payload: Area[]) }
   } else {
     return state
   }
@@ -33,4 +32,4 @@ const reducer: Reducer<AreaState, AreaAction> = (
 export default reducer
 export { selectors as areaSelectors }
 export { initialState as initialAreaState }
-export type { AreaState }
+export type { AreaState, AreaAction }

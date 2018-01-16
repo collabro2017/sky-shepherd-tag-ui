@@ -19,7 +19,7 @@ const mapStateToProps = (state: State): Props => {
   }
 }
 
-const keyExtractor = (item: Area) => item.objectId
+const keyExtractor = (item: Area) => item.id
 
 const AreaScreen = (props: Props) => {
   return (

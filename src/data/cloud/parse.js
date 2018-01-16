@@ -7,8 +7,9 @@ import Parse from "parse/react-native"
 import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
 import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
 
-import { Cloud, ActiveBoundary, Coordinate } from "./types"
-import type { Action, ThunkAction } from "../../state/types"
+import type { Cloud } from "./types"
+import type { ActiveBoundary, Area } from "../types"
+import type { Action, Dispatch, ThunkAction } from "../../state/types"
 
 Parse.setAsyncStorage(AsyncStorage)
 Parse.initialize(PARSE_APPLICATION_ID)
@@ -16,13 +17,15 @@ Parse.serverURL = PARSE_SERVER_URL
 
 const logError = (error: any) => console.log(error)
 
-const loadParseQuery = (type: string, query: Object): ThunkAction => {
+const loadParseList = (
+  query: Object,
+  transform: (list: Array<Object>, dispatch: Dispatch) => typeof undefined
+): ThunkAction => {
   return dispatch => {
-    return query.find(list => {
+    return query.find().then((list: Array<Object>) => {
       // We don't want data loading to interfere with smooth animations
       InteractionManager.runAfterInteractions(() => {
-        // Flow can't guarantee {type, list} is a valid action
-        dispatch(({ type, list }: any))
+        transform(list, dispatch)
       })
     }, logError)
   }
@@ -46,29 +49,49 @@ const runParseCloudFunction = (
 
 const ParseArea = Parse.Object.extend("Boundary")
 const getAreas = (): ThunkAction => {
-  return loadParseQuery("tag/area/LOADED_AREAS", new Parse.Query(ParseArea))
+  return loadParseList(
+    new Parse.Query(ParseArea),
+    (list: Array<Object>, dispatch: Dispatch) => {
+      const areas = list
+        .map(boundary => areaFromParse(boundary))
+        .sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        )
+      dispatch({ type: "tag/area/LOADED_AREAS", payload: areas })
+    }
+  )
 }
 
 const getTags = (): ThunkAction => {
   return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
 }
 
-const coordinateFromParse = (point: Object): Coordinate => {
+const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
   return {
-    latitude: point.get("latitude"),
-    longitude: point.get("longitude")
+    boundaryId: boundary.get("boundaryId"),
+    coreId: boundary.get("coreId"),
+    id: boundary.id,
+    position: boundary.get("position"),
+    region: boundary.get("region"),
+    createdAt: boundary.get("createdAt"),
+    updatedAt: boundary.get("updatedAt")
   }
 }
 
-const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
+const areaFromParse = (boundary: Object): Area => {
   return {
-    objectId: boundary.get("objectId"),
+    centroid: boundary.get("centroid"),
+    id: boundary.id,
+    identifier: boundary.get("identifier"),
+    maxIdx: boundary.get("maxIdx"),
+    maxPos: boundary.get("maxPos"),
+    minPos: boundary.get("minPos"),
+    name: boundary.get("name"),
+    points: boundary.get("points"),
+    ptCnt: boundary.get("ptCnt"),
+    scale: boundary.get("scale"),
     createdAt: boundary.get("createdAt"),
-    updatedAt: boundary.get("updatedAt"),
-    position: coordinateFromParseGeoPoint(boundary.get("position")),
-    region: boundary.get("region"),
-    coreId: boundary.get("coreId"),
-    boundaryId: boundary.get("boundaryId")
+    updatedAt: boundary.get("updatedAt")
   }
 }
 
