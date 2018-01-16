@@ -5,10 +5,9 @@ import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
 import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
-import { calculateLongitudeDelta } from "../utils/map"
 import area, { initialAreaState, areaSelectors } from "./area"
 import tag, { initialTagState, tagSelectors } from "./tag"
-import map, { mapModes, mapTypes } from "./map"
+import map, { initialMapState } from "./map"
 import nav, { initialNavState } from "./nav"
 
 import type { Reducer, Store, StoreCreator } from "redux"
@@ -24,20 +23,10 @@ const rootReducer: Reducer = combineReducers({
   tag
 })
 
-const defaultLatitudeDelta = 0.00922
-const defaultRegion: Region = {
-  latitude: 44.906005,
-  longitude: -93.198442,
-  latitudeDelta: defaultLatitudeDelta,
-  longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
-}
-
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
-const viewMode: mapTypes.MapMode = mapModes.VIEW_MODE
-
 const defaultState: State = {
-  map: { lastRegion: defaultRegion, mode: viewMode },
+  map: initialMapState,
   nav: initialNavState,
   area: initialAreaState,
   tag: initialTagState

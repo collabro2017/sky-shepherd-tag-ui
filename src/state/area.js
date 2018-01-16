@@ -18,13 +18,13 @@ const reducer: Reducer<AreaState, AreaAction> = (
   state: AreaState = initialState,
   action: AreaAction
 ): AreaState => {
-  if (
-    action.type === "tag/area/LOADED_AREAS" &&
-    action.payload instanceof Array
-  ) {
-    return { ...state, areas: (action.payload: Area[]) }
-  } else {
-    return state
+  switch (action.type) {
+    case "tag/area/LOADED":
+      return { ...state, areas: (action.payload: Area[]) }
+    case "tag/area/SELECTED":
+      return { ...state, selectedId: action.payload }
+    default:
+      return state
   }
 }
 

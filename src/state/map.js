@@ -1,22 +1,19 @@
-// TYPES
-const createType = name => `tag/map/${name}`
-const types = {
-  MOVE_TO_LOCATION: createType("MOVE_TO_LOCATION"),
-  REGION_CHANGED: createType("REGION_CHANGED"),
-  CREATE_BOUNDARY: createType("CREATE_BOUNDARY")
-}
+// @flow
+import { calculateLongitudeDelta } from "../utils/map"
+import type { MapAction, MapState, Region, State } from "./types"
+import type { Area, Coordinate } from "../data/types"
 
 // ACTIONS
-const moveToLocationAction = location => {
-  return { type: types.MOVE_TO_LOCATION, payload: { location } }
+const moveToLocationAction = (location: Coordinate): MapAction => {
+  return { type: "tag/map/MOVE_TO_LOCATION", payload: { location } }
 }
 
-const regionChangedAction = region => {
-  return { type: types.REGION_CHANGED, payload: { region } }
+const regionChangedAction = (region: Region): MapAction => {
+  return { type: "tag/map/REGION_CHANGED", payload: { region } }
 }
 
-const createBoundaryAction = () => {
-  return { type: types.CREATE_BOUNDARY, payload: {} }
+const createBoundaryAction = (): MapAction => {
+  return { type: "tag/map/CREATE_BOUNDARY", payload: {} }
 }
 
 // OPERATIONS
@@ -28,13 +25,13 @@ const operations = { moveToLocation, regionChanged, createBoundary }
 
 // SELECTORS
 const selectors = {
-  getRegion: ({ map }) => map.region,
-  getLastRegion: ({ map }) => map.lastRegion,
-  getMode: ({ map }) => map.mode
+  getRegion: (state: State): ?Region => state.map.region,
+  getLastRegion: (state: State): Region => state.map.lastRegion,
+  getMode: (state: State): string => state.map.mode
 }
 
 // REDUCERS
-const updateRegion = (region, newLocation) => {
+const updateRegion = (region: Region, newLocation: Coordinate) => {
   return {
     ...region,
     latitude: newLocation.latitude,
@@ -42,30 +39,56 @@ const updateRegion = (region, newLocation) => {
   }
 }
 
-const VIEW_MODE = "view"
-const CREATE_MODE = "create"
-
-const modes = {
-  VIEW_MODE,
-  CREATE_MODE
+const regionFromArea = (area: Area): Region => {
+  console.log({ area })
+  return {
+    // TODO: Calculate proper deltas
+    ...defaultRegion,
+    ...area.centroid
+  }
 }
 
-const reducer = (state = {}, { type, payload }) => {
-  switch (type) {
-    case types.MOVE_TO_LOCATION:
+const defaultLatitudeDelta = 0.00922
+const defaultRegion: Region = {
+  latitude: 44.906005,
+  longitude: -93.198442,
+  latitudeDelta: defaultLatitudeDelta,
+  longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
+}
+
+const initialMapState: MapState = {
+  lastRegion: defaultRegion,
+  mode: "view",
+  region: null
+}
+
+const reducer = (
+  state: MapState = initialMapState,
+  action: MapAction
+): MapState => {
+  switch (action.type) {
+    case "tag/map/MOVE_TO_LOCATION":
       return {
         ...state,
-        region: updateRegion(state.region, payload.location)
+        region: updateRegion(
+          state.region || defaultRegion,
+          action.payload.location
+        )
       }
-    case types.REGION_CHANGED:
+    case "tag/map/REGION_CHANGED":
       return {
         ...state,
-        lastRegion: payload.region
+        lastRegion: action.payload.region
       }
-    case types.CREATE_BOUNDARY:
+    case "tag/map/CREATE_BOUNDARY":
       return {
         ...state,
-        mode: modes.CREATE_MODE
+        mode: "create"
+      }
+    case "tag/map/SHOW_AREA":
+      return {
+        ...state,
+        region: regionFromArea(action.payload)
       }
     default:
       return state
@@ -75,6 +98,5 @@ const reducer = (state = {}, { type, payload }) => {
 // INTERFACE
 export { selectors as mapSelectors }
 export { operations as mapOperations }
-export { modes as mapModes }
-export { types as mapTypes }
+export { initialMapState }
 export default reducer

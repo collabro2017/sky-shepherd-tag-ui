@@ -1,18 +1,24 @@
 // @flow
 import React from "react"
-import { Text, View } from "react-native"
+import { Text, View, TouchableOpacity } from "react-native"
 import type { Area } from "../../data/types"
 import styles from "../../styles"
 
 type Props = {
-  area: Area
+  area: Area,
+  onPress: (area: Area) => typeof undefined
 }
 
-const AreaListItem = ({ area }: Props) => {
+const AreaListItem = ({ area, onPress }: Props) => {
+  const onPressThis = () => {
+    onPress(area)
+  }
   return (
-    <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{area.name}</Text>
-    </View>
+    <TouchableOpacity onPress={onPressThis}>
+      <View style={styles.listItem}>
+        <Text style={styles.listItemText}>{area.name}</Text>
+      </View>
+    </TouchableOpacity>
   )
 }
 

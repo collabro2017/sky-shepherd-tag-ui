@@ -8,8 +8,13 @@ import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
 import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
 
 import type { Cloud } from "./types"
-import type { ActiveBoundary, Area } from "../types"
-import type { Action, Dispatch, ThunkAction } from "../../state/types"
+import type { ActiveBoundary, Area, Coordinate } from "../types"
+import type {
+  Action,
+  AreaAction,
+  Dispatch,
+  ThunkAction
+} from "../../state/types"
 
 Parse.setAsyncStorage(AsyncStorage)
 Parse.initialize(PARSE_APPLICATION_ID)
@@ -57,7 +62,8 @@ const getAreas = (): ThunkAction => {
         .sort((a, b) =>
           a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         )
-      dispatch({ type: "tag/area/LOADED_AREAS", payload: areas })
+      const action: AreaAction = { type: "tag/area/LOADED", payload: areas }
+      dispatch(action)
     }
   )
 }
@@ -71,7 +77,7 @@ const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
     boundaryId: boundary.get("boundaryId"),
     coreId: boundary.get("coreId"),
     id: boundary.id,
-    position: boundary.get("position"),
+    position: coordinateFromParse(boundary.get("position")),
     region: boundary.get("region"),
     createdAt: boundary.get("createdAt"),
     updatedAt: boundary.get("updatedAt")
@@ -80,7 +86,7 @@ const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
 
 const areaFromParse = (boundary: Object): Area => {
   return {
-    centroid: boundary.get("centroid"),
+    centroid: coordinateFromParse(boundary.get("centroid")),
     id: boundary.id,
     identifier: boundary.get("identifier"),
     maxIdx: boundary.get("maxIdx"),
@@ -92,6 +98,14 @@ const areaFromParse = (boundary: Object): Area => {
     scale: boundary.get("scale"),
     createdAt: boundary.get("createdAt"),
     updatedAt: boundary.get("updatedAt")
+  }
+}
+
+// Parse GeoPoints can be treated as Coordinates for type purposes
+const coordinateFromParse = (geoPoint: Coordinate): Coordinate => {
+  return {
+    latitude: geoPoint.latitude,
+    longitude: geoPoint.longitude
   }
 }
 

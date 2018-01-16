@@ -5,7 +5,7 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
 import PropTypes from "prop-types"
 import styles from "../../styles"
 
-import { mapSelectors, mapOperations, mapModes } from "../../state/map"
+import { mapSelectors, mapOperations } from "../../state/map"
 
 const mapStateToProps = state => {
   const props = {
@@ -39,7 +39,7 @@ class Map extends Component {
 
   componentWillReceiveProps(newProps) {
     const modeChanged = newProps.mode != this.props.mode
-    const isCreateMode = newProps.mode == mapModes.CREATE_MODE
+    const isCreateMode = newProps.mode == "create"
     if (modeChanged && isCreateMode) {
       Alert.alert("New area")
     }

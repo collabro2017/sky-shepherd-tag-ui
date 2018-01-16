@@ -1,7 +1,7 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { ActiveBoundary, Area, Tag } from "../data"
+import type { ActiveBoundary, Area, Coordinate, Tag } from "../data"
 
 export type Region = {
   latitude: number,
@@ -14,19 +14,20 @@ export type AreaState = {
   areas: Area[]
 }
 
+export type MapState = {
+  lastRegion: Region,
+  mode: MapMode,
+  region: ?Region
+}
+
 export type TagState = {
   tags: Tag[]
 }
 
 export type State = {
-  +map: {
-    lastRegion: Region,
-    mode: string
-  },
+  +area: AreaState,
+  +map: MapState,
   +nav: NavigationState,
-  +area: {
-    areas: Area[]
-  },
   +tag: TagState
 }
 
@@ -35,9 +36,23 @@ export type ActiveBoundaryAction =
   | { type: "tag/activeBoundary/UPDATED", payload: ActiveBoundary }
   | { type: "tag/activeBoundary/SUBSCRIBED" }
 
-export type AreaAction = { type: "tag/area/LOADED_AREAS", payload: Area[] }
+export type AreaAction =
+  | { type: "tag/area/LOADED", payload: Area[] }
+  | { type: "tag/area/SELECTED", payload: string }
 
-export type Action = NavigationAction | ActiveBoundaryAction | AreaAction
+export type MapAction =
+  | { type: "tag/map/SHOW_AREA", payload: Area }
+  | { type: "tag/map/MOVE_TO_LOCATION", payload: { location: Coordinate } }
+  | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
+  | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
+
+export type Action =
+  | ActiveBoundaryAction
+  | AreaAction
+  | MapAction
+  | NavigationAction
+
+export type MapMode = "view" | "create"
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
