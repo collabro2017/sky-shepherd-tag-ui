@@ -157,12 +157,10 @@ const authenticate = (): ThunkAction => {
 }
 
 const ParseBackend: Cloud = {
-  areaStubs: () => [],
-  tagStubs: () => [],
-  areaFromJson: () => null,
   authenticate,
   getAreas,
-  getTags
+  getTags,
+  tagStubs: () => []
 }
 
 export default ParseBackend
