@@ -22,6 +22,8 @@ type PointsAndScale = {
   scale: number
 }
 
+const maxMinPosRatio = 100000.0
+
 // Convert index to lat/long int
 const indexToPosition = ({
   index,
@@ -47,7 +49,6 @@ const coordinateFromPoint = ({
     reference: zeroPoint.y,
     scale: scale
   })
-  const maxMinPosRatio = 100000.0
 
   return {
     latitude: y / maxMinPosRatio,
@@ -64,6 +65,33 @@ const coordinatesFromArea = (area: ?Area): Coordinate[] => {
   return points.pointsArray.map((point: Point): Coordinate => {
     return coordinateFromPoint({ point, scale, zeroPoint: minPos })
   })
+}
+
+type MinMax = {
+  min: number,
+  max: number
+}
+
+const calculateDelta = (extent: MinMax): number => {
+  const paddingFactor = 1.1
+  const delta = Math.abs(extent.max - extent.min) / maxMinPosRatio
+  return delta * paddingFactor
+}
+const latitudeDelta = (area: Area): number => {
+  return calculateDelta({ max: area.maxPos.y, min: area.minPos.y })
+}
+
+const longitudeDelta = (area: Area): number => {
+  return calculateDelta({ max: area.maxPos.x, min: area.minPos.x })
+}
+
+const regionFromArea = (area: Area): Region => {
+  return {
+    latitude: area.centroid.latitude,
+    longitude: area.centroid.longitude,
+    latitudeDelta: latitudeDelta(area),
+    longitudeDelta: longitudeDelta(area)
+  }
 }
 
 const mapStateToProps = (state: State, ownProps: Props) => {
@@ -88,6 +116,17 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
+const pickRegion = (props: Props): Region => {
+  const { area, lastRegion, region } = props
+  if (area) {
+    return regionFromArea(area)
+  } else if (region) {
+    return region
+  } else {
+    return lastRegion
+  }
+}
+
 class Map extends Component<Props> {
   // Only update if the region or mode changes. Otherwise we get jitter from recording
   // region updates
@@ -106,7 +145,7 @@ class Map extends Component<Props> {
   }
 
   render() {
-    const region: Region = this.props.region || this.props.lastRegion
+    const region = pickRegion(this.props)
     const props: Props = { ...this.props, region }
     const { area } = props
     const coordinates = coordinatesFromArea(area)
