@@ -17,20 +17,14 @@ type PointsAndScale = {
 const maxMinPosRatio = 100000.0
 
 // Convert index to lat/long int
-const indexToPosition = ({
-  index,
-  reference,
-  scale
-}: IndexesAndScale): number => {
+const indexToPosition = (params: IndexesAndScale): number => {
+  const { index, reference, scale } = params
   return ((index * scale) >> 4) + reference
 }
 
 // Convert indexed point to mappable coordinate
-const coordinateFromPoint = ({
-  point,
-  zeroPoint,
-  scale
-}: PointsAndScale): Coordinate => {
+const coordinateFromPoint = (params: PointsAndScale): Coordinate => {
+  const { point, zeroPoint, scale } = params
   const x = indexToPosition({
     index: point.x,
     reference: zeroPoint.x,
