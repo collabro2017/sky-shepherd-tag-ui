@@ -11,11 +11,13 @@ import type { Area, Coordinate } from "../../data/types"
 import styles from "../../styles"
 
 import { mapSelectors, mapOperations } from "../../state/map"
+import { areaSelectors } from "../../state/area"
 
 const mapStateToProps = (state: State, ownProps: Props) => {
   const provider: string = PROVIDER_GOOGLE
   return {
     ...ownProps,
+    areas: areaSelectors.getAreas(state),
     lastRegion: mapSelectors.getLastRegion(state),
     region: mapSelectors.getRegion(state),
     mode: mapSelectors.getMode(state),
@@ -65,12 +67,12 @@ class Map extends Component<Props> {
   render() {
     const region = pickRegion(this.props)
     const props: Props = { ...this.props, region }
-    const { area } = props
+    const { area, areas } = props
     const coordinates: Coordinate[] = coordinatesFromArea(area)
     return (
       <View style={{ flex: 1 }}>
         <MapView {...props}>
-          <AreaMarker area={area} />
+          {areas.map((a: Area) => <AreaMarker area={a} key={a.id} />)}
           <Polygon coordinates={coordinates} />
         </MapView>
       </View>
@@ -80,6 +82,7 @@ class Map extends Component<Props> {
 
 type Props = {
   area: Area,
+  areas: Area[],
   lastRegion: Region,
   mode: string,
   onRegionChangeComplete: MapView.propTypes.onRegionChangeComplete,
