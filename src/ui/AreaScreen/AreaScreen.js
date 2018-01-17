@@ -1,5 +1,4 @@
 // @flow
-import Promise from "promise"
 import React from "react"
 import { connect } from "react-redux"
 import { FlatList, View } from "react-native"
@@ -7,10 +6,10 @@ import { areaSelectors } from "../../state/area"
 import AreaListItem from "./AreaListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
-import type { NavigationScreenProp, NavigationAction } from "react-navigation"
+import type { NavigationScreenProp } from "react-navigation"
 import type { Dispatch } from "redux-thunk"
 import type { Area } from "../../data/types"
-import type { MapAction, State, ThunkAction } from "../../state/types"
+import type { State } from "../../state/types"
 
 type Props = {
   data: Area[],
@@ -25,20 +24,20 @@ const mapStateToProps = (state: State, ownProps: Props): Props => {
   }
 }
 
-const showArea = (area: Area): ThunkAction => {
-  return dispatch => {
-    dispatch({
-      type: "tag/map/SHOW_AREA",
-      payload: area
-    })
-  }
-}
+// const showArea = (area: Area): ThunkAction => {
+//   return dispatch => {
+//     dispatch({
+//       type: "tag/map/SHOW_AREA",
+//       payload: area
+//     })
+//   }
+// }
+
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   return {
     ...ownProps,
     onPressItem: (area: Area) => {
-      dispatch(showArea(area))
-      ownProps.navigation.navigate("map")
+      ownProps.navigation.navigate("map", { area })
     }
   }
 }

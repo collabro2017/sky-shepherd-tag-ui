@@ -88,7 +88,8 @@ const reducer = (
     case "tag/map/SHOW_AREA":
       return {
         ...state,
-        region: regionFromArea(action.payload)
+        region: regionFromArea(action.payload),
+        mode: "area"
       }
     default:
       return state

@@ -52,7 +52,7 @@ export type Action =
   | MapAction
   | NavigationAction
 
-export type MapMode = "view" | "create"
+export type MapMode = "view" | "create" | "area"
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
