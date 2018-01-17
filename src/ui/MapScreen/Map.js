@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Alert, View } from "react-native"
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
 import { coordinatesFromArea, regionFromArea } from "./area"
 import type { Region, State } from "../../state/types"
@@ -69,6 +70,7 @@ class Map extends Component<Props> {
     return (
       <View style={{ flex: 1 }}>
         <MapView {...props}>
+          <AreaMarker area={area} />
           <Polygon coordinates={coordinates} />
         </MapView>
       </View>
