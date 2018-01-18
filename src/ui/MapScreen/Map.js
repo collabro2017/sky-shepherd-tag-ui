@@ -30,7 +30,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
 const mapDispatchToProps = dispatch => {
   return {
     onLongPress: () => dispatch(mapOperations.createBoundary()),
-    onRegionChangeComplete: function(region) {
+    saveRegion: function(region: Region) {
       dispatch(mapOperations.regionChanged(region))
     }
   }
@@ -47,15 +47,14 @@ const pickRegion = (props: Props): Region => {
   }
 }
 
-class Map extends Component<Props> {
-  // Only update if the region or mode changes. Otherwise we get jitter from recording
-  // region updates
-  shouldComponentUpdate(nextProps: Props) {
-    return (
-      nextProps.region != this.props.region || nextProps.mode != this.props.mode
-    )
+class Map extends Component<Props, MapComponentState> {
+  constructor(props: Props) {
+    super(props)
+    const region = pickRegion(this.props)
+    this.state = { region }
   }
 
+  // TODO: Make sure "create" mode gets turned off
   componentWillReceiveProps(newProps) {
     const modeChanged = newProps.mode != this.props.mode
     const isCreateMode = newProps.mode == "create"
@@ -64,11 +63,18 @@ class Map extends Component<Props> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.saveRegion(this.state.region)
+  }
+
+  onRegionChangeComplete(region: Region) {
+    this.setState({ region })
+  }
+
   render() {
-    const region = pickRegion(this.props)
-    const props: Props = { ...this.props, region }
-    const { area, areas } = props
+    const { area, areas } = this.props
     const coordinates: Coordinate[] = coordinatesFromArea(area)
+    const props = { ...this.props, region: this.state.region }
     return (
       <View style={{ flex: 1 }}>
         <MapView {...props}>
@@ -85,10 +91,14 @@ type Props = {
   areas: Area[],
   lastRegion: Region,
   mode: string,
-  onRegionChangeComplete: MapView.propTypes.onRegionChangeComplete,
+  saveRegion: (region: Region) => void,
   provider: string,
   region: Region,
   style: View.propTypes.style
+}
+
+type MapComponentState = {
+  region: Region
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map)
