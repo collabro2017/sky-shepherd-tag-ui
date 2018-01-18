@@ -20,49 +20,34 @@ const drawerItemStackOptions = ({ title }) => {
         headerLeft: drawerButton(navigation),
         headerStyle: styles.navigationHeader,
         headerTintColor: colors.white,
-        title: title || ""
+        title: title
       }
     }
   }
 }
 
-const MapStack = StackNavigator(
-  {
-    map: {
-      screen: MapScreen
-    }
-  },
-  drawerItemStackOptions({ title: "Map" })
-)
-
-const AreaStack = StackNavigator(
-  {
-    areas: {
-      screen: AreaScreen
-    }
-  },
-  drawerItemStackOptions({ title: "Area" })
-)
-
-const TagStack = StackNavigator(
-  {
-    tags: {
-      screen: TagScreen
-    }
-  },
-  drawerItemStackOptions({ title: "Tag" })
-)
-
 // TODO: Add custom DrawerContent
 const DrawerNav = DrawerNavigator({
-  mapStack: {
-    screen: MapStack
+  map: {
+    screen: MapScreen,
+    navigationOptions: {
+      title: "Map",
+      headerTitle: "Map"
+    }
   },
-  areasStack: {
-    screen: AreaStack
+  areas: {
+    screen: AreaScreen,
+    navigationOptions: {
+      title: "Areas",
+      headerTitle: "Areas"
+    }
   },
   tags: {
-    screen: TagStack
+    screen: TagScreen,
+    navigationOptions: {
+      title: "Tags",
+      headerTitle: "Tags"
+    }
   }
 })
 
@@ -74,9 +59,7 @@ const PrimaryNav = StackNavigator(
       screen: DrawerNav
     }
   },
-  {
-    headerMode: "none"
-  }
+  drawerItemStackOptions({})
 )
 
 export default PrimaryNav

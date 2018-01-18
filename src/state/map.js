@@ -80,18 +80,26 @@ const reducer = (
       }
     case "Navigation/NAVIGATE":
       switch (action.routeName) {
-        // Area was just selected
         case "map":
-          return {
-            ...state,
-            area: action.params.area,
-            mode: "area"
-          }
-        // Just viewing the map
-        case "mapStack":
-          return {
-            ...state,
-            mode: "view"
+          if (
+            typeof action.params !== "undefined" &&
+            action.params !== null &&
+            typeof action.params.area !== "undefined" &&
+            action.params.area !== null
+          ) {
+            // Area was just selected
+            const area = action.params.area
+            return {
+              ...state,
+              area,
+              mode: "area"
+            }
+          } else {
+            // No area, just viewing the map
+            return {
+              ...state,
+              mode: "view"
+            }
           }
         default:
           return state

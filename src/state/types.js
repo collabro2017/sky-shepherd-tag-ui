@@ -46,8 +46,7 @@ export type MapAction =
   | { type: "tag/map/MOVE_TO_LOCATION", payload: { location: Coordinate } }
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-  | { type: "Navigation/NAVIGATE", routeName: "map", params: { area: Area } }
-  | { type: "Navigation/NAVIGATE", routeName: "mapStack" }
+  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?{ area: ?Area } }
 
 export type Action =
   | ActiveBoundaryAction
