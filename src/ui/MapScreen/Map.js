@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Alert, View } from "react-native"
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import { isEqual } from "lodash"
 import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
 import { coordinatesFromArea, regionFromArea } from "./area"
@@ -50,15 +51,6 @@ const pickRegion = (props: Props): Region => {
   }
 }
 
-const regionsEqual = (a: Region, b: Region): boolean => {
-  return (
-    a.latitude === b.latitude &&
-    a.longitude === b.longitude &&
-    a.latitudeDelta === b.latitudeDelta &&
-    a.longitudeDelta === b.longitudeDelta
-  )
-}
-
 class Map extends Component<Props, MapComponentState> {
   constructor(props: Props) {
     super(props)
@@ -79,14 +71,15 @@ class Map extends Component<Props, MapComponentState> {
     this.props.saveRegion(this.state.region)
   }
 
+  shouldComponentUpdate(nextProps: Props) {
+    // Only pay attention to props. Allowing state to cause an update
+    // doesn't work well, since state updates in response to changes
+    // in the map.
+    return !isEqual(this.props, nextProps)
+  }
+
   onRegionChangeComplete(region: Region) {
-    // Only handle this event if the region actually changed.
-    // The "onRegionChangeComplete" event fires internally to the map component
-    // while rendering tiles, causing spurious actions to be sent
-    const previousRegion = this.state.region
-    if (!regionsEqual(previousRegion, region)) {
-      this.setState({ region })
-    }
+    this.setState({ region })
   }
 
   render() {
@@ -96,8 +89,9 @@ class Map extends Component<Props, MapComponentState> {
       <View style={{ flex: 1 }}>
         <MapView
           {...this.props}
-          region={this.state.region}
           onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+          initialRegion={this.state.region}
+          region={this.state.region}
         >
           {areas.map((a: Area) => <AreaMarker area={a} key={a.id} />)}
           <Polygon coordinates={coordinates} />
