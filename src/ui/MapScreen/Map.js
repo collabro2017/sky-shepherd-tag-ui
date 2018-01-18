@@ -17,6 +17,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   const provider: string = PROVIDER_GOOGLE
   return {
     ...ownProps,
+    area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
     lastRegion: mapSelectors.getLastRegion(state),
     region: mapSelectors.getRegion(state),
@@ -37,14 +38,25 @@ const mapDispatchToProps = dispatch => {
 }
 
 const pickRegion = (props: Props): Region => {
-  const { area, lastRegion, region } = props
-  if (area) {
-    return regionFromArea(area)
-  } else if (region) {
-    return region
-  } else {
-    return lastRegion
+  const { area, lastRegion, mode, region } = props
+  switch (mode) {
+    case "area":
+      if (typeof area !== "undefined" && area !== null) {
+        return regionFromArea(area)
+      }
+    // fallthrough
+    default:
+      return region || lastRegion
   }
+}
+
+const regionsEqual = (a: Region, b: Region): boolean => {
+  return (
+    a.latitude === b.latitude &&
+    a.longitude === b.longitude &&
+    a.latitudeDelta === b.latitudeDelta &&
+    a.longitudeDelta === b.longitudeDelta
+  )
 }
 
 class Map extends Component<Props, MapComponentState> {
@@ -68,16 +80,25 @@ class Map extends Component<Props, MapComponentState> {
   }
 
   onRegionChangeComplete(region: Region) {
-    this.setState({ region })
+    // Only handle this event if the region actually changed.
+    // The "onRegionChangeComplete" event fires internally to the map component
+    // while rendering tiles, causing spurious actions to be sent
+    const previousRegion = this.state.region
+    if (!regionsEqual(previousRegion, region)) {
+      this.setState({ region })
+    }
   }
 
   render() {
     const { area, areas } = this.props
     const coordinates: Coordinate[] = coordinatesFromArea(area)
-    const props = { ...this.props, region: this.state.region }
     return (
       <View style={{ flex: 1 }}>
-        <MapView {...props}>
+        <MapView
+          {...this.props}
+          region={this.state.region}
+          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+        >
           {areas.map((a: Area) => <AreaMarker area={a} key={a.id} />)}
           <Polygon coordinates={coordinates} />
         </MapView>
@@ -87,7 +108,7 @@ class Map extends Component<Props, MapComponentState> {
 }
 
 type Props = {
-  area: Area,
+  area: ?Area,
   areas: Area[],
   lastRegion: Region,
   mode: string,

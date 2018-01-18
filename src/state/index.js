@@ -1,5 +1,5 @@
 // @flow
-import { createStore, applyMiddleware, compose } from "redux"
+import { applyMiddleware, combineReducers, compose, createStore } from "redux"
 import { persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
@@ -13,8 +13,6 @@ import nav, { initialNavState } from "./nav"
 import type { Reducer, Store, StoreCreator } from "redux"
 import type { Action, Region, State, TagState } from "./types"
 import type { AreaState } from "./area"
-
-import { combineReducers } from "redux"
 
 const rootReducer: Reducer = combineReducers({
   map,

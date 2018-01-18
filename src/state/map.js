@@ -25,6 +25,7 @@ const operations = { moveToLocation, regionChanged, createBoundary }
 
 // SELECTORS
 const selectors = {
+  getArea: (state: State): ?Area => state.map.area,
   getRegion: (state: State): ?Region => state.map.region,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): string => state.map.mode
@@ -39,15 +40,6 @@ const updateRegion = (region: Region, newLocation: Coordinate) => {
   }
 }
 
-const regionFromArea = (area: Area): Region => {
-  console.log({ area })
-  return {
-    // TODO: Calculate proper deltas
-    ...defaultRegion,
-    ...area.centroid
-  }
-}
-
 const defaultLatitudeDelta = 0.00922
 const defaultRegion: Region = {
   latitude: 44.906005,
@@ -57,6 +49,7 @@ const defaultRegion: Region = {
 }
 
 const initialMapState: MapState = {
+  area: null,
   lastRegion: defaultRegion,
   mode: "view",
   region: null
@@ -85,11 +78,23 @@ const reducer = (
         ...state,
         mode: "create"
       }
-    case "tag/map/SHOW_AREA":
-      return {
-        ...state,
-        region: regionFromArea(action.payload),
-        mode: "area"
+    case "Navigation/NAVIGATE":
+      switch (action.routeName) {
+        // Area was just selected
+        case "map":
+          return {
+            ...state,
+            area: action.params.area,
+            mode: "area"
+          }
+        // Just viewing the map
+        case "mapStack":
+          return {
+            ...state,
+            mode: "view"
+          }
+        default:
+          return state
       }
     default:
       return state
