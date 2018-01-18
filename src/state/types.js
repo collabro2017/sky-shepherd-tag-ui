@@ -42,7 +42,6 @@ export type AreaAction =
   | { type: "tag/area/SELECTED", payload: string }
 
 export type MapAction =
-  | { type: "tag/map/SHOW_AREA", payload: Area }
   | { type: "tag/map/MOVE_TO_LOCATION", payload: { location: Coordinate } }
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }

@@ -6,7 +6,7 @@ import styles from "../../styles"
 
 type Props = {
   area: Area,
-  onPress: (area: Area) => typeof undefined
+  onPress: (area: Area) => void
 }
 
 const AreaListItem = ({ area, onPress }: Props) => {

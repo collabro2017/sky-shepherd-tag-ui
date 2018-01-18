@@ -1,18 +1,22 @@
 // @flow
 import React, { Component } from "react"
-import { connect } from "react-redux"
-import { Alert, View } from "react-native"
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import { connect, Dispatch } from "react-redux"
+import { Alert, InteractionManager, View } from "react-native"
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
 import { isEqual } from "lodash"
-import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
 import { coordinatesFromArea, regionFromArea } from "./area"
-import type { Region, State } from "../../state/types"
-import type { Area, Coordinate } from "../../data/types"
-import styles from "../../styles"
-
 import { mapSelectors, mapOperations } from "../../state/map"
 import { areaSelectors } from "../../state/area"
+import styles from "../../styles"
+
+import type { Region, State } from "../../state/types"
+import type { Area, Coordinate } from "../../data/types"
+import type { MapAction } from "../../state/types"
+
+type MapViewType = {
+  animateToRegion: (region: Region) => void
+}
 
 const mapStateToProps = (state: State, ownProps: Props) => {
   const provider: string = PROVIDER_GOOGLE
@@ -29,7 +33,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch<MapAction>) => {
   return {
     onLongPress: () => dispatch(mapOperations.createBoundary()),
     saveRegion: function(region: Region) {
@@ -42,7 +46,7 @@ const pickRegion = (props: Props): Region => {
   const { area, lastRegion, mode, region } = props
   switch (mode) {
     case "area":
-      if (typeof area !== "undefined" && area !== null) {
+      if (area != null) {
         return regionFromArea(area)
       }
     // fallthrough
@@ -51,11 +55,29 @@ const pickRegion = (props: Props): Region => {
   }
 }
 
+const onMarkerPress = (map: Map, area: Area): (() => void) => {
+  return () => {
+    map.setState({ area })
+    // Ensure the animation doesn't get swallowed by re-render
+    InteractionManager.runAfterInteractions(() => {
+      const region = regionFromArea(area)
+      const mapView = map._map
+      if (mapView != null) {
+        mapView.animateToRegion(region)
+      }
+    })
+  }
+}
+
 class Map extends Component<Props, MapComponentState> {
+  _map: ?MapViewType
+  _onRegionChangeComplete: Function
+
   constructor(props: Props) {
     super(props)
     const region = pickRegion(this.props)
-    this.state = { region }
+    this.state = { area: props.area, region }
+    this._onRegionChangeComplete = this._onRegionChangeComplete.bind(this)
   }
 
   // TODO: Make sure "create" mode gets turned off
@@ -71,29 +93,43 @@ class Map extends Component<Props, MapComponentState> {
     this.props.saveRegion(this.state.region)
   }
 
-  shouldComponentUpdate(nextProps: Props) {
-    // Only pay attention to props. Allowing state to cause an update
-    // doesn't work well, since state updates in response to changes
+  shouldComponentUpdate(
+    nextProps: Props,
+    nextState: MapComponentState
+  ): boolean {
+    // Ignore the region held in state, since state updates in response to changes
     // in the map.
-    return !isEqual(this.props, nextProps)
+    const shouldUpdate =
+      !isEqual(this.props, nextProps) ||
+      !isEqual(this.state.area, nextState.area)
+    return shouldUpdate
   }
 
-  onRegionChangeComplete(region: Region) {
+  _onRegionChangeComplete(region: Region) {
     this.setState({ region })
   }
 
   render() {
-    const { area, areas } = this.props
+    const { areas } = this.props
+    const { area } = this.state
     const coordinates: Coordinate[] = coordinatesFromArea(area)
     return (
       <View style={{ flex: 1 }}>
         <MapView
           {...this.props}
-          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
           initialRegion={this.state.region}
+          onRegionChangeComplete={this._onRegionChangeComplete}
+          ref={(ref: ?MapViewType) => (this._map = ref)}
           region={this.state.region}
         >
-          {areas.map((a: Area) => <AreaMarker area={a} key={a.id} />)}
+          {areas.map((a: Area) => (
+            <Marker
+              coordinate={a.centroid}
+              key={a.id}
+              title={a.name}
+              onPress={onMarkerPress(this, a)}
+            />
+          ))}
           <Polygon coordinates={coordinates} />
         </MapView>
       </View>
@@ -113,6 +149,7 @@ type Props = {
 }
 
 type MapComponentState = {
+  area: ?Area,
   region: Region
 }
 
