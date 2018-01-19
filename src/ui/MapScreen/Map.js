@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react"
-import { connect, Dispatch } from "react-redux"
+import { connect } from "react-redux"
 import { Alert, InteractionManager, View } from "react-native"
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
 import { isEqual } from "lodash"
@@ -10,9 +10,8 @@ import { mapSelectors, mapOperations } from "../../state/map"
 import { areaSelectors } from "../../state/area"
 import styles from "../../styles"
 
-import type { Region, State } from "../../state/types"
+import type { Dispatch, Region, State } from "../../state/types"
 import type { Area, Coordinate } from "../../data/types"
-import type { MapAction } from "../../state/types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void
@@ -33,7 +32,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<MapAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     onLongPress: () => dispatch(mapOperations.createBoundary()),
     saveRegion: function(region: Region) {
@@ -55,29 +54,41 @@ const pickRegion = (props: Props): Region => {
   }
 }
 
-const onMarkerPress = (map: Map, area: Area): (() => void) => {
-  return () => {
-    map.setState({ area })
-    // Ensure the animation doesn't get swallowed by re-render
-    InteractionManager.runAfterInteractions(() => {
-      const region = regionFromArea(area)
-      const mapView = map._map
-      if (mapView != null) {
-        mapView.animateToRegion(region)
-      }
-    })
+type AreaHandler = Area => () => void
+const onMarkerPress = (map: Map): AreaHandler => {
+  return (area: Area) => {
+    return () => {
+      map.setState({ area })
+      // Ensure the animation doesn't get swallowed by re-render
+      InteractionManager.runAfterInteractions(() => {
+        const region = regionFromArea(area)
+        const mapView = map._map
+        if (mapView != null) {
+          mapView.animateToRegion(region)
+        }
+      })
+    }
+  }
+}
+
+type RegionHandler = Region => void
+const onRegionChangeComplete = (map: Map): RegionHandler => {
+  return (region: Region) => {
+    map.setState({ region })
   }
 }
 
 class Map extends Component<Props, MapComponentState> {
   _map: ?MapViewType
-  _onRegionChangeComplete: Function
+  _onRegionChangeComplete: RegionHandler
+  _onMarkerPress: AreaHandler
 
   constructor(props: Props) {
     super(props)
     const region = pickRegion(this.props)
     this.state = { area: props.area, region }
-    this._onRegionChangeComplete = this._onRegionChangeComplete.bind(this)
+    this._onMarkerPress = onMarkerPress(this)
+    this._onRegionChangeComplete = onRegionChangeComplete(this)
   }
 
   // TODO: Make sure "create" mode gets turned off
@@ -105,10 +116,6 @@ class Map extends Component<Props, MapComponentState> {
     return shouldUpdate
   }
 
-  _onRegionChangeComplete(region: Region) {
-    this.setState({ region })
-  }
-
   render() {
     const { areas } = this.props
     const { area } = this.state
@@ -127,7 +134,7 @@ class Map extends Component<Props, MapComponentState> {
               coordinate={a.centroid}
               key={a.id}
               title={a.name}
-              onPress={onMarkerPress(this, a)}
+              onPress={this._onMarkerPress(a)}
             />
           ))}
           <Polygon coordinates={coordinates} />

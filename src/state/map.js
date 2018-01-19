@@ -18,7 +18,7 @@ const createBoundaryAction = (): MapAction => {
 
 // OPERATIONS
 const moveToLocation = moveToLocationAction
-const regionChanged = regionChangedAction
+const regionChanged: Region => MapAction = regionChangedAction
 const createBoundary = createBoundaryAction
 
 const operations = { moveToLocation, regionChanged, createBoundary }
