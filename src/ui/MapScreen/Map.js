@@ -136,7 +136,7 @@ class Map extends Component<Props, MapComponentState> {
               onPress={this._onMarkerPress(a)}
             />
           ))}
-          <Polygon coordinates={coordinates} />
+          {coordinates.length > 0 && <Polygon coordinates={coordinates} />}
         </MapView>
       </View>
     )
