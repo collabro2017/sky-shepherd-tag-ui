@@ -4,10 +4,6 @@ import type { MapAction, MapState, Region, State } from "./types"
 import type { Area, Coordinate } from "../data/types"
 
 // ACTIONS
-const moveToLocationAction = (location: Coordinate): MapAction => {
-  return { type: "tag/map/MOVE_TO_LOCATION", payload: { location } }
-}
-
 const regionChangedAction = (region: Region): MapAction => {
   return { type: "tag/map/REGION_CHANGED", payload: { region } }
 }
@@ -17,16 +13,14 @@ const createBoundaryAction = (): MapAction => {
 }
 
 // OPERATIONS
-const moveToLocation = moveToLocationAction
-const regionChanged: Region => MapAction = regionChangedAction
+const regionChanged = regionChangedAction
 const createBoundary = createBoundaryAction
 
-const operations = { moveToLocation, regionChanged, createBoundary }
+const operations = { regionChanged, createBoundary }
 
 // SELECTORS
 const selectors = {
   getArea: (state: State): ?Area => state.map.area,
-  getRegion: (state: State): ?Region => state.map.region,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): string => state.map.mode
 }
@@ -60,14 +54,6 @@ const reducer = (
   action: MapAction
 ): MapState => {
   switch (action.type) {
-    case "tag/map/MOVE_TO_LOCATION":
-      return {
-        ...state,
-        region: updateRegion(
-          state.region || defaultRegion,
-          action.payload.location
-        )
-      }
     case "tag/map/REGION_CHANGED":
       return {
         ...state,

@@ -24,7 +24,6 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
     lastRegion: mapSelectors.getLastRegion(state),
-    region: mapSelectors.getRegion(state),
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
     provider: provider,
@@ -42,7 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 }
 
 const pickRegion = (props: Props): Region => {
-  const { area, lastRegion, mode, region } = props
+  const { area, lastRegion, mode } = props
   switch (mode) {
     case "area":
       if (area != null) {
@@ -50,7 +49,7 @@ const pickRegion = (props: Props): Region => {
       }
     // fallthrough
     default:
-      return region || lastRegion
+      return lastRegion
   }
 }
 
@@ -151,7 +150,6 @@ type Props = {
   mode: string,
   saveRegion: (region: Region) => void,
   provider: string,
-  region: Region,
   style: View.propTypes.style
 }
 
