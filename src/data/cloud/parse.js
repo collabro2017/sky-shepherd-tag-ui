@@ -11,6 +11,7 @@ import type { Cloud } from "./types"
 import type { ActiveBoundary, Area, Coordinate } from "../types"
 import type {
   Action,
+  ActiveBoundaryAction,
   AreaAction,
   Dispatch,
   ThunkAction
@@ -36,21 +37,22 @@ const loadParseList = (
   }
 }
 
-const runParseCloudFunction = (
-  type: string,
-  func: string,
-  params: { [string]: string | number }
-): ThunkAction => {
-  return dispatch => {
-    return Parse.Cloud.run(func, params).then(list => {
-      // We don't want data loading to interfere with smooth animations
-      InteractionManager.runAfterInteractions(() => {
-        // Flow can't guarantee {type, list} is a valid action
-        dispatch(({ type, list }: any))
-      })
-    }, logError)
-  }
-}
+// No cloud functions for now. Commented out to prevent warnings
+// const runParseCloudFunction = (
+//   type: string,
+//   func: string,
+//   params: { [string]: string | number }
+// ): ThunkAction => {
+//   return dispatch => {
+//     return Parse.Cloud.run(func, params).then(list => {
+//       // We don't want data loading to interfere with smooth animations
+//       InteractionManager.runAfterInteractions(() => {
+//         // Flow can't guarantee {type, list} is a valid action
+//         dispatch(({ type, list }: any))
+//       })
+//     }, logError)
+//   }
+// }
 
 const ParseArea = Parse.Object.extend("Boundary")
 const getAreas = (): ThunkAction => {
@@ -58,7 +60,7 @@ const getAreas = (): ThunkAction => {
     new Parse.Query(ParseArea),
     (list: Array<Object>, dispatch: Dispatch) => {
       const areas = list
-        .map(boundary => areaFromParse(boundary))
+        .map(areaFromParse)
         .sort((a, b) =>
           a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         )
@@ -68,9 +70,9 @@ const getAreas = (): ThunkAction => {
   )
 }
 
-const getTags = (): ThunkAction => {
-  return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
-}
+// const getDevicesForUser = (): ThunkAction => {
+//   return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
+// }
 
 const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
   return {
@@ -110,12 +112,29 @@ const coordinateFromParse = (geoPoint: Coordinate): Coordinate => {
 }
 
 const ParseActiveBoundary: Object = Parse.Object.extend("ActiveBoundary")
+const activeBoundaryQuery: Object = new Parse.Query(ParseActiveBoundary)
+  .exists("updatedAt")
+  .ascending("createdAt")
+
+const getActiveBoundaries = (): ThunkAction => {
+  return loadParseList(
+    activeBoundaryQuery,
+    (list: Array<Object>, dispatch: Dispatch) => {
+      const activeBoundaries: Array<ActiveBoundary> = list.map(
+        activeBoundaryFromParse
+      )
+      const action: ActiveBoundaryAction = {
+        type: "tag/activeBoundary/LOADED",
+        payload: activeBoundaries
+      }
+      dispatch(action)
+    }
+  )
+}
+
 const subscribeToAreaUpdates = (): ThunkAction => {
-  const query = new Parse.Query(ParseActiveBoundary)
-    .exists("updatedAt")
-    .ascending("createdAt")
   return dispatch => {
-    const subscription = query.subscribe()
+    const subscription = activeBoundaryQuery.subscribe()
     subscription.on("open", () => {
       InteractionManager.runAfterInteractions(() => {
         dispatch({ type: "tag/activeBoundary/SUBSCRIBED" })
@@ -149,7 +168,7 @@ const authenticate = (): ThunkAction => {
         // Flow can't guarantee {type, list} is a valid action
         dispatch(({ type, user }: any))
         dispatch(getAreas())
-        dispatch(getTags())
+        dispatch(getActiveBoundaries())
         dispatch(subscribeToAreaUpdates())
       })
     }, logError)
@@ -159,7 +178,7 @@ const authenticate = (): ThunkAction => {
 const ParseBackend: Cloud = {
   authenticate,
   getAreas,
-  getTags,
+  getActiveBoundaries,
   tagStubs: () => []
 }
 

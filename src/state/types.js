@@ -35,6 +35,7 @@ export type ActiveBoundaryAction =
   | { type: "tag/activeBoundary/CREATED", payload: ActiveBoundary }
   | { type: "tag/activeBoundary/UPDATED", payload: ActiveBoundary }
   | { type: "tag/activeBoundary/SUBSCRIBED" }
+  | { type: "tag/activeBoundary/LOADED", payload: ActiveBoundary[] }
 
 export type AreaAction =
   | { type: "tag/area/LOADED", payload: Area[] }

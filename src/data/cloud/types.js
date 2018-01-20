@@ -5,6 +5,6 @@ import type { Tag } from "../types"
 export interface Cloud {
   authenticate(): ThunkAction;
   getAreas(): ThunkAction;
-  getTags(): ThunkAction;
+  getActiveBoundaries(): ThunkAction;
   tagStubs(): Tag[];
 }
