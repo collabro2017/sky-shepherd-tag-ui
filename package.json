@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "beta": "yarn run beta:android && yarn run beta:ios",
+    "beta:android": "cd android && fastlane android beta",
+    "beta:ios": "cd ios && fastlane ios beta",
     "flow coverage": "flow coverage",
     "flow start": "flow start",
     "flow status": "flow status",
