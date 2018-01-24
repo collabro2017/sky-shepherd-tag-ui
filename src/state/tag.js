@@ -1,10 +1,8 @@
 // @flow
 import { Cloud } from "../data"
 import type { Reducer } from "redux"
-import type { State, TagState } from "./types"
+import type { State, TagAction, TagState } from "./types"
 import type { Tag } from "../data"
-
-type TagAction = { type: "tag/tag/DUMMY_ACTION", payload: string }
 
 // SELECTORS
 const selectors = {
@@ -22,9 +20,8 @@ const reducer: Reducer<TagState, TagAction> = (
   action: TagAction
 ): TagState => {
   switch (action.type) {
-    case "tag/tag/DUMMY_ACTION":
-      // Handle action
-      return state
+    case "tag/tag/LOADED":
+      return { ...state, tags: action.payload }
     default:
       return state
   }

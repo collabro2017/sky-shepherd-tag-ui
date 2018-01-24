@@ -19,7 +19,7 @@ const mapStateToProps = (state: State): Props => {
   }
 }
 
-const keyExtractor = (item: Tag) => item.objectId
+const keyExtractor = (item: Tag) => item.id
 
 const TagScreen = (props: Props) => {
   return (

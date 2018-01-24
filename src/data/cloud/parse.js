@@ -1,5 +1,4 @@
 // @flow
-import console from "console"
 import { AsyncStorage, InteractionManager } from "react-native"
 import Parse from "parse/react-native"
 
@@ -75,12 +74,11 @@ const getAreas = (): ThunkAction => {
 // }
 
 const tagFromParse = (boundary: Object): Tag => {
-  const id = boundary.get("boundaryId")
   return {
-    boundaryId: id,
+    boundaryId: boundary.get("boundaryId"),
     coreId: boundary.get("coreId"),
     id: boundary.id,
-    name: tagName(id),
+    name: tagName(boundary.id),
     position: coordinateFromParse(boundary.get("position")),
     region: boundary.get("region"),
     createdAt: boundary.get("createdAt"),
@@ -88,11 +86,12 @@ const tagFromParse = (boundary: Object): Tag => {
   }
 }
 
-// Hack around the fact that ActiveBoundaries don't have names yet
+// Hack around the fact that ActiveBoundaries don't have names yet.
+// Just assign a name to the ActiveBoundaries we know.
 const tagName = (id: string): string => {
   switch (id) {
     case "ZZpH27ziVl":
-      return "Mauzi"
+      return "Mausi"
     case "CNBnEesR9Q":
       return "Star"
     default:
