@@ -1,7 +1,7 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { ActiveBoundary, Area, Coordinate, Tag } from "../data"
+import type { Area, Tag } from "../data/types"
 
 export type Region = {
   latitude: number,
@@ -31,12 +31,6 @@ export type State = {
   +tag: TagState
 }
 
-export type ActiveBoundaryAction =
-  | { type: "tag/activeBoundary/CREATED", payload: ActiveBoundary }
-  | { type: "tag/activeBoundary/UPDATED", payload: ActiveBoundary }
-  | { type: "tag/activeBoundary/SUBSCRIBED" }
-  | { type: "tag/activeBoundary/LOADED", payload: ActiveBoundary[] }
-
 export type AreaAction =
   | { type: "tag/area/LOADED", payload: Area[] }
   | { type: "tag/area/SELECTED", payload: string }
@@ -46,11 +40,14 @@ export type MapAction =
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?{ area: ?Area } }
 
-export type Action =
-  | ActiveBoundaryAction
-  | AreaAction
-  | MapAction
-  | NavigationAction
+export type TagAction =
+  | { type: "tag/tag/CREATED", payload: Tag }
+  | { type: "tag/tag/LOADED", payload: Tag[] }
+  | { type: "tag/tag/SELECTED", payload: string }
+  | { type: "tag/tag/SUBSCRIBED" }
+  | { type: "tag/tag/UPDATED", payload: Tag }
+
+export type Action = AreaAction | MapAction | NavigationAction | TagAction
 
 export type MapMode = "view" | "create" | "area"
 

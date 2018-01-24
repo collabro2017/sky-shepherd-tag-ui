@@ -1,8 +1,9 @@
 // @flow
-export type ActiveBoundary = {
+export type Tag = {
   boundaryId: string,
   coreId: number,
   id: string,
+  name: string,
   position: Coordinate,
   region: number,
   createdAt: Date,
@@ -34,8 +35,4 @@ export type Point = {
 export type Coordinate = {
   latitude: number,
   longitude: number
-}
-export type Tag = {
-  objectId: string,
-  name: string
 }

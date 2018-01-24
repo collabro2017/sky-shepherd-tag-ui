@@ -8,12 +8,12 @@ import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
 import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
 
 import type { Cloud } from "./types"
-import type { ActiveBoundary, Area, Coordinate } from "../types"
+import type { Area, Coordinate, Tag } from "../types"
 import type {
   Action,
-  ActiveBoundaryAction,
   AreaAction,
   Dispatch,
+  TagAction,
   ThunkAction
 } from "../../state/types"
 
@@ -74,15 +74,29 @@ const getAreas = (): ThunkAction => {
 //   return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
 // }
 
-const activeBoundaryFromParse = (boundary: Object): ActiveBoundary => {
+const tagFromParse = (boundary: Object): Tag => {
+  const id = boundary.get("boundaryId")
   return {
-    boundaryId: boundary.get("boundaryId"),
+    boundaryId: id,
     coreId: boundary.get("coreId"),
     id: boundary.id,
+    name: tagName(id),
     position: coordinateFromParse(boundary.get("position")),
     region: boundary.get("region"),
     createdAt: boundary.get("createdAt"),
     updatedAt: boundary.get("updatedAt")
+  }
+}
+
+// Hack around the fact that ActiveBoundaries don't have names yet
+const tagName = (id: string): string => {
+  switch (id) {
+    case "ZZpH27ziVl":
+      return "Mauzi"
+    case "CNBnEesR9Q":
+      return "Star"
+    default:
+      return "Tag"
   }
 }
 
@@ -120,12 +134,10 @@ const getActiveBoundaries = (): ThunkAction => {
   return loadParseList(
     activeBoundaryQuery,
     (list: Array<Object>, dispatch: Dispatch) => {
-      const activeBoundaries: Array<ActiveBoundary> = list.map(
-        activeBoundaryFromParse
-      )
-      const action: ActiveBoundaryAction = {
-        type: "tag/activeBoundary/LOADED",
-        payload: activeBoundaries
+      const tags: Array<Tag> = list.map(tagFromParse)
+      const action: TagAction = {
+        type: "tag/tag/LOADED",
+        payload: tags
       }
       dispatch(action)
     }
@@ -137,23 +149,19 @@ const subscribeToAreaUpdates = (): ThunkAction => {
     const subscription = activeBoundaryQuery.subscribe()
     subscription.on("open", () => {
       InteractionManager.runAfterInteractions(() => {
-        dispatch({ type: "tag/activeBoundary/SUBSCRIBED" })
+        dispatch({ type: "tag/tag/SUBSCRIBED" })
       })
     })
     subscription.on("create", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
-        const boundary = activeBoundaryFromParse(parseBoundary)
-        dispatch(
-          ({ type: "tag/activeBoundary/CREATED", payload: boundary }: Action)
-        )
+        const tag = tagFromParse(parseBoundary)
+        dispatch(({ type: "tag/tag/CREATED", payload: tag }: Action))
       })
     })
     subscription.on("update", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
-        const boundary = activeBoundaryFromParse(parseBoundary)
-        dispatch(
-          ({ type: "tag/activeBoundary/UPDATED", payload: boundary }: Action)
-        )
+        const tag = tagFromParse(parseBoundary)
+        dispatch(({ type: "tag/tag/UPDATED", payload: tag }: Action))
       })
     })
   }
