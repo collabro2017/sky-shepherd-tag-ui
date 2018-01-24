@@ -6,10 +6,14 @@ import AppNav from "./AppNav"
 import Cloud from "../data/cloud"
 import type { Dispatch } from "redux"
 import type { NavigationState } from "react-navigation"
+import type { State } from "../state/types"
 
-const mapStateToProps = state => ({
-  nav: state.nav
-})
+const mapStateToProps = (state: State, ownProps: Props): Props => {
+  return {
+    ...ownProps,
+    nav: state.nav
+  }
+}
 
 type Props = {
   dispatch: Dispatch,

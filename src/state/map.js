@@ -1,6 +1,13 @@
 // @flow
 import { calculateLongitudeDelta } from "../utils/map"
-import type { MapAction, MapState, Region, State } from "./types"
+import type {
+  MapAction,
+  MapMode,
+  MapRouteParams,
+  MapState,
+  Region,
+  State
+} from "./types"
 import type { Area, Coordinate, Tag } from "../data/types"
 
 // ACTIONS
@@ -12,17 +19,26 @@ const createBoundaryAction = (): MapAction => {
   return { type: "tag/map/CREATE_BOUNDARY", payload: {} }
 }
 
+const changeModeAction = (params: MapRouteParams): MapAction => {
+  return {
+    type: "Navigation/NAVIGATE",
+    routeName: "map",
+    params
+  }
+}
+
 // OPERATIONS
 const regionChanged = regionChangedAction
 const createBoundary = createBoundaryAction
+const changeMode = changeModeAction
 
-const operations = { regionChanged, createBoundary }
+const operations = { regionChanged, createBoundary, changeMode }
 
 // SELECTORS
 const selectors = {
   getArea: (state: State): ?Area => state.map.area,
   getLastRegion: (state: State): Region => state.map.lastRegion,
-  getMode: (state: State): string => state.map.mode,
+  getMode: (state: State): MapMode => state.map.mode,
   getTag: (state: State): ?Tag => state.map.tag
 }
 
@@ -74,14 +90,20 @@ const reducer = (
             return {
               ...state,
               area: action.params.area,
-              mode: "area"
+              mode: action.params.mode || "area"
             }
           } else if (action.params != null && action.params.tag != null) {
             // Tag was selected to show on the map
             return {
               ...state,
               tag: action.params.tag,
-              mode: "tag"
+              mode: action.params.mode || "tag"
+            }
+          } else if (action.params != null && action.params.mode != null) {
+            // Nothing selected, just viewing the map
+            return {
+              ...state,
+              mode: action.params.mode
             }
           } else {
             // Nothing selected, just viewing the map

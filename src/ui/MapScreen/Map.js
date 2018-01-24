@@ -46,10 +46,14 @@ const pickRegion = (props: Props): Region => {
 }
 
 type AreaHandler = Area => () => void
-const onAreaMarkerPress = (map: Map): AreaHandler => {
+const onAreaMarkerPress = (
+  map: Map,
+  navigateToArea: Area => void
+): AreaHandler => {
   return (area: Area) => {
     return () => {
       map.setState({ area })
+      navigateToArea(area)
       // Ensure the animation doesn't get swallowed by re-render
       InteractionManager.runAfterInteractions(() => {
         const region = regionFromArea(area)
@@ -69,6 +73,8 @@ const onRegionChangeComplete = (map: Map): RegionHandler => {
   }
 }
 
+const provider: string = PROVIDER_GOOGLE
+
 class Map extends Component<Props, MapComponentState> {
   _map: ?MapViewType
   _onRegionChangeComplete: RegionHandler
@@ -77,20 +83,11 @@ class Map extends Component<Props, MapComponentState> {
   constructor(props: Props) {
     super(props)
     const region = pickRegion(props)
-    const { area, mode } = props
-    this.state = { area, mode, region }
-    this._onAreaMarkerPress = onAreaMarkerPress(this)
+    const { area } = props
+    this.state = { area, region }
+    this._onAreaMarkerPress = onAreaMarkerPress(this, props.navigateToArea)
     this._onRegionChangeComplete = onRegionChangeComplete(this)
   }
-
-  // TODO: Make sure "create" mode gets turned off
-  // componentWillReceiveProps(newProps) {
-  //   const modeChanged = newProps.mode != this.props.mode
-  //   const isCreateMode = newProps.mode == "create"
-  //   if (modeChanged && isCreateMode) {
-  //     Alert.alert("New area")
-  //   }
-  // }
 
   componentWillUnmount() {
     this.props.saveRegion(this.state.region)
@@ -104,23 +101,17 @@ class Map extends Component<Props, MapComponentState> {
     // in the map.
     const shouldUpdate =
       !isEqual(this.props, nextProps) ||
-      !isEqual(this.state.area, nextState.area) ||
-      !isEqual(this.state.mode, nextState.mode)
+      !isEqual(this.state.area, nextState.area)
     return shouldUpdate
   }
 
-  _createMode() {
-    this.setState({ mode: "create" })
-  }
-
   render() {
-    const provider: string = PROVIDER_GOOGLE
     return (
       <View style={{ flex: 1 }}>
         <MapView
           initialRegion={this.state.region}
           mapType={this.props.mapType}
-          onLongPress={this._createMode.bind(this)}
+          onLongPress={this.props.onLongPress}
           onRegionChangeComplete={this._onRegionChangeComplete}
           provider={provider}
           ref={(ref: ?MapViewType) => (this._map = ref)}
@@ -130,7 +121,7 @@ class Map extends Component<Props, MapComponentState> {
           <MapContent
             area={this.state.area}
             areas={this.props.areas}
-            mode={this.state.mode}
+            mode={this.props.mode}
             tag={this.props.tag}
             onAreaMarkerPress={this._onAreaMarkerPress}
           />
@@ -146,13 +137,14 @@ type Props = {
   lastRegion: Region,
   mapType: MapType,
   mode: MapMode,
+  navigateToArea: Area => void,
+  onLongPress: () => void,
   saveRegion: RegionHandler,
   tag: ?Tag
 }
 
 type MapComponentState = {
   area: ?Area,
-  mode: MapMode,
   region: Region
 }
 

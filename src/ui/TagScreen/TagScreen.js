@@ -21,7 +21,7 @@ const mapStateToProps = (state: State, ownProps: Props): Props => {
     ...ownProps,
     data: tagSelectors.getTags(state),
     onPressItem: (tag: Tag) => {
-      ownProps.navigation.navigate("map", { tag })
+      ownProps.navigation.navigate("map", { tag, mode: "tag" })
     }
   }
 }

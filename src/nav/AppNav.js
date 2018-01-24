@@ -29,11 +29,7 @@ const drawerItemStackOptions = ({ title }) => {
 // TODO: Add custom DrawerContent
 const DrawerNav = DrawerNavigator({
   map: {
-    screen: MapScreen,
-    navigationOptions: {
-      title: "Map",
-      headerTitle: "Map"
-    }
+    screen: MapScreen
   },
   areas: {
     screen: AreaScreen,

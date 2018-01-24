@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   return {
     ...ownProps,
     onPressItem: (area: Area) => {
-      ownProps.navigation.navigate("map", { area })
+      ownProps.navigation.navigate("map", { area, mode: "area" })
     }
   }
 }

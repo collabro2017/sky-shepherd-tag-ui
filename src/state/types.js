@@ -36,7 +36,7 @@ export type AreaAction =
   | { type: "tag/area/LOADED", payload: Area[] }
   | { type: "tag/area/SELECTED", payload: string }
 
-export type MapRouteParams = { area: ?Area, tag: ?Tag }
+export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
