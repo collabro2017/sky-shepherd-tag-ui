@@ -1,16 +1,16 @@
 // @flow
 import React from "react"
-import MapView from "react-native-maps"
-import { colors } from "../../styles"
-import type { Coordinate } from "../../data/types"
+import { Polygon as MapViewPolygon } from "react-native-maps"
+import { colors } from "../../../styles"
+import type { Coordinate } from "../../../data/types"
 
 const fillColor = colors.statusGreenAlpha50
 const strokeColor = colors.logoBlue
 const strokeWidth = 3
 
-const Polygon = (props: Props) => {
+export default function Polygon(props: Props) {
   return (
-    <MapView.Polygon
+    <MapViewPolygon
       coordinates={props.coordinates}
       fillColor={fillColor}
       strokeColor={strokeColor}
@@ -22,5 +22,3 @@ const Polygon = (props: Props) => {
 type Props = {
   coordinates: Coordinate[]
 }
-
-export default Polygon

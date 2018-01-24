@@ -1,9 +1,9 @@
 // @flow
 import React from "react"
 import { Marker } from "react-native-maps"
-import type { Area } from "../../data/types"
+import type { Area } from "../../../data/types"
 
-export default ({ areas, onMarkerPress }: Props) => {
+export default function AreaMarkers({ areas, onMarkerPress }: Props) {
   return areas.map((area: Area) => (
     <Marker
       coordinate={area.centroid}
