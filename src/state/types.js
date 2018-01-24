@@ -53,6 +53,7 @@ export type TagAction =
 export type Action = AreaAction | MapAction | NavigationAction | TagAction
 
 export type MapMode = "view" | "create" | "edit" | "area" | "tag"
+export type MapType = "hybrid"
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

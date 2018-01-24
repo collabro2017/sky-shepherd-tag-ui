@@ -1,49 +1,19 @@
 // @flow
 import React, { Component } from "react"
-import { connect } from "react-redux"
 import { InteractionManager, View } from "react-native"
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
 import { isEqual } from "lodash"
 import MapContent from "./MapContent"
 import { regionFromArea } from "./area"
-import {
-  defaultLatitudeDelta,
-  mapSelectors,
-  mapOperations
-} from "../../state/map"
-import { areaSelectors } from "../../state/area"
-import styles from "../../styles"
+import { defaultLatitudeDelta } from "../../state/map"
 import { calculateLongitudeDelta } from "../../utils/map"
+import styles from "../../styles"
 
-import type { Dispatch, Region, MapMode, State } from "../../state/types"
+import type { Region, MapMode, MapType } from "../../state/types"
 import type { Area, Tag } from "../../data/types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void
-}
-
-const mapStateToProps = (state: State, ownProps: Props) => {
-  const provider: string = PROVIDER_GOOGLE
-  return {
-    ...ownProps,
-    area: mapSelectors.getArea(state),
-    areas: areaSelectors.getAreas(state),
-    lastRegion: mapSelectors.getLastRegion(state),
-    mode: mapSelectors.getMode(state),
-    mapType: "hybrid",
-    provider: provider,
-    style: styles.map,
-    tag: mapSelectors.getTag(state)
-  }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    // onLongPress: () => dispatch(mapOperations.createBoundary()),
-    saveRegion: function(region: Region) {
-      dispatch(mapOperations.regionChanged(region))
-    }
-  }
 }
 
 // For now, just pick default deltas
@@ -144,23 +114,24 @@ class Map extends Component<Props, MapComponentState> {
   }
 
   render() {
-    const { areas, tag } = this.props
-    const { area, mode } = this.state
+    const provider: string = PROVIDER_GOOGLE
     return (
       <View style={{ flex: 1 }}>
         <MapView
-          {...this.props}
           initialRegion={this.state.region}
+          mapType={this.props.mapType}
           onLongPress={this._createMode.bind(this)}
           onRegionChangeComplete={this._onRegionChangeComplete}
+          provider={provider}
           ref={(ref: ?MapViewType) => (this._map = ref)}
           region={this.state.region}
+          style={styles.map}
         >
           <MapContent
-            area={area}
-            areas={areas}
-            mode={mode}
-            tag={tag}
+            area={this.state.area}
+            areas={this.props.areas}
+            mode={this.state.mode}
+            tag={this.props.tag}
             onAreaMarkerPress={this._onAreaMarkerPress}
           />
         </MapView>
@@ -173,10 +144,9 @@ type Props = {
   area: ?Area,
   areas: Area[],
   lastRegion: Region,
+  mapType: MapType,
   mode: MapMode,
   saveRegion: RegionHandler,
-  provider: string,
-  style: View.propTypes.style,
   tag: ?Tag
 }
 
@@ -186,4 +156,4 @@ type MapComponentState = {
   region: Region
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Map)
+export default Map
