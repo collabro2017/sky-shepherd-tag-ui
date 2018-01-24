@@ -24,15 +24,6 @@ const mapStateToProps = (state: State, ownProps: Props): Props => {
   }
 }
 
-// const showArea = (area: Area): ThunkAction => {
-//   return dispatch => {
-//     dispatch({
-//       type: "tag/map/SHOW_AREA",
-//       payload: area
-//     })
-//   }
-// }
-
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   return {
     ...ownProps,
