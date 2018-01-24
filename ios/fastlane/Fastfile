@@ -35,7 +35,7 @@ platform :ios do
     ensure_git_branch(branch: "develop")
     build
     pilot
-    commit_version_bump(message: "Bump iOS build number", xcodeproj: xcodeproj)
+    commit_version_bump(message: "Bump iOS build number")
     push_to_git_remote
   end
 end
