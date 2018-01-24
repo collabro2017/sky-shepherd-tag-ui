@@ -1,7 +1,7 @@
 // @flow
 import { calculateLongitudeDelta } from "../utils/map"
 import type { MapAction, MapState, Region, State } from "./types"
-import type { Area, Coordinate } from "../data/types"
+import type { Area, Coordinate, Tag } from "../data/types"
 
 // ACTIONS
 const regionChangedAction = (region: Region): MapAction => {
@@ -22,7 +22,8 @@ const operations = { regionChanged, createBoundary }
 const selectors = {
   getArea: (state: State): ?Area => state.map.area,
   getLastRegion: (state: State): Region => state.map.lastRegion,
-  getMode: (state: State): string => state.map.mode
+  getMode: (state: State): string => state.map.mode,
+  getTag: (state: State): ?Tag => state.map.tag
 }
 
 // REDUCERS
@@ -46,7 +47,8 @@ const initialMapState: MapState = {
   area: null,
   lastRegion: defaultRegion,
   mode: "view",
-  region: null
+  region: null,
+  tag: null
 }
 
 const reducer = (
@@ -67,21 +69,22 @@ const reducer = (
     case "Navigation/NAVIGATE":
       switch (action.routeName) {
         case "map":
-          if (
-            typeof action.params !== "undefined" &&
-            action.params !== null &&
-            typeof action.params.area !== "undefined" &&
-            action.params.area !== null
-          ) {
-            // Area was just selected
-            const area = action.params.area
+          if (action.params != null && action.params.area != null) {
+            // Area was selected to show on the map
             return {
               ...state,
-              area,
+              area: action.params.area,
               mode: "area"
             }
+          } else if (action.params != null && action.params.tag != null) {
+            // Tag was selected to show on the map
+            return {
+              ...state,
+              tag: action.params.tag,
+              mode: "tag"
+            }
           } else {
-            // No area, just viewing the map
+            // Nothing selected, just viewing the map
             return {
               ...state,
               mode: "view"
@@ -98,5 +101,5 @@ const reducer = (
 // INTERFACE
 export { selectors as mapSelectors }
 export { operations as mapOperations }
-export { initialMapState }
+export { initialMapState, defaultLatitudeDelta }
 export default reducer

@@ -6,16 +6,23 @@ import { tagSelectors } from "../../state/tag"
 import TagListItem from "./TagListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
+import type { NavigationScreenProp } from "react-navigation"
 import type { Tag } from "../../data/types"
 import type { State } from "../../state/types"
 
 type Props = {
-  data: Tag[]
+  data: Tag[],
+  navigation: NavigationScreenProp<*>,
+  onPressItem: Tag => void
 }
 
-const mapStateToProps = (state: State): Props => {
+const mapStateToProps = (state: State, ownProps: Props): Props => {
   return {
-    data: tagSelectors.getTags(state)
+    ...ownProps,
+    data: tagSelectors.getTags(state),
+    onPressItem: (tag: Tag) => {
+      ownProps.navigation.navigate("map", { tag })
+    }
   }
 }
 
@@ -30,7 +37,7 @@ const TagScreen = (props: Props) => {
         ItemSeparatorComponent={ItemSeparator}
         keyExtractor={keyExtractor}
         renderItem={({ item }) => {
-          return <TagListItem tag={item} />
+          return <TagListItem tag={item} onPress={props.onPressItem} />
         }}
       />
     </View>

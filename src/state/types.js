@@ -17,7 +17,8 @@ export type AreaState = {
 export type MapState = {
   area: ?Area,
   lastRegion: Region,
-  mode: MapMode
+  mode: MapMode,
+  tag: ?Tag
 }
 
 export type TagState = {
@@ -35,10 +36,12 @@ export type AreaAction =
   | { type: "tag/area/LOADED", payload: Area[] }
   | { type: "tag/area/SELECTED", payload: string }
 
+export type MapRouteParams = { area: ?Area, tag: ?Tag }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?{ area: ?Area } }
+  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
+  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
 
 export type TagAction =
   | { type: "tag/tag/CREATED", payload: Tag }
@@ -49,7 +52,7 @@ export type TagAction =
 
 export type Action = AreaAction | MapAction | NavigationAction | TagAction
 
-export type MapMode = "view" | "create" | "area"
+export type MapMode = "view" | "create" | "area" | "tag"
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>

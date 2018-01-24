@@ -1,18 +1,24 @@
 // @flow
 import React from "react"
-import { Text, View } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import type { Tag } from "../../data/types"
 import styles from "../../styles"
 
 type Props = {
-  tag: Tag
+  tag: Tag,
+  onPress: Tag => void
 }
 
-const TagListItem = ({ tag }: Props) => {
+const TagListItem = ({ tag, onPress }: Props) => {
+  const onPressThis = () => {
+    onPress(tag)
+  }
   return (
-    <View style={styles.listItem}>
-      <Text style={styles.listItemText}>{tag.name}</Text>
-    </View>
+    <TouchableOpacity onPress={onPressThis}>
+      <View style={styles.listItem}>
+        <Text style={styles.listItemText}>{tag.name}</Text>
+      </View>
+    </TouchableOpacity>
   )
 }
 

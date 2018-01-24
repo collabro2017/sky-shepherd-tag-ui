@@ -6,12 +6,17 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
 import { isEqual } from "lodash"
 import Polygon from "./Polygon"
 import { coordinatesFromArea, regionFromArea } from "./area"
-import { mapSelectors, mapOperations } from "../../state/map"
+import {
+  defaultLatitudeDelta,
+  mapSelectors,
+  mapOperations
+} from "../../state/map"
 import { areaSelectors } from "../../state/area"
-import styles from "../../styles"
+import styles, { colors } from "../../styles"
+import { calculateLongitudeDelta } from "../../utils/map"
 
 import type { Dispatch, Region, State } from "../../state/types"
-import type { Area, Coordinate } from "../../data/types"
+import type { Area, Coordinate, Tag } from "../../data/types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void
@@ -27,7 +32,8 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
     provider: provider,
-    style: styles.map
+    style: styles.map,
+    tag: mapSelectors.getTag(state)
   }
 }
 
@@ -40,12 +46,28 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   }
 }
 
+// For now, just pick default deltas
+const regionFromTag = (tag: Tag): Region => {
+  const { latitude, longitude } = tag.position
+  return {
+    latitude,
+    longitude,
+    latitudeDelta: defaultLatitudeDelta,
+    longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
+  }
+}
+
 const pickRegion = (props: Props): Region => {
-  const { area, lastRegion, mode } = props
+  const { area, lastRegion, mode, tag } = props
   switch (mode) {
     case "area":
       if (area != null) {
         return regionFromArea(area)
+      }
+    // fallthrough
+    case "tag":
+      if (tag != null) {
+        return regionFromTag(tag)
       }
     // fallthrough
     default:
@@ -116,7 +138,7 @@ class Map extends Component<Props, MapComponentState> {
   }
 
   render() {
-    const { areas } = this.props
+    const { areas, tag } = this.props
     const { area } = this.state
     const coordinates: Coordinate[] = coordinatesFromArea(area)
     return (
@@ -137,6 +159,14 @@ class Map extends Component<Props, MapComponentState> {
             />
           ))}
           {coordinates.length > 0 && <Polygon coordinates={coordinates} />}
+          {tag != null && (
+            <Marker
+              coordinate={tag.position}
+              key={tag.id}
+              title={tag.name}
+              pinColor={colors.logoBlue}
+            />
+          )}
         </MapView>
       </View>
     )
@@ -150,7 +180,8 @@ type Props = {
   mode: string,
   saveRegion: (region: Region) => void,
   provider: string,
-  style: View.propTypes.style
+  style: View.propTypes.style,
+  tag: ?Tag
 }
 
 type MapComponentState = {

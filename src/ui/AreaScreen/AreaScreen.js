@@ -43,7 +43,6 @@ const AreaScreen = (props: Props) => {
         data={props.data}
         ItemSeparatorComponent={ItemSeparator}
         keyExtractor={keyExtractor}
-        onPressItem={props.onPressItem}
         renderItem={({ item }) => {
           return <AreaListItem area={item} onPress={props.onPressItem} />
         }}
