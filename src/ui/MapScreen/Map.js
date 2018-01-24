@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Alert, InteractionManager, View } from "react-native"
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
+import { InteractionManager, View } from "react-native"
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
 import { isEqual } from "lodash"
+import AreaMarkers from "./AreaMarkers"
 import Polygon from "./Polygon"
+import TagMarkers from "./TagMarkers"
 import { coordinatesFromArea, regionFromArea } from "./area"
 import {
   defaultLatitudeDelta,
@@ -12,10 +14,10 @@ import {
   mapOperations
 } from "../../state/map"
 import { areaSelectors } from "../../state/area"
-import styles, { colors } from "../../styles"
+import styles from "../../styles"
 import { calculateLongitudeDelta } from "../../utils/map"
 
-import type { Dispatch, Region, State } from "../../state/types"
+import type { Dispatch, Region, MapMode, State } from "../../state/types"
 import type { Area, Coordinate, Tag } from "../../data/types"
 
 type MapViewType = {
@@ -39,7 +41,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    onLongPress: () => dispatch(mapOperations.createBoundary()),
+    // onLongPress: () => dispatch(mapOperations.createBoundary()),
     saveRegion: function(region: Region) {
       dispatch(mapOperations.regionChanged(region))
     }
@@ -99,6 +101,10 @@ const onRegionChangeComplete = (map: Map): RegionHandler => {
   }
 }
 
+const createOrEditMode = (mode: MapMode): boolean => {
+  return mode === "create" || mode === "edit"
+}
+
 class Map extends Component<Props, MapComponentState> {
   _map: ?MapViewType
   _onRegionChangeComplete: RegionHandler
@@ -106,20 +112,21 @@ class Map extends Component<Props, MapComponentState> {
 
   constructor(props: Props) {
     super(props)
-    const region = pickRegion(this.props)
-    this.state = { area: props.area, region }
+    const region = pickRegion(props)
+    const { area, mode } = props
+    this.state = { area, mode, region }
     this._onMarkerPress = onMarkerPress(this)
     this._onRegionChangeComplete = onRegionChangeComplete(this)
   }
 
   // TODO: Make sure "create" mode gets turned off
-  componentWillReceiveProps(newProps) {
-    const modeChanged = newProps.mode != this.props.mode
-    const isCreateMode = newProps.mode == "create"
-    if (modeChanged && isCreateMode) {
-      Alert.alert("New area")
-    }
-  }
+  // componentWillReceiveProps(newProps) {
+  //   const modeChanged = newProps.mode != this.props.mode
+  //   const isCreateMode = newProps.mode == "create"
+  //   if (modeChanged && isCreateMode) {
+  //     Alert.alert("New area")
+  //   }
+  // }
 
   componentWillUnmount() {
     this.props.saveRegion(this.state.region)
@@ -133,40 +140,36 @@ class Map extends Component<Props, MapComponentState> {
     // in the map.
     const shouldUpdate =
       !isEqual(this.props, nextProps) ||
-      !isEqual(this.state.area, nextState.area)
+      !isEqual(this.state.area, nextState.area) ||
+      !isEqual(this.state.mode, nextState.mode)
     return shouldUpdate
+  }
+
+  _createArea() {
+    this.setState({ mode: "create" })
   }
 
   render() {
     const { areas, tag } = this.props
-    const { area } = this.state
+    const { area, mode } = this.state
     const coordinates: Coordinate[] = coordinatesFromArea(area)
     return (
       <View style={{ flex: 1 }}>
         <MapView
           {...this.props}
           initialRegion={this.state.region}
+          onLongPress={this._createArea.bind(this)}
           onRegionChangeComplete={this._onRegionChangeComplete}
           ref={(ref: ?MapViewType) => (this._map = ref)}
           region={this.state.region}
         >
-          {areas.map((a: Area) => (
-            <Marker
-              coordinate={a.centroid}
-              key={a.id}
-              title={a.name}
-              onPress={this._onMarkerPress(a)}
-            />
-          ))}
-          {coordinates.length > 0 && <Polygon coordinates={coordinates} />}
-          {tag != null && (
-            <Marker
-              coordinate={tag.position}
-              key={tag.id}
-              title={tag.name}
-              pinColor={colors.logoBlue}
-            />
+          {!createOrEditMode(mode) && (
+            <AreaMarkers areas={areas} onMarkerPress={this._onMarkerPress} />
           )}
+          {!createOrEditMode(mode) &&
+            coordinates.length > 0 && <Polygon coordinates={coordinates} />}
+          {!createOrEditMode(mode) &&
+            tag != null && <TagMarkers tags={[tag]} />}
         </MapView>
       </View>
     )
@@ -177,8 +180,8 @@ type Props = {
   area: ?Area,
   areas: Area[],
   lastRegion: Region,
-  mode: string,
-  saveRegion: (region: Region) => void,
+  mode: MapMode,
+  saveRegion: RegionHandler,
   provider: string,
   style: View.propTypes.style,
   tag: ?Tag
@@ -186,6 +189,7 @@ type Props = {
 
 type MapComponentState = {
   area: ?Area,
+  mode: MapMode,
   region: Region
 }
 
