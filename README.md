@@ -8,33 +8,30 @@ To get started, clone this repository, and [install dependencies](https://facebo
 
 1. Install `nodejs`, `watchman`, `yarn`, and `react-native-cli`. You may install nodejs however you like (e.g. using [asdf version manager](https://github.com/asdf-vm/asdf)). If you already have a version of nodejs installed, you can use that (current version is 8.9.1). Here are instructions for using Homebrew:
 
-        brew install nodejs
-        brew install watchman
-        brew install yarn --without-node
-        npm install -g react-native-cli
+       brew install nodejs
+       brew install watchman
+       brew install yarn --without-node
+       npm install -g react-native-cli
 
 2. Get this project
 
-        git clone https://gitlab.com/safe-retrieve/sky-shepherd-tag-ui
-        cd sky-shepherd-tag-ui
+       git clone https://gitlab.com/safe-retrieve/sky-shepherd-tag-ui
+       cd sky-shepherd-tag-ui
 
 3. Install project dependencies
 
-        yarn install
-        
-        # if needing to run iOS app
-        # NOTE: requires Xcode 9 or above
-        brew install cocoapods
-        cd ios
-        pod install --repo-update
-        
-        # if needing to run Android app
-        echo "sdk.dir = $HOME/Library/Android/sdk" >> android/local.properties
+       yarn install
 
-        
-        
+       # if needing to run iOS app
+       # NOTE: requires Xcode 9 or above
+       brew install cocoapods
+       cd ios
+       pod install --repo-update
 
-4. Make sure you have Xcode and Android Studio installed to run the app using simulators or devices. Follow [React Native setup instructions](https://facebook.github.io/react-native/docs/getting-started.html) per platform
+       # if needing to run Android app
+       echo "sdk.dir = $HOME/Library/Android/sdk" >> android/local.properties
+
+4) Make sure you have Xcode and Android Studio installed to run the app using simulators or devices. Follow [React Native setup instructions](https://facebook.github.io/react-native/docs/getting-started.html) per platform
 
 Now you are ready to run the app. You should be able to run the app using the `react-native` CLI. For iOS simulator:
 
@@ -55,6 +52,17 @@ To run using Android Studio:
 ## Debugging
 
 The [React Native Debugger](https://github.com/jhen0409/react-native-debugger) is really handy.
+
+## Releases
+
+Building releases is automated with Fastlane. To publish beta releases on both platforms:
+
+    yarn run beta
+
+For individual platforms:
+
+    yarn run beta:android
+    yarn run beta:ios
 
 ## Style
 
