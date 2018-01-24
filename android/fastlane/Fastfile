@@ -45,7 +45,6 @@ platform :android do
     increment_version_code
     gradle(task: "clean")
     gradle(task: "assemble", build_type: "Release")
-    supply
   end
 
   desc "Ship to PlayStore Beta"
