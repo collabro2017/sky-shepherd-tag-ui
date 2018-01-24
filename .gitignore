@@ -4,6 +4,10 @@ env-*.js
 # Fastlane additions
 **/*/fastlane/report.xml
 
+# iOS Build products
+ios/*.ipa
+ios/*.dSYM*
+
 # Created by https://www.gitignore.io/api/fastlane
 
 ### fastlane ###
