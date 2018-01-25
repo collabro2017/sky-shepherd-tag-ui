@@ -3,10 +3,14 @@ import React from "react"
 import { connect } from "react-redux"
 import { FlatList, View } from "react-native"
 import { tagSelectors } from "../../state/tag"
+import { headerLeft, headerRight, headerTitle } from "../../nav"
 import TagListItem from "./TagListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
-import type { NavigationScreenProp } from "react-navigation"
+import type {
+  NavigationScreenProp,
+  NavigationScreenConfigProps
+} from "react-navigation"
 import type { Tag } from "../../data/types"
 import type { State } from "../../state/types"
 
@@ -28,20 +32,35 @@ const mapStateToProps = (state: State, ownProps: Props): Props => {
 
 const keyExtractor = (item: Tag) => item.id
 
-const TagScreen = (props: Props) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <StatusBar />
-      <FlatList
-        data={props.data}
-        ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={keyExtractor}
-        renderItem={({ item }) => {
-          return <TagListItem tag={item} onPress={props.onPressItem} />
-        }}
-      />
-    </View>
-  )
+class TagScreen extends React.Component<Props> {
+  static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
+    return {
+      title: "Map",
+      headerLeft: headerLeft(navigation),
+      headerRight: headerRight(navigation),
+      headerTitle: headerTitle(navigation)
+    }
+  }
+
+  constructor(props: Props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar />
+        <FlatList
+          data={this.props.data}
+          ItemSeparatorComponent={ItemSeparator}
+          keyExtractor={keyExtractor}
+          renderItem={({ item }) => {
+            return <TagListItem tag={item} onPress={this.props.onPressItem} />
+          }}
+        />
+      </View>
+    )
+  }
 }
 
 export default connect(mapStateToProps)(TagScreen)

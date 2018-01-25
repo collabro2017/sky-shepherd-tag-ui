@@ -6,10 +6,7 @@ import { mapSelectors, mapOperations } from "../../state/map"
 import { areaSelectors } from "../../state/area"
 import Map from "./Map"
 import StatusBar from "../StatusBar"
-import {
-  titleForMapRouteParams,
-  headerRightForMapRouteParams
-} from "./mapRouteParams"
+import { headerLeft, headerRight, headerTitle } from "../../nav"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
@@ -52,12 +49,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
 }
 
 class MapScreen extends Component<Props> {
-  static navigationOptions = (params: NavigationScreenConfigProps) => {
-    const navigation: NavigationScreenProp<*> = params.navigation
+  static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
     return {
       title: "Map",
-      headerTitle: titleForMapRouteParams(navigation.state.params),
-      headerRight: headerRightForMapRouteParams(navigation.state.params)
+      headerLeft: headerLeft(navigation),
+      headerRight: headerRight(navigation),
+      headerTitle: headerTitle(navigation)
     }
   }
 
