@@ -2,14 +2,11 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { View } from "react-native"
-import {
-  mapSelectors,
-  mapOperations,
-  defaultLatitudeDelta
-} from "../../state/map"
+import { mapSelectors, mapOperations } from "../../state/map"
 import { areaSelectors } from "../../state/area"
 import Map from "./Map"
 import StatusBar from "../StatusBar"
+import { titleForMapRouteParams } from "./mapRouteParams"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
@@ -50,55 +47,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   }
 }
 
-const titleForMapParams = (params: ?{ [key: string]: mixed }): string => {
-  const defaultTitle = "Map"
-  if (params != null) {
-    const mode = mapMode(params.mode)
-    switch (mode) {
-      case "create":
-        return "New area"
-      // TODO: Use area name when area, tag name when tag
-      case "area":
-        return nameFromParam(params.area, defaultTitle)
-      case "tag":
-        return nameFromParam(params.tag, defaultTitle)
-      default:
-        return defaultTitle
-    }
-  } else {
-    return defaultTitle
-  }
-}
-
-const mapMode = (param: mixed): MapMode => {
-  if (
-    typeof param === "string" &&
-    (param === "view" ||
-      param === "create" ||
-      param === "edit" ||
-      param === "area" ||
-      param === "tag")
-  ) {
-    return param
-  } else {
-    return "area"
-  }
-}
-
-const nameFromParam = (param: mixed, defaultTitle: string): string => {
-  if (param != null && typeof param.name === "string") {
-    return param.name
-  } else {
-    return defaultTitle
-  }
-}
-
 class MapScreen extends Component<Props> {
   static navigationOptions = (params: NavigationScreenConfigProps) => {
     const navigation: NavigationScreenProp<*> = params.navigation
     return {
       title: "Map",
-      headerTitle: titleForMapParams(navigation.state.params)
+      headerTitle: titleForMapRouteParams(navigation.state.params)
       // headerRight: <Button color={screenProps.tintColor} />,
     }
   }
