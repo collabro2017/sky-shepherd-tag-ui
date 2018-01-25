@@ -9,7 +9,7 @@ import { defaultLatitudeDelta } from "../../state/map"
 import { calculateLongitudeDelta } from "../../utils/map"
 import styles from "../../styles"
 
-import type { Region, MapMode, MapType } from "../../state/types"
+import type { MapMode, MapType, PressEvent, Region } from "../../state/types"
 import type { Area, Tag } from "../../data/types"
 
 type MapViewType = {
@@ -112,6 +112,7 @@ class Map extends Component<Props, MapComponentState> {
           initialRegion={this.state.region}
           mapType={this.props.mapType}
           onLongPress={this.props.onLongPress}
+          onPress={this.props.onPress}
           onRegionChangeComplete={this._onRegionChangeComplete}
           provider={provider}
           ref={(ref: ?MapViewType) => (this._map = ref)}
@@ -139,6 +140,7 @@ type Props = {
   mode: MapMode,
   navigateToArea: Area => void,
   onLongPress: () => void,
+  onPress: PressEvent => void,
   saveRegion: RegionHandler,
   tag: ?Tag
 }

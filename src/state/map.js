@@ -89,9 +89,29 @@ const reducer = (
         lastMode: state.mode,
         mode: "create:save"
       }
+    case "tag/map/ADD_COORDINATE_TO_NEW_AREA":
+      return {
+        ...state,
+        newArea: {
+          ...state.newArea,
+          coordinates: [
+            ...(state.newArea != null ? state.newArea.coordinates : []),
+            action.payload
+          ]
+        }
+      }
     case "Navigation/NAVIGATE":
       switch (action.routeName) {
         case "map":
+          if (action.params != null && action.params.mode === "create") {
+            // Create mode
+            const lastMode = nextLastMode(state, "create")
+            const newArea = state.newArea || {
+              name: "New area",
+              coordinates: []
+            }
+            return { ...state, lastMode, newArea }
+          }
           if (action.params != null && action.params.area != null) {
             // Area was selected to show on the map
             const area = action.params.area
@@ -104,11 +124,6 @@ const reducer = (
             const mode = action.params.mode || "area"
             const lastMode: MapMode = nextLastMode(state, mode)
             return { ...state, tag, lastMode, mode }
-          } else if (action.params != null && action.params.mode != null) {
-            // Nothing selected, just viewing the map
-            const mode = action.params.mode
-            const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, lastMode, mode }
           } else if (action.params != null) {
             // Nothing selected, just viewing the map
             const mode = action.params.mode || state.mode

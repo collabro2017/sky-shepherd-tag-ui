@@ -5,7 +5,7 @@ import { mapSelectors } from "../state/map"
 import SaveButton from "./SaveButton"
 import type { StyleObj } from "react-native/Libraries/StyleSheet/StyleSheetTypes"
 import type { Action, Dispatch, State } from "../state/types"
-import type { Area } from "../data/types"
+import type { NewArea } from "../data/types"
 
 const mapStateToProps = (state: State, ownProps: Props): Props => {
   return {
@@ -26,12 +26,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   }
 }
 
-const areaHasTooFewPoints = (area: ?Area): boolean => {
-  if (area == null) {
-    return true
-  } else {
-    return area.points.pointsArray.length < 3
-  }
+const areaHasTooFewPoints = (area: ?NewArea): boolean => {
+  return area != null && area.coordinates.length < 3
 }
 
 const SaveNewAreaButton = (props: Props) => {
@@ -45,7 +41,7 @@ const SaveNewAreaButton = (props: Props) => {
 }
 
 type Props = {
-  newArea: ?Area,
+  newArea: ?NewArea,
   onPress: () => void,
   style: StyleObj
 }

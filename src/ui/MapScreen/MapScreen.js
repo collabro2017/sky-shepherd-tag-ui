@@ -11,12 +11,14 @@ import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
 } from "react-navigation"
-import type { Area, Tag } from "../../data/types"
+import type { Area, NewArea, Tag } from "../../data/types"
 import type {
   Dispatch,
   Region,
+  MapAction,
   MapMode,
   MapType,
+  PressEvent,
   State
 } from "../../state/types"
 
@@ -33,11 +35,25 @@ const mapStateToProps = (state: State, ownProps: Props) => {
   }
 }
 
+type PressEventHandler = PressEvent => void
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   return {
     ...ownProps,
     navigateToArea: (area: Area) => {
       ownProps.navigation.navigate("map", { mode: "area", area })
+    },
+    onPress: (mapScreen: MapScreen): PressEventHandler => {
+      return ({ nativeEvent: { coordinate } }: PressEvent) => {
+        console.log({ coordinate })
+        if (mapScreen.props.mode === "create") {
+          dispatch(
+            ({
+              type: "tag/map/ADD_COORDINATE_TO_NEW_AREA",
+              payload: coordinate
+            }: MapAction)
+          )
+        }
+      }
     },
     onLongPress: () => {
       ownProps.navigation.navigate("map", { mode: "create" })
@@ -58,8 +74,11 @@ class MapScreen extends Component<Props> {
     }
   }
 
+  _onPress: PressEvent => void
+
   constructor(props: Props) {
     super(props)
+    this._onPress = this.props.onPress(this)
   }
 
   render() {
@@ -74,6 +93,7 @@ class MapScreen extends Component<Props> {
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
           onLongPress={this.props.onLongPress}
+          onPress={this._onPress}
           saveRegion={this.props.saveRegion}
           tag={this.props.tag}
         />
@@ -88,10 +108,11 @@ type Props = {
   lastRegion: Region,
   mapType: MapType,
   mode: MapMode,
-  newArea: ?Area,
+  newArea: ?NewArea,
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
   onLongPress: () => void,
+  onPress: MapScreen => PressEventHandler,
   saveRegion: Region => void,
   tag: ?Tag
 }

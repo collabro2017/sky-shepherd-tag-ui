@@ -27,6 +27,11 @@ export type Area = {
   updatedAt: Date
 }
 
+export type NewArea = {
+  coordinates: Coordinate[],
+  name: string
+}
+
 export type Point = {
   x: number,
   y: number

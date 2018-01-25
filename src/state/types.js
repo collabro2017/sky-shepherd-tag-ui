@@ -1,7 +1,7 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { Area, Tag } from "../data/types"
+import type { Area, Coordinate, NewArea, Point, Tag } from "../data/types"
 
 export type Region = {
   latitude: number,
@@ -19,7 +19,7 @@ export type MapState = {
   lastMode: MapMode,
   lastRegion: Region,
   mode: MapMode,
-  newArea: ?Area,
+  newArea: ?NewArea,
   tag: ?Tag
 }
 
@@ -43,6 +43,7 @@ export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
   | { type: "tag/map/SAVE_NEW_AREA", payload: ?Area }
+  | { type: "tag/map/ADD_COORDINATE_TO_NEW_AREA", payload: Coordinate }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
 
 export type TagAction =
@@ -62,6 +63,9 @@ export type MapMode =
   | "area"
   | "tag"
 export type MapType = "hybrid"
+
+export type NativePressEvent = { coordinate: Coordinate, point: Point }
+export type PressEvent = { nativeEvent: NativePressEvent }
 
 export type Dispatch = (
   action: Action | ThunkAction | PromiseAction | Array<Action>
