@@ -8,7 +8,7 @@ import type {
   Region,
   State
 } from "./types"
-import type { Area, Coordinate, Tag } from "../data/types"
+import type { Area, NewArea, Tag } from "../data/types"
 
 // ACTIONS
 const regionChangedAction = (region: Region): MapAction => {
@@ -40,19 +40,11 @@ const selectors = {
   getLastMode: (state: State): MapMode => state.map.lastMode,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): MapMode => state.map.mode,
-  getNewArea: (state: State): ?Area => state.map.newArea,
+  getNewArea: (state: State): ?NewArea => state.map.newArea,
   getTag: (state: State): ?Tag => state.map.tag
 }
 
 // REDUCERS
-const updateRegion = (region: Region, newLocation: Coordinate) => {
-  return {
-    ...region,
-    latitude: newLocation.latitude,
-    longitude: newLocation.longitude
-  }
-}
-
 const defaultLatitudeDelta = 0.00922
 const defaultRegion: Region = {
   latitude: 44.906005,
