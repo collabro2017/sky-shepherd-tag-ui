@@ -37,6 +37,7 @@ const operations = { regionChanged, createBoundary, changeMode }
 // SELECTORS
 const selectors = {
   getArea: (state: State): ?Area => state.map.area,
+  getLastMode: (state: State): MapMode => state.map.lastMode,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): MapMode => state.map.mode,
   getNewArea: (state: State): ?Area => state.map.newArea,
@@ -62,11 +63,16 @@ const defaultRegion: Region = {
 
 const initialMapState: MapState = {
   area: null,
+  lastMode: "view",
   lastRegion: defaultRegion,
   mode: "view",
   newArea: null,
   region: null,
   tag: null
+}
+
+const nextLastMode = (state: MapState, nextMode: MapMode): MapMode => {
+  return nextMode !== state.mode ? state.mode : state.lastMode
 }
 
 const reducer = (
@@ -82,11 +88,13 @@ const reducer = (
     case "tag/map/CREATE_BOUNDARY":
       return {
         ...state,
+        lastMode: state.mode,
         mode: "create"
       }
     case "tag/map/SAVE_NEW_AREA":
       return {
         ...state,
+        lastMode: state.mode,
         mode: "create:save"
       }
     case "Navigation/NAVIGATE":
@@ -94,30 +102,28 @@ const reducer = (
         case "map":
           if (action.params != null && action.params.area != null) {
             // Area was selected to show on the map
-            return {
-              ...state,
-              area: action.params.area,
-              mode: action.params.mode || "area"
-            }
+            const area = action.params.area
+            const mode = action.params.mode || "area"
+            const lastMode: MapMode = nextLastMode(state, mode)
+            return { ...state, area, lastMode, mode }
           } else if (action.params != null && action.params.tag != null) {
             // Tag was selected to show on the map
-            return {
-              ...state,
-              tag: action.params.tag,
-              mode: action.params.mode || "tag"
-            }
+            const tag = action.params.tag
+            const mode = action.params.mode || "area"
+            const lastMode: MapMode = nextLastMode(state, mode)
+            return { ...state, tag, lastMode, mode }
           } else if (action.params != null && action.params.mode != null) {
             // Nothing selected, just viewing the map
-            return {
-              ...state,
-              mode: action.params.mode
-            }
-          } else {
+            const mode = action.params.mode
+            const lastMode: MapMode = nextLastMode(state, mode)
+            return { ...state, lastMode, mode }
+          } else if (action.params != null) {
             // Nothing selected, just viewing the map
-            return {
-              ...state,
-              mode: "view"
-            }
+            const mode = action.params.mode || state.mode
+            const lastMode: MapMode = nextLastMode(state, mode)
+            return { ...state, lastMode, mode }
+          } else {
+            return state
           }
         default:
           return state

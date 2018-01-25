@@ -1,11 +1,13 @@
 // @flow
 import React from "react"
+import { mapSelectors } from "../state/map"
 import SaveNewAreaButton from "../ui/SaveNewAreaButton"
 import DrawerButton from "../ui/DrawerButton"
 import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
 import type { Element } from "react"
 import type { NavigationScreenProp } from "react-navigation"
+import type { GetState } from "redux-thunk"
 import type { MapMode } from "../state/types"
 
 const headerTitle = (navigation: NavigationScreenProp<*>): string => {
@@ -64,7 +66,7 @@ const nameFromParam = (param: mixed, defaultTitle: string): string => {
   }
 }
 
-const headerLeft = (navigation: NavigationScreenProp<*>): ?Element<*> => {
+const headerLeft = (navigation: NavigationScreenProp<*>): Element<*> => {
   const { routeName, params } = navigation.state
   const drawerButton = <DrawerButton navigation={navigation} />
 
@@ -79,7 +81,17 @@ const headerLeft = (navigation: NavigationScreenProp<*>): ?Element<*> => {
                 style={styles.headerButtonLeft}
                 onPress={() => {
                   // Flow doesn't like this, but it dispatches fine
-                  navigation.dispatch({ type: "tag/map/CANCEL_NEW_AREA" })
+                  navigation.dispatch(
+                    (_dispatch: Dispatch, getState: GetState) => {
+                      _dispatch({
+                        type: "Navigation/NAVIGATE",
+                        routeName: "map",
+                        params: {
+                          mode: mapSelectors.getLastMode(getState())
+                        }
+                      })
+                    }
+                  )
                 }}
               />
             )

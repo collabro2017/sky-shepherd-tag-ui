@@ -16,6 +16,7 @@ export type AreaState = {
 
 export type MapState = {
   area: ?Area,
+  lastMode: MapMode,
   lastRegion: Region,
   mode: MapMode,
   newArea: ?Area,
@@ -42,7 +43,6 @@ export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
   | { type: "tag/map/SAVE_NEW_AREA", payload: ?Area }
-  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
 
 export type TagAction =

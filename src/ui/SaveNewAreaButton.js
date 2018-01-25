@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
 }
 
 const areaHasTooFewPoints = (area: ?Area): boolean => {
-  console.log({ theArea: area })
   if (area == null) {
     return true
   } else {

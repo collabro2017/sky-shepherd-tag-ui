@@ -1,5 +1,4 @@
 import { DrawerNavigator, StackNavigator } from "react-navigation"
-import { headerLeft } from "./header"
 import AreaScreen from "../ui/AreaScreen"
 import MapScreen from "../ui/MapScreen"
 import TagScreen from "../ui/TagScreen"
@@ -10,9 +9,13 @@ import styles, { colors } from "../styles"
 const drawerItemStackOptions = ({ title }) => {
   return {
     headerMode: "float",
-    navigationOptions: ({ navigation }) => {
+    navigationOptions: () => {
       return {
-        headerLeft: headerLeft(navigation),
+        // TODO: Figure out how to get this to appear when the drawer is open, without
+        // clobbering the headerLeft of other screens. Or, preferably, figure out how
+        // to make the drawer slide over the whole screen again without generating
+        // multiple maps.
+        // headerLeft: headerLeft(navigation),
         headerStyle: styles.navigationHeader,
         headerTintColor: colors.white,
         title: title
