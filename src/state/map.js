@@ -11,15 +11,15 @@ import type {
 import type { Area, NewArea, Tag } from "../data/types"
 
 // ACTIONS
-const regionChangedAction = (region: Region): MapAction => {
+const regionChanged = (region: Region): MapAction => {
   return { type: "tag/map/REGION_CHANGED", payload: { region } }
 }
 
-const createBoundaryAction = (): MapAction => {
+const createBoundary = (): MapAction => {
   return { type: "tag/map/CREATE_BOUNDARY", payload: {} }
 }
 
-const changeModeAction = (params: MapRouteParams): MapAction => {
+const changeMode = (params: MapRouteParams): MapAction => {
   return {
     type: "Navigation/NAVIGATE",
     routeName: "map",
@@ -27,12 +27,7 @@ const changeModeAction = (params: MapRouteParams): MapAction => {
   }
 }
 
-// OPERATIONS
-const regionChanged = regionChangedAction
-const createBoundary = createBoundaryAction
-const changeMode = changeModeAction
-
-const operations = { regionChanged, createBoundary, changeMode }
+const actions = { regionChanged, createBoundary, changeMode }
 
 // SELECTORS
 const selectors = {
@@ -147,6 +142,6 @@ const reducer = (
 
 // INTERFACE
 export { selectors as mapSelectors }
-export { operations as mapOperations }
+export { actions as mapActions }
 export { initialMapState, defaultLatitudeDelta }
 export default reducer
