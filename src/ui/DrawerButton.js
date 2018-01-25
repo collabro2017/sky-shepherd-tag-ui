@@ -16,7 +16,7 @@ const onPress = navigation => {
 
 const DrawerButton = (props: Props) => {
   return (
-    <View style={styles.drawerButton}>
+    <View style={styles.headerButtonLeft}>
       <Icon
         name="menu"
         size={30}

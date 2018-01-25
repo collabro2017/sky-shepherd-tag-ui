@@ -59,8 +59,11 @@ const styles = StyleSheet.create({
   map: {
     flex: 1
   },
-  drawerButton: {
+  headerButtonLeft: {
     paddingLeft: 12
+  },
+  headerButtonRight: {
+    paddingRight: 12
   },
   navigationHeader: {
     backgroundColor: colors.logoGray

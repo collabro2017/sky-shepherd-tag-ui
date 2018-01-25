@@ -1,7 +1,12 @@
 // @flow
+import React from "react"
+import SaveNewAreaButton from "../SaveNewAreaButton"
+import styles from "../../styles"
+import type { Element } from "react"
 import type { MapMode } from "../../state/types"
 
-const titleForMapRouteParams = (params: ?{ [key: string]: mixed }): string => {
+type MapRouteParams = { [key: string]: mixed }
+const titleForMapRouteParams = (params: ?MapRouteParams): string => {
   const defaultTitle = "Map"
   if (params != null) {
     const mode = mapMode(params.mode)
@@ -43,4 +48,16 @@ const nameFromParam = (param: mixed, defaultTitle: string): string => {
   }
 }
 
-export { titleForMapRouteParams }
+const headerRightForMapRouteParams = (params: ?MapRouteParams): ?Element<*> => {
+  if (params != null) {
+    const mode = mapMode(params.mode)
+    switch (mode) {
+      case "create":
+        return <SaveNewAreaButton style={styles.headerButtonRight} />
+      default:
+        return null
+    }
+  }
+}
+
+export { titleForMapRouteParams, headerRightForMapRouteParams }

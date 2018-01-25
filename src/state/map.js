@@ -39,6 +39,7 @@ const selectors = {
   getArea: (state: State): ?Area => state.map.area,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): MapMode => state.map.mode,
+  getNewArea: (state: State): ?Area => state.map.newArea,
   getTag: (state: State): ?Tag => state.map.tag
 }
 
@@ -63,6 +64,7 @@ const initialMapState: MapState = {
   area: null,
   lastRegion: defaultRegion,
   mode: "view",
+  newArea: null,
   region: null,
   tag: null
 }
@@ -81,6 +83,11 @@ const reducer = (
       return {
         ...state,
         mode: "create"
+      }
+    case "tag/map/SAVE_NEW_AREA":
+      return {
+        ...state,
+        mode: "create:save"
       }
     case "Navigation/NAVIGATE":
       switch (action.routeName) {

@@ -6,7 +6,10 @@ import { mapSelectors, mapOperations } from "../../state/map"
 import { areaSelectors } from "../../state/area"
 import Map from "./Map"
 import StatusBar from "../StatusBar"
-import { titleForMapRouteParams } from "./mapRouteParams"
+import {
+  titleForMapRouteParams,
+  headerRightForMapRouteParams
+} from "./mapRouteParams"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
@@ -25,6 +28,7 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     ...ownProps,
     area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
+    newArea: mapSelectors.getNewArea(state),
     lastRegion: mapSelectors.getLastRegion(state),
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
@@ -52,8 +56,8 @@ class MapScreen extends Component<Props> {
     const navigation: NavigationScreenProp<*> = params.navigation
     return {
       title: "Map",
-      headerTitle: titleForMapRouteParams(navigation.state.params)
-      // headerRight: <Button color={screenProps.tintColor} />,
+      headerTitle: titleForMapRouteParams(navigation.state.params),
+      headerRight: headerRightForMapRouteParams(navigation.state.params)
     }
   }
 
@@ -87,6 +91,7 @@ type Props = {
   lastRegion: Region,
   mapType: MapType,
   mode: MapMode,
+  newArea: ?Area,
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
   onLongPress: () => void,
