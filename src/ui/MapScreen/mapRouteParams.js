@@ -31,7 +31,7 @@ const mapMode = (param: mixed): MapMode => {
   ) {
     return param
   } else {
-    return "area"
+    return "view"
   }
 }
 
