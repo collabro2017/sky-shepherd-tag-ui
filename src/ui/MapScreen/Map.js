@@ -10,7 +10,7 @@ import { calculateLongitudeDelta } from "../../utils/map"
 import styles from "../../styles"
 
 import type { MapMode, MapType, PressEvent, Region } from "../../state/types"
-import type { Area, Tag } from "../../data/types"
+import type { Area, NewArea, Tag } from "../../data/types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void
@@ -106,6 +106,7 @@ class Map extends Component<Props, MapComponentState> {
   }
 
   render() {
+    console.log("render map")
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -123,6 +124,7 @@ class Map extends Component<Props, MapComponentState> {
             area={this.state.area}
             areas={this.props.areas}
             mode={this.props.mode}
+            newArea={this.props.newArea}
             tag={this.props.tag}
             onAreaMarkerPress={this._onAreaMarkerPress}
           />
@@ -139,6 +141,7 @@ type Props = {
   mapType: MapType,
   mode: MapMode,
   navigateToArea: Area => void,
+  newArea: ?NewArea,
   onLongPress: () => void,
   onPress: PressEvent => void,
   saveRegion: RegionHandler,

@@ -43,6 +43,7 @@ export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
   | { type: "tag/map/SAVE_NEW_AREA", payload: ?Area }
+  | { type: "tag/map/CANCEL_NEW_AREA" }
   | { type: "tag/map/ADD_COORDINATE_TO_NEW_AREA", payload: Coordinate }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
 

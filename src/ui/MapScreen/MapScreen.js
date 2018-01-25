@@ -82,6 +82,7 @@ class MapScreen extends Component<Props> {
   }
 
   render() {
+    console.log({ render: "MapScreen", mode: this.props.mode })
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />
@@ -92,6 +93,7 @@ class MapScreen extends Component<Props> {
           mapType={this.props.mapType}
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
+          newArea={this.props.newArea}
           onLongPress={this.props.onLongPress}
           onPress={this._onPress}
           saveRegion={this.props.saveRegion}

@@ -83,6 +83,11 @@ const reducer = (
         lastMode: state.mode,
         mode: "create"
       }
+    case "tag/map/CANCEL_NEW_AREA":
+      return {
+        ...state,
+        newArea: null
+      }
     case "tag/map/SAVE_NEW_AREA":
       return {
         ...state,
@@ -110,7 +115,7 @@ const reducer = (
               name: "New area",
               coordinates: []
             }
-            return { ...state, lastMode, newArea }
+            return { ...state, lastMode, mode: "create", newArea }
           }
           if (action.params != null && action.params.area != null) {
             // Area was selected to show on the map
