@@ -1,9 +1,9 @@
 // @flow
 import React from "react"
 import { View } from "react-native"
-import AreaMarkers from "./AreaMarkers"
+import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
-import TagMarkers from "./TagMarkers"
+import TagMarker from "./TagMarker"
 import { coordinatesFromArea } from "../area"
 import type { Area, Coordinate, Tag } from "../../../data/types"
 
@@ -12,9 +12,15 @@ export default function ViewMapContent(props: Props) {
   const coordinates: Coordinate[] = coordinatesFromArea(area)
   return (
     <View>
-      <AreaMarkers areas={areas} onMarkerPress={onAreaMarkerPress} />
+      {areas.map(area => (
+        <AreaMarker
+          area={area}
+          key={area.id}
+          onMarkerPress={onAreaMarkerPress(area)}
+        />
+      ))}
       {coordinates.length > 0 && <Polygon coordinates={coordinates} />}
-      {tag != null && <TagMarkers tags={[tag]} />}
+      {tag != null && <TagMarker tag={tag} key={tag.id} />}
     </View>
   )
 }

@@ -2,7 +2,7 @@
 import React from "react"
 import { View } from "react-native"
 import Polygon from "./Polygon"
-import ModificationMarkers from "./ModificationMarkers"
+import ModificationMarker from "./ModificationMarker"
 import type { NewArea } from "../../../data/types"
 
 export default function CreateMapContent({ newArea }: Props) {
@@ -11,7 +11,9 @@ export default function CreateMapContent({ newArea }: Props) {
     return (
       <View>
         <Polygon coordinates={newArea.coordinates} />
-        <ModificationMarkers coordinates={newArea.coordinates} />
+        {newArea.coordinates.map((coordinate, index) => (
+          <ModificationMarker coordinate={coordinate} key={index} />
+        ))}
       </View>
     )
   } else {

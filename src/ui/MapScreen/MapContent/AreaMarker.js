@@ -3,18 +3,17 @@ import React from "react"
 import { Marker } from "react-native-maps"
 import type { Area } from "../../../data/types"
 
-export default function AreaMarkers({ areas, onMarkerPress }: Props) {
-  return areas.map((area: Area) => (
+export default function AreaMarker({ area, onMarkerPress }: Props) {
+  return (
     <Marker
       coordinate={area.centroid}
-      key={area.id}
       title={area.name}
-      onPress={onMarkerPress(area)}
+      onPress={onMarkerPress}
     />
-  ))
+  )
 }
 
 type Props = {
-  areas: Area[],
-  onMarkerPress: Area => () => void
+  area: Area,
+  onMarkerPress: () => void
 }
