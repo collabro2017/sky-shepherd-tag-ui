@@ -28,6 +28,8 @@ export const colors = {
   white
 }
 
+const modificationMarkerSize = 20
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -58,6 +60,14 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1
+  },
+  mapModificationMarker: {
+    backgroundColor: colors.white,
+    borderColor: colors.logoBlue,
+    borderWidth: 2,
+    borderRadius: modificationMarkerSize * 0.5,
+    height: modificationMarkerSize,
+    width: modificationMarkerSize
   },
   headerButtonLeft: {
     paddingLeft: 12

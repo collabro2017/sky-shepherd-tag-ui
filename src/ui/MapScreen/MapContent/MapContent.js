@@ -27,7 +27,7 @@ type Props = {
   area: ?Area,
   areas: Area[],
   mode: MapMode,
-  newArea: NewArea,
+  newArea: ?NewArea,
   onAreaMarkerPress: Area => () => void,
   tag: ?Tag
 }
