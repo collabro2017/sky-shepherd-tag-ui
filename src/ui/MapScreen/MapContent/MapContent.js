@@ -7,7 +7,6 @@ import type { MapMode } from "../../../state/types"
 
 export default function MapContent(props: Props) {
   const { area, areas, mode, newArea, onAreaMarkerPress, tag } = props
-  console.log({ render: "MapContent", mode: mode })
   switch (mode) {
     case "create" || "edit":
       return <CreateMapContent newArea={newArea} />

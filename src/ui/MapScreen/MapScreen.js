@@ -44,7 +44,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     },
     onPress: (mapScreen: MapScreen): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
-        console.log({ coordinate })
         if (mapScreen.props.mode === "create") {
           dispatch(
             ({
@@ -82,7 +81,6 @@ class MapScreen extends Component<Props> {
   }
 
   render() {
-    console.log({ render: "MapScreen", mode: this.props.mode })
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />

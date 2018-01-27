@@ -108,7 +108,6 @@ class Map extends Component<Props, MapComponentState> {
   }
 
   render() {
-    console.log("render map")
     return (
       <View style={{ flex: 1 }}>
         <MapView

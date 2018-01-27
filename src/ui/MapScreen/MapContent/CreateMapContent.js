@@ -6,7 +6,6 @@ import ModificationMarker from "./ModificationMarker"
 import type { NewArea } from "../../../data/types"
 
 export default function CreateMapContent({ newArea }: Props) {
-  console.log("render createMapContent")
   if (newArea != null) {
     return (
       <View>
