@@ -87,6 +87,10 @@ class Map extends Component<Props, MapComponentState> {
     this._onRegionChangeComplete = onRegionChangeComplete(this)
   }
 
+  componentDidMount() {
+    this.props.saveRegion(this.state.region)
+  }
+
   componentWillUnmount() {
     this.props.saveRegion(this.state.region)
   }
