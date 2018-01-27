@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react"
 import { InteractionManager, View } from "react-native"
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import MapView from "react-native-maps"
 import { isEqual } from "lodash"
 import MapContent from "./MapContent"
 import { regionFromArea } from "./area"
@@ -73,8 +73,6 @@ const onRegionChangeComplete = (map: Map): RegionHandler => {
   }
 }
 
-const provider: string = PROVIDER_GOOGLE
-
 class Map extends Component<Props, MapComponentState> {
   _map: ?MapViewType
   _onRegionChangeComplete: RegionHandler
@@ -115,7 +113,6 @@ class Map extends Component<Props, MapComponentState> {
           onLongPress={this.props.onLongPress}
           onPress={this.props.onPress}
           onRegionChangeComplete={this._onRegionChangeComplete}
-          provider={provider}
           ref={(ref: ?MapViewType) => (this._map = ref)}
           region={this.state.region}
           style={styles.map}
