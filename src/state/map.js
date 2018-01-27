@@ -8,26 +8,41 @@ import type {
   Region,
   State
 } from "./types"
-import type { Area, NewArea, Tag } from "../data/types"
+import type { Area, Coordinate, NewArea, Tag } from "../data/types"
 
 // ACTIONS
-const regionChanged = (region: Region): MapAction => {
-  return { type: "tag/map/REGION_CHANGED", payload: { region } }
-}
+const actions = {
+  addCoordinateToNewArea: (coordinate: Coordinate): MapAction => ({
+    type: "tag/map/ADD_COORDINATE_TO_NEW_AREA",
+    payload: coordinate
+  }),
 
-const createBoundary = (): MapAction => {
-  return { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-}
+  regionChanged: (region: Region): MapAction => ({
+    type: "tag/map/REGION_CHANGED",
+    payload: { region }
+  }),
 
-const changeMode = (params: MapRouteParams): MapAction => {
-  return {
+  createBoundary: (): MapAction => ({
+    type: "tag/map/CREATE_BOUNDARY",
+    payload: {}
+  }),
+
+  changeMode: (params: MapRouteParams): MapAction => ({
     type: "Navigation/NAVIGATE",
     routeName: "map",
     params
-  }
-}
+  }),
 
-const actions = { regionChanged, createBoundary, changeMode }
+  saveNewArea: (newArea: NewArea): MapAction => ({
+    type: "tag/map/SAVE_NEW_AREA",
+    payload: newArea
+  }),
+
+  updateNewAreaName: (name: string): MapAction => ({
+    type: "tag/map/UPDATE_NEW_AREA_NAME",
+    payload: name
+  })
+}
 
 // SELECTORS
 const selectors = {
@@ -98,6 +113,14 @@ const reducer = (
             ...(state.newArea != null ? state.newArea.coordinates : []),
             action.payload
           ]
+        }
+      }
+    case "tag/map/UPDATE_NEW_AREA_NAME":
+      return {
+        ...state,
+        newArea: {
+          ...state.newArea,
+          name: action.payload
         }
       }
     case "Navigation/NAVIGATE":

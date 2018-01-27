@@ -2,11 +2,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { View } from "react-native"
-import { mapSelectors, mapOperations } from "../../state/map"
+import { mapSelectors, mapActions } from "../../state/map"
 import { areaSelectors } from "../../state/area"
 import Map from "./Map"
+import InputBar from "../InputBar"
+import SlideDownFromTopView from "../SlideDownFromTopView"
 import StatusBar from "../StatusBar"
 import { headerLeft, headerRight, headerTitle } from "../../nav"
+import { inputBarHeight } from "../../styles"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
@@ -15,7 +18,6 @@ import type { Area, NewArea, Tag } from "../../data/types"
 import type {
   Dispatch,
   Region,
-  MapAction,
   MapMode,
   MapType,
   PressEvent,
@@ -23,11 +25,14 @@ import type {
 } from "../../state/types"
 
 const mapStateToProps = (state: State, ownProps: Props) => {
+  const newArea = mapSelectors.getNewArea(state)
+  const newAreaName = newArea != null ? newArea.name : ""
   return {
     ...ownProps,
     area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
-    newArea: mapSelectors.getNewArea(state),
+    newArea,
+    newAreaName,
     lastRegion: mapSelectors.getLastRegion(state),
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
@@ -45,20 +50,20 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     onPress: (mapScreen: MapScreen): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
         if (mapScreen.props.mode === "create") {
-          dispatch(
-            ({
-              type: "tag/map/ADD_COORDINATE_TO_NEW_AREA",
-              payload: coordinate
-            }: MapAction)
-          )
+          dispatch(mapActions.addCoordinateToNewArea(coordinate))
         }
       }
     },
     onLongPress: () => {
       ownProps.navigation.navigate("map", { mode: "create" })
     },
+
+    onAreaNameChanged: (name: string) => {
+      dispatch(mapActions.updateNewAreaName(name))
+    },
+
     saveRegion: (region: Region) => {
-      dispatch(mapOperations.regionChanged(region))
+      dispatch(mapActions.regionChanged(region))
     }
   }
 }
@@ -84,6 +89,15 @@ class MapScreen extends Component<Props> {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />
+        {this.props.mode == "create" && (
+          <SlideDownFromTopView height={inputBarHeight}>
+            <InputBar
+              label="Name"
+              value={this.props.newAreaName}
+              onChangeText={this.props.onAreaNameChanged}
+            />
+          </SlideDownFromTopView>
+        )}
         <Map
           area={this.props.area}
           areas={this.props.areas}
@@ -109,8 +123,10 @@ type Props = {
   mapType: MapType,
   mode: MapMode,
   newArea: ?NewArea,
+  newAreaName: string,
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
+  onAreaNameChanged: string => void,
   onLongPress: () => void,
   onPress: MapScreen => PressEventHandler,
   saveRegion: Region => void,

@@ -1,10 +1,10 @@
 // @flow
 import React from "react"
 import { connect } from "react-redux"
-import { mapSelectors } from "../state/map"
+import { mapSelectors, mapActions } from "../state/map"
 import SaveButton from "./SaveButton"
 import type { StyleObj } from "react-native/Libraries/StyleSheet/StyleSheetTypes"
-import type { Action, Dispatch, State } from "../state/types"
+import type { Dispatch, State } from "../state/types"
 import type { NewArea } from "../data/types"
 
 const mapStateToProps = (state: State, ownProps: Props): Props => {
@@ -20,20 +20,22 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     onPress: () => {
       const newArea = ownProps.newArea
       if (newArea != null) {
-        dispatch(({ type: "tag/map/SAVE_NEW_AREA", payload: newArea }: Action))
+        dispatch(mapActions.saveNewArea(newArea))
       }
     }
   }
 }
 
-const areaHasTooFewPoints = (area: ?NewArea): boolean => {
-  return area != null && area.coordinates.length < 3
-}
+const areaHasEnoughPoints = (area: NewArea): boolean =>
+  area.coordinates.length >= 3
+
+const newAreaValid = (newArea: NewArea): boolean =>
+  areaHasEnoughPoints(newArea) && newArea.name.length > 0
 
 const SaveNewAreaButton = (props: Props) => {
   return (
     <SaveButton
-      disabled={areaHasTooFewPoints(props.newArea)}
+      disabled={props.newArea == null || !newAreaValid(props.newArea)}
       onPress={props.onPress}
       style={props.style}
     />
