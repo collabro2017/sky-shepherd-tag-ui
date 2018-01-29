@@ -10,9 +10,23 @@ export type Tag = {
   updatedAt: Date
 }
 
+// Unsaved Area data
+export type AreaData = {
+  centroid: Coordinate,
+  identifier: number,
+  maxIdx: Point,
+  maxPos: Point,
+  minPos: Point,
+  name: string,
+  points: {
+    pointsArray: Point[]
+  },
+  ptCnt: number,
+  scale: number
+}
+
 export type Area = {
   centroid: Coordinate,
-  id: string,
   identifier: number,
   maxIdx: Point,
   maxPos: Point,
@@ -23,6 +37,7 @@ export type Area = {
   },
   ptCnt: number,
   scale: number,
+  id: string,
   createdAt: Date,
   updatedAt: Date
 }
