@@ -6,15 +6,22 @@ export default class SlideDownFromTopView extends React.Component<
   Props,
   State
 > {
+  static defaultProps = {
+    duration: 500,
+    marginTop: 0
+  }
+
   constructor(props: Props) {
     super(props)
-    this.state = { marginTop: new Animated.Value(-props.height) }
+    this.state = {
+      marginTop: new Animated.Value(-this.props.height)
+    }
   }
 
   componentDidMount() {
-    Animated.timing(this.state.marginTop, {
+    Animated.spring(this.state.marginTop, {
       toValue: 0,
-      duration: 1000
+      duration: this.props.duration
     }).start()
   }
 
@@ -28,6 +35,7 @@ export default class SlideDownFromTopView extends React.Component<
 }
 
 type Props = {
+  duration: number,
   height: number,
   children: ?React.Node
 }
