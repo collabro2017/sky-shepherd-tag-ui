@@ -67,7 +67,6 @@ const inputBarTextFieldBottomPadding = spacing.zero
 const inputBarTextFieldBorderBottomWidth = 1
 const inputBarTextFieldFontSize = fontSize.three
 const inputBarHeight =
-  inputBarLabelFontSize +
   inputBarTextFieldFontSize +
   2 * inputBarPadding +
   inputBarTextFieldBorderBottomWidth +
@@ -132,7 +131,6 @@ const styles = StyleSheet.create({
     color: colors.logoGray,
     flex: 0,
     fontSize: inputBarTextFieldFontSize,
-    // marginLeft: inputBarTextFieldPadding,
     marginRight: inputBarTextFieldPadding,
     width: "100%"
   },

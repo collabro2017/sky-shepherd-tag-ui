@@ -92,9 +92,9 @@ class MapScreen extends Component<Props> {
         {this.props.mode == "create" && (
           <SlideDownFromTopView height={inputBarHeight}>
             <InputBar
-              label="Name"
-              value={this.props.newAreaName}
               onChangeText={this.props.onAreaNameChanged}
+              placeholder="New area"
+              value={this.props.newAreaName}
             />
           </SlideDownFromTopView>
         )}

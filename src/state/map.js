@@ -130,7 +130,7 @@ const reducer = (
             // Create mode
             const lastMode = nextLastMode(state, "create")
             const newArea = state.newArea || {
-              name: "New area",
+              name: "",
               coordinates: []
             }
             return { ...state, lastMode, mode: "create", newArea }
