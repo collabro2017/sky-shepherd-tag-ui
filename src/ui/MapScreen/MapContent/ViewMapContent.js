@@ -4,7 +4,7 @@ import { View } from "react-native"
 import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
 import TagMarker from "./TagMarker"
-import { coordinatesFromArea } from "../area"
+import { coordinatesFromArea } from "../areaConversion"
 import type { Area, Coordinate, Tag } from "../../../data/types"
 
 export default function ViewMapContent(props: Props) {

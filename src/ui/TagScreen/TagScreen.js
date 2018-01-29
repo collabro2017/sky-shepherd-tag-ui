@@ -34,11 +34,12 @@ const keyExtractor = (item: Tag) => item.id
 
 class TagScreen extends React.Component<Props> {
   static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
+    const { routeName, params } = navigation.state
     return {
       title: "Map",
       headerLeft: headerLeft(navigation),
-      headerRight: headerRight(navigation),
-      headerTitle: headerTitle(navigation)
+      headerRight: headerRight(routeName, params),
+      headerTitle: headerTitle(routeName, params)
     }
   }
 

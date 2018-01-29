@@ -1,21 +1,19 @@
 // @flow
-import React from "react"
+import * as React from "react"
 import { mapSelectors } from "../state/map"
 import SaveNewAreaButton from "../ui/SaveNewAreaButton"
 import DrawerButton from "../ui/DrawerButton"
 import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
-import type { Element } from "react"
 import type { NavigationScreenProp } from "react-navigation"
 import type { GetState } from "redux-thunk"
 import type { MapMode } from "../state/types"
 
-const headerTitle = (navigation: NavigationScreenProp<*>): string => {
+type Params = { [string]: mixed }
+const headerTitle = (routeName: string, params: Params): string => {
   const defaultMapTitle = "Map"
   const defaultTagsTitle = "Tags"
   const defaultAreasTitle = "Areas"
-
-  const { routeName, params } = navigation.state
 
   switch (routeName) {
     case "map":
@@ -66,7 +64,7 @@ const nameFromParam = (param: mixed, defaultTitle: string): string => {
   }
 }
 
-const headerLeft = (navigation: NavigationScreenProp<*>): Element<*> => {
+const headerLeft = (navigation: NavigationScreenProp<*>): React.Node => {
   const { routeName, params } = navigation.state
   const drawerButton = <DrawerButton navigation={navigation} />
 
@@ -107,8 +105,7 @@ const headerLeft = (navigation: NavigationScreenProp<*>): Element<*> => {
   }
 }
 
-const headerRight = (navigation: NavigationScreenProp<*>): ?Element<*> => {
-  const { routeName, params } = navigation.state
+const headerRight = (routeName: string, params: Params): ?React.Node => {
   switch (routeName) {
     case "map":
       if (params != null) {

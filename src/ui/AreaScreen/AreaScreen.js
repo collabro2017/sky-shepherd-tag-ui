@@ -8,7 +8,7 @@ import AreaListItem from "./AreaListItem"
 import ItemSeparator from "../ListItemSeparator"
 import StatusBar from "../StatusBar"
 import type {
-  NavigationConfigScreenProps,
+  NavigationScreenConfigProps,
   NavigationScreenProp
 } from "react-navigation"
 import type { Dispatch } from "redux-thunk"
@@ -40,14 +40,13 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
 const keyExtractor = (item: Area) => item.id
 
 class AreaScreen extends React.Component<Props> {
-  static navigationOptions = ({
-    navigation
-  }: NavigationConfigScreenProps<*>) => {
+  static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
+    const { routeName, params } = navigation.state
     return {
       title: "Areas",
       headerLeft: headerLeft(navigation),
-      headerRight: headerRight(navigation),
-      headerTitle: headerTitle(navigation)
+      headerRight: headerRight(routeName, params),
+      headerTitle: headerTitle(routeName, params)
     }
   }
   constructor(props) {
