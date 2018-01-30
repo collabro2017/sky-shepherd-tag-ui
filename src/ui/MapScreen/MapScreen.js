@@ -70,11 +70,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
 
 class MapScreen extends Component<Props> {
   static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
+    const { routeName, params } = navigation.state
     return {
       title: "Map",
       headerLeft: headerLeft(navigation),
-      headerRight: headerRight(navigation),
-      headerTitle: headerTitle(navigation)
+      headerRight: headerRight(routeName, params),
+      headerTitle: headerTitle(routeName, params)
     }
   }
 

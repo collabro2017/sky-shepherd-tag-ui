@@ -235,4 +235,4 @@ const areaFromNameAndCoordinates = (
       */
 }
 
-export { coordinatesFromArea, regionFromArea }
+export { coordinatesFromArea, regionFromArea, areaFromNameAndCoordinates }
