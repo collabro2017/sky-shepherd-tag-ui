@@ -141,6 +141,10 @@ const integerFromDecimal = (decimal: Coordinate): Coordinate => {
   }
 }
 
+const unsignedInt = (number: number): number => {
+  return Uint32Array.from([number])[0]
+}
+
 type IdentifierParams = { min: Point, points: Point[], scale: number }
 const generateIdentifier = ({
   min,
@@ -149,8 +153,9 @@ const generateIdentifier = ({
 }: IdentifierParams): number => {
   console.log({ min, points, scale })
   let localHash = 0
-  let uMinX = Math.floor(Math.abs(min.x))
-  let uMinY = Math.floor(Math.abs(min.y))
+  let uMinX = unsignedInt(Math.abs(min.x))
+  let uMinY = unsignedInt(Math.abs(min.y))
+  let uScale = unsignedInt(scale)
 
   /*
         localHash = ((( uMinX ) << 16) | ( uMinY )).safePlus( localHash << 6 ).safePlus( localHash << 16 ).safeMinus( localHash );
@@ -159,12 +164,14 @@ const generateIdentifier = ({
 
   localHash =
     ((uMinX << 16) | uMinY) + (localHash << 6) + (localHash << 16) - localHash
-  localHash = scale + (localHash << 6) + (localHash << 16) - localHash
+  localHash = uScale + (localHash << 6) + (localHash << 16) - localHash
 
-  points.forEach(({ x, y }) => {
-    localHash =
-      ((x << 16) | y) + (localHash << 6) + (localHash << 16) - localHash
-  })
+  points
+    .map(({ x, y }) => ({ x: unsignedInt(x), y: unsignedInt(y) }))
+    .forEach(({ x, y }) => {
+      localHash =
+        ((x << 16) | y) + (localHash << 6) + (localHash << 16) - localHash
+    })
 
   return localHash
 }
