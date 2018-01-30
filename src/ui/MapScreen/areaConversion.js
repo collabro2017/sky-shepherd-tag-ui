@@ -141,6 +141,47 @@ const integerFromDecimal = (decimal: Coordinate): Coordinate => {
   }
 }
 
+type IdentifierParams = { min: Point, points: Point[], scale: number }
+const generateIdentifier = ({
+  min,
+  points,
+  scale
+}: IdentifierParams): number => {
+  console.log({ min, points, scale })
+  let localHash = 0
+  let uMinX = Math.floor(Math.abs(min.x))
+  let uMinY = Math.floor(Math.abs(min.y))
+
+  /*
+        localHash = ((( uMinX ) << 16) | ( uMinY )).safePlus( localHash << 6 ).safePlus( localHash << 16 ).safeMinus( localHash );
+        localHash = ( _scale ).safePlus( localHash << 6 ).safePlus( localHash << 16 ).safeMinus( localHash );
+        */
+
+  localHash =
+    ((uMinX << 16) | uMinY) + (localHash << 6) + (localHash << 16) - localHash
+  localHash = scale + (localHash << 6) + (localHash << 16) - localHash
+
+  points.forEach(({ x, y }) => {
+    localHash =
+      ((x << 16) | y) + (localHash << 6) + (localHash << 16) - localHash
+  })
+
+  return localHash
+}
+
+/*
+
+        for point in array {
+            let intX = (point["x"] as! Int32)
+            let intY = (point["y"] as! Int32)
+            let x = UInt32(intX)
+            let y = UInt32(intY)
+            localHash = (( x << 16) | y).safePlus(localHash << 6).safePlus(localHash << 16).safeMinus(localHash);
+        }
+        return (localHash)
+    }
+    */
+
 const areaFromNameAndCoordinates = (
   name: string,
   coordinates: Coordinate[]
@@ -232,9 +273,11 @@ const areaFromNameAndCoordinates = (
       })
     }))
 
+  const identifier = generateIdentifier({ min: minPos, points, scale })
+
   return {
     centroid,
-    identifier: 0,
+    identifier,
     minPos,
     maxIdx,
     maxPos,
