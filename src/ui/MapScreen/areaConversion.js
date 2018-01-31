@@ -152,25 +152,67 @@ const generateIdentifier = ({
   scale
 }: IdentifierParams): number => {
   console.log({ min, points, scale })
-  let localHash = 0
-  let uMinX = unsignedInt(Math.abs(min.x))
-  let uMinY = unsignedInt(Math.abs(min.y))
+  let localHash = unsignedInt(0)
+  // let uMinX = unsignedInt(Math.abs(min.x))
+  // let uMinY = unsignedInt(Math.abs(min.y))
+  let uMin = {
+    x: unsignedInt(Math.abs(min.x)),
+    y: unsignedInt(Math.abs(min.y))
+  }
   let uScale = unsignedInt(scale)
+  console.log({ uMin, uScale })
 
   /*
         localHash = ((( uMinX ) << 16) | ( uMinY )).safePlus( localHash << 6 ).safePlus( localHash << 16 ).safeMinus( localHash );
         localHash = ( _scale ).safePlus( localHash << 6 ).safePlus( localHash << 16 ).safeMinus( localHash );
         */
 
-  localHash =
-    ((uMinX << 16) | uMinY) + (localHash << 6) + (localHash << 16) - localHash
-  localHash = uScale + (localHash << 6) + (localHash << 16) - localHash
+  const applyValueToHash = (value: number, hash: number): number => {
+    const shift6 = (hash << 6) >>> 0
+    const shift16 = (hash << 16) >>> 0
+    const addingShift6 = unsignedInt(value + shift6)
+    const addingShift16 = unsignedInt(addingShift6 + shift16)
+    const addingShift16Signed = addingShift6 + shift16
+    const addingShift16Or = (addingShift6 + shift16) | 0
+    const addingShift16ZeroFill = (addingShift6 + shift16) >>> 0
+    const subtractingHashUnsigned = unsignedInt(addingShift16 - hash)
+    const subtractingHashShift = (addingShift16 - hash) >>> 0
+    console.log({
+      shift6,
+      shift16,
+      addingShift6,
+      addingShift16,
+      addingShift16Signed,
+      addingShift16Or,
+      addingShift16ZeroFill,
+      subtractingHashUnsigned,
+      subtractingHashShift
+    })
+    return unsignedInt(addingShift16 - unsignedInt(hash))
+  }
+
+  const applyPointToHash = ({ x, y }: Point, hash: number): number => {
+    const value = (((x << 16) >>> 0) | y) >>> 0
+    return applyValueToHash(value, hash)
+  }
+
+  localHash = applyPointToHash(uMin, localHash)
+  console.log({ afterMin: localHash })
+  localHash = applyValueToHash(uScale, unsignedInt(localHash))
+  console.log({ afterScale: localHash })
+
+  // localHash =
+  //   ((uMinX << 16) | uMinY) + (localHash << 6) + (localHash << 16) - localHash
+  // localHash = uScale + (localHash << 6) + (localHash << 16) - localHash
 
   points
     .map(({ x, y }) => ({ x: unsignedInt(x), y: unsignedInt(y) }))
-    .forEach(({ x, y }) => {
-      localHash =
-        ((x << 16) | y) + (localHash << 6) + (localHash << 16) - localHash
+    .forEach((point, index) => {
+      localHash = applyPointToHash(point, localHash)
+      const label = `afterPoint${index}`
+      console.log({ label, localHash })
+      // localHash =
+      // ((x << 16) | y) + (localHash << 6) + (localHash << 16) - localHash
     })
 
   return localHash
