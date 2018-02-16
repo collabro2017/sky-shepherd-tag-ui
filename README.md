@@ -55,6 +55,10 @@ The [React Native Debugger](https://github.com/jhen0409/react-native-debugger) i
 
 ## Releases
 
+Make sure you have fastlane installed
+
+    bundle install
+
 Building releases is automated with Fastlane. To publish beta releases on both platforms:
 
     yarn run beta
