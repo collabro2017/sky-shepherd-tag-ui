@@ -1,5 +1,5 @@
 # ENV variables
-env-*.js
+#env-*.js
 
 # Fastlane additions
 **/*/fastlane/report.xml
