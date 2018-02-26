@@ -9,7 +9,10 @@ export default function CreateMapContent({ newArea }: Props) {
   if (newArea != null) {
     return (
       <View>
-        <Polygon coordinates={newArea.coordinates} />
+        {newArea.coordinates.length > 0 && (
+          // Google Maps crashes if a polygon has no coordinates
+          <Polygon coordinates={newArea.coordinates} />
+        )}
         {newArea.coordinates.map((coordinate, index) => (
           <ModificationMarker coordinate={coordinate} key={index} />
         ))}
