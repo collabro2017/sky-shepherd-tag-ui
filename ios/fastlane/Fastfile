@@ -32,7 +32,7 @@ platform :ios do
 
   desc "Ship to TestFlight"
   lane :beta do
-    ensure_git_branch(branch: "develop")
+    # ensure_git_branch(branch: "develop")
     build
     pilot
     commit_version_bump(message: "Bump iOS build number")
