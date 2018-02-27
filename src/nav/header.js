@@ -81,7 +81,7 @@ const headerLeft = (navigation: NavigationScreenProp<*>): React.Node => {
                   // Flow doesn't like this, but it dispatches fine
                   navigation.dispatch(
                     (_dispatch: Dispatch, getState: GetState) => {
-                      _dispatch({ type: "tag/map/CANCEL_NEW_AREA" })
+                      _dispatch({ type: "tag/map/CANCEL_AREA_CHANGES" })
                       _dispatch({
                         type: "Navigation/NAVIGATE",
                         routeName: "map",

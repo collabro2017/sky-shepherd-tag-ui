@@ -1,19 +1,24 @@
 // @flow
+import Promise from "promise"
+import { Alert } from "react-native"
 import { calculateLongitudeDelta } from "../utils/map"
 import type {
+  Dispatch,
+  GetState,
   MapAction,
   MapMode,
   MapRouteParams,
   MapState,
   Region,
-  State
+  State,
+  ThunkAction
 } from "./types"
 import type { Area, Coordinate, AreaChanges, Tag } from "../data/types"
 
 // ACTIONS
 const actions = {
   addCoordinateToAreaChanges: (coordinate: Coordinate): MapAction => ({
-    type: "tag/map/ADD_COORDINATE_TO_NEW_AREA",
+    type: "tag/map/ADD_COORDINATE_TO_AREA",
     payload: coordinate
   }),
 
@@ -23,7 +28,7 @@ const actions = {
   }),
 
   createBoundary: (): MapAction => ({
-    type: "tag/map/CREATE_BOUNDARY",
+    type: "tag/map/CREATE_AREA",
     payload: {}
   }),
 
@@ -33,13 +38,22 @@ const actions = {
     params
   }),
 
-  saveAreaChanges: (areaChanges: AreaChanges): MapAction => ({
-    type: "tag/map/SAVE_NEW_AREA",
-    payload: areaChanges
-  }),
+  saveAreaChanges: (areaChanges: AreaChanges): ThunkAction => {
+    return (dispatch: Dispatch, getState: GetState) => {
+      Promise.resolve({})
+        .then((area: Area) => {
+          dispatch(actions.changeMode({ area: area, tag: null, mode: "view" }))
+        })
+        .catch(error => {
+          Alert.alert("Error saving area", "", [{ text: "OK" }], {
+            cancelable: false
+          })
+        })
+    }
+  },
 
   updateAreaChangesName: (name: string): MapAction => ({
-    type: "tag/map/UPDATE_NEW_AREA_NAME",
+    type: "tag/map/UPDATE_AREA_NAME",
     payload: name
   })
 }
@@ -77,6 +91,16 @@ const nextLastMode = (state: MapState, nextMode: MapMode): MapMode => {
   return nextMode !== state.mode ? state.mode : state.lastMode
 }
 
+const saveAreaChangesNextMode = (lastMode: MapMode): MapMode => {
+  if (lastMode == "create") {
+    return "create:save"
+  } else if (lastMode == "edit") {
+    return "edit:save"
+  } else {
+    return lastMode
+  }
+}
+
 const reducer = (
   state: MapState = initialMapState,
   action: MapAction
@@ -87,24 +111,25 @@ const reducer = (
         ...state,
         lastRegion: action.payload.region
       }
-    case "tag/map/CREATE_BOUNDARY":
+    case "tag/map/CREATE_AREA":
       return {
         ...state,
         lastMode: state.mode,
         mode: "create"
       }
-    case "tag/map/CANCEL_NEW_AREA":
+    case "tag/map/CANCEL_AREA_CHANGES":
       return {
         ...state,
+        mode: state.lastMode,
         areaChanges: null
       }
-    case "tag/map/SAVE_NEW_AREA":
+    case "tag/map/SAVE_AREA_CHANGES":
       return {
         ...state,
         lastMode: state.mode,
-        mode: "create:save"
+        mode: saveAreaChangesNextMode(state.mode)
       }
-    case "tag/map/ADD_COORDINATE_TO_NEW_AREA":
+    case "tag/map/ADD_COORDINATE_TO_AREA":
       return {
         ...state,
         areaChanges: {
@@ -115,7 +140,7 @@ const reducer = (
           ]
         }
       }
-    case "tag/map/UPDATE_NEW_AREA_NAME":
+    case "tag/map/UPDATE_AREA_NAME":
       return {
         ...state,
         areaChanges: {
