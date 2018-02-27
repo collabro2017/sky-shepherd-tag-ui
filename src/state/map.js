@@ -8,11 +8,11 @@ import type {
   Region,
   State
 } from "./types"
-import type { Area, Coordinate, NewArea, Tag } from "../data/types"
+import type { Area, Coordinate, AreaChanges, Tag } from "../data/types"
 
 // ACTIONS
 const actions = {
-  addCoordinateToNewArea: (coordinate: Coordinate): MapAction => ({
+  addCoordinateToAreaChanges: (coordinate: Coordinate): MapAction => ({
     type: "tag/map/ADD_COORDINATE_TO_NEW_AREA",
     payload: coordinate
   }),
@@ -33,12 +33,12 @@ const actions = {
     params
   }),
 
-  saveNewArea: (newArea: NewArea): MapAction => ({
+  saveAreaChanges: (areaChanges: AreaChanges): MapAction => ({
     type: "tag/map/SAVE_NEW_AREA",
-    payload: newArea
+    payload: areaChanges
   }),
 
-  updateNewAreaName: (name: string): MapAction => ({
+  updateAreaChangesName: (name: string): MapAction => ({
     type: "tag/map/UPDATE_NEW_AREA_NAME",
     payload: name
   })
@@ -50,7 +50,7 @@ const selectors = {
   getLastMode: (state: State): MapMode => state.map.lastMode,
   getLastRegion: (state: State): Region => state.map.lastRegion,
   getMode: (state: State): MapMode => state.map.mode,
-  getNewArea: (state: State): ?NewArea => state.map.newArea,
+  getAreaChanges: (state: State): ?AreaChanges => state.map.areaChanges,
   getTag: (state: State): ?Tag => state.map.tag
 }
 
@@ -68,7 +68,7 @@ const initialMapState: MapState = {
   lastMode: "view",
   lastRegion: defaultRegion,
   mode: "view",
-  newArea: null,
+  areaChanges: null,
   region: null,
   tag: null
 }
@@ -96,7 +96,7 @@ const reducer = (
     case "tag/map/CANCEL_NEW_AREA":
       return {
         ...state,
-        newArea: null
+        areaChanges: null
       }
     case "tag/map/SAVE_NEW_AREA":
       return {
@@ -107,10 +107,10 @@ const reducer = (
     case "tag/map/ADD_COORDINATE_TO_NEW_AREA":
       return {
         ...state,
-        newArea: {
-          ...state.newArea,
+        areaChanges: {
+          ...state.areaChanges,
           coordinates: [
-            ...(state.newArea != null ? state.newArea.coordinates : []),
+            ...(state.areaChanges != null ? state.areaChanges.coordinates : []),
             action.payload
           ]
         }
@@ -118,8 +118,8 @@ const reducer = (
     case "tag/map/UPDATE_NEW_AREA_NAME":
       return {
         ...state,
-        newArea: {
-          ...state.newArea,
+        areaChanges: {
+          ...state.areaChanges,
           name: action.payload
         }
       }
@@ -129,11 +129,11 @@ const reducer = (
           if (action.params != null && action.params.mode === "create") {
             // Create mode
             const lastMode = nextLastMode(state, "create")
-            const newArea = state.newArea || {
+            const areaChanges = state.areaChanges || {
               name: "",
               coordinates: []
             }
-            return { ...state, lastMode, mode: "create", newArea }
+            return { ...state, lastMode, mode: "create", areaChanges }
           }
           if (action.params != null && action.params.area != null) {
             // Area was selected to show on the map

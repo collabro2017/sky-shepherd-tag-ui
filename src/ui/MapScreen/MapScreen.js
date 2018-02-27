@@ -14,7 +14,7 @@ import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
 } from "react-navigation"
-import type { Area, NewArea, Tag } from "../../data/types"
+import type { Area, AreaChanges, Tag } from "../../data/types"
 import type {
   Dispatch,
   Region,
@@ -25,14 +25,14 @@ import type {
 } from "../../state/types"
 
 const mapStateToProps = (state: State, ownProps: Props) => {
-  const newArea = mapSelectors.getNewArea(state)
-  const newAreaName = newArea != null ? newArea.name : ""
+  const areaChanges = mapSelectors.getAreaChanges(state)
+  const areaChangesName = areaChanges != null ? areaChanges.name : ""
   return {
     ...ownProps,
     area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
-    newArea,
-    newAreaName,
+    areaChanges,
+    areaChangesName,
     lastRegion: mapSelectors.getLastRegion(state),
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     onPress: (mapScreen: MapScreen): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
         if (mapScreen.props.mode === "create") {
-          dispatch(mapActions.addCoordinateToNewArea(coordinate))
+          dispatch(mapActions.addCoordinateToAreaChanges(coordinate))
         }
       }
     },
@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     },
 
     onAreaNameChanged: (name: string) => {
-      dispatch(mapActions.updateNewAreaName(name))
+      dispatch(mapActions.updateAreaChangesName(name))
     },
 
     saveRegion: (region: Region) => {
@@ -95,7 +95,7 @@ class MapScreen extends Component<Props> {
             <InputBar
               onChangeText={this.props.onAreaNameChanged}
               placeholder="New area"
-              value={this.props.newAreaName}
+              value={this.props.areaChangesName}
             />
           </SlideDownFromTopView>
         )}
@@ -106,7 +106,7 @@ class MapScreen extends Component<Props> {
           mapType={this.props.mapType}
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
-          newArea={this.props.newArea}
+          areaChanges={this.props.areaChanges}
           onLongPress={this.props.onLongPress}
           onPress={this._onPress}
           saveRegion={this.props.saveRegion}
@@ -123,8 +123,8 @@ type Props = {
   lastRegion: Region,
   mapType: MapType,
   mode: MapMode,
-  newArea: ?NewArea,
-  newAreaName: string,
+  areaChanges: ?AreaChanges,
+  areaChangesName: string,
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
   onAreaNameChanged: string => void,

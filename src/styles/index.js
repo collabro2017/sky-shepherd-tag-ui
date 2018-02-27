@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   map: {
     flex: 1
   },
-  mapModificationMarker: {
+  mapAreaCoordinateMarker: {
     backgroundColor: colors.white,
     borderColor: colors.logoBlue,
     borderWidth: 2,

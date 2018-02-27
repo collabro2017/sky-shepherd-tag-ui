@@ -1,15 +1,15 @@
 // @flow
 import React from "react"
-import CreateMapContent from "./CreateMapContent"
+import AreaChangesMapContent from "./AreaChangesMapContent"
 import ViewMapContent from "./ViewMapContent"
-import type { Area, NewArea, Tag } from "../../../data/types"
+import type { Area, AreaChanges, Tag } from "../../../data/types"
 import type { MapMode } from "../../../state/types"
 
 export default function MapContent(props: Props) {
-  const { area, areas, mode, newArea, onAreaMarkerPress, tag } = props
+  const { area, areas, mode, areaChanges, onAreaMarkerPress, tag } = props
   switch (mode) {
     case "create" || "edit":
-      return <CreateMapContent newArea={newArea} />
+      return <AreaChangesMapContent areaChanges={areaChanges} />
     default:
       return (
         <ViewMapContent
@@ -26,7 +26,7 @@ type Props = {
   area: ?Area,
   areas: Area[],
   mode: MapMode,
-  newArea: ?NewArea,
+  areaChanges: ?AreaChanges,
   onAreaMarkerPress: Area => () => void,
   tag: ?Tag
 }

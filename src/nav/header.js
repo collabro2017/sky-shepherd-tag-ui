@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react"
 import { mapSelectors } from "../state/map"
-import SaveNewAreaButton from "../ui/SaveNewAreaButton"
+import SaveAreaChangesButton from "../ui/SaveAreaChangesButton"
 import DrawerButton from "../ui/DrawerButton"
 import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
@@ -112,7 +112,7 @@ const headerRight = (routeName: string, params: Params): ?React.Node => {
         const mode = mapMode(params.mode)
         switch (mode) {
           case "create":
-            return <SaveNewAreaButton style={styles.headerButtonRight} />
+            return <SaveAreaChangesButton style={styles.headerButtonRight} />
           default:
             return null
         }

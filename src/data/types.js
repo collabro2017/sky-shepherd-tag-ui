@@ -42,7 +42,7 @@ export type Area = {
   updatedAt: Date
 }
 
-export type NewArea = {
+export type AreaChanges = {
   coordinates: Coordinate[],
   name: string
 }

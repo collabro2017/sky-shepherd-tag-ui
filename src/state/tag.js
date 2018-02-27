@@ -1,5 +1,4 @@
 // @flow
-import { Cloud } from "../data"
 import type { Reducer } from "redux"
 import type { State, TagAction, TagState } from "./types"
 import type { Tag } from "../data"

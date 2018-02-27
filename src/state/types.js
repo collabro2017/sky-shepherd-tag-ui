@@ -1,7 +1,7 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { Area, Coordinate, NewArea, Point, Tag } from "../data/types"
+import type { Area, Coordinate, AreaChanges, Point, Tag } from "../data/types"
 
 export type Region = {
   latitude: number,
@@ -19,7 +19,7 @@ export type MapState = {
   lastMode: MapMode,
   lastRegion: Region,
   mode: MapMode,
-  newArea: ?NewArea,
+  areaChanges: ?AreaChanges,
   tag: ?Tag
 }
 
@@ -42,7 +42,7 @@ export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-  | { type: "tag/map/SAVE_NEW_AREA", payload: NewArea }
+  | { type: "tag/map/SAVE_NEW_AREA", payload: AreaChanges }
   | { type: "tag/map/CANCEL_NEW_AREA" }
   | { type: "tag/map/ADD_COORDINATE_TO_NEW_AREA", payload: Coordinate }
   | { type: "tag/map/UPDATE_NEW_AREA_NAME", payload: string }
