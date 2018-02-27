@@ -23,14 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
       Alert.alert(
         "Save not implemented",
         "Pending identifier calculation",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-        ],
+        [{ text: "OK" }],
         { cancelable: false }
       )
       const newArea = ownProps.newArea
