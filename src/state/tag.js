@@ -10,7 +10,7 @@ const selectors = {
 }
 
 const initialState: TagState = {
-  tags: Cloud.tagStubs()
+  tags: []
 }
 
 // REDUCERS
