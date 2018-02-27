@@ -79,11 +79,11 @@ const calculateDelta = (extent: MinMax): number => {
   return delta * paddingFactor
 }
 const latitudeDelta = (area: Area): number => {
-  return calculateDelta({ max: area.maxIdx.y, min: area.minPos.y })
+  return calculateDelta({ max: area.maxPos.y, min: area.minPos.y })
 }
 
 const longitudeDelta = (area: Area): number => {
-  return calculateDelta({ max: area.maxIdx.x, min: area.minPos.x })
+  return calculateDelta({ max: area.maxPos.x, min: area.minPos.x })
 }
 
 const regionFromArea = (area: Area): Region => {
