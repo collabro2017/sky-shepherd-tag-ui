@@ -6,7 +6,7 @@ import DrawerButton from "../ui/DrawerButton"
 import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
 import type { NavigationScreenProp } from "react-navigation"
-import type { GetState } from "redux-thunk"
+import type { Dispatch, GetState } from "redux-thunk"
 import type { MapMode } from "../state/types"
 
 type Params = { [string]: mixed }

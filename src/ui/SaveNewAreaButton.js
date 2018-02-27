@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
         { cancelable: false }
       )
       const newArea = ownProps.newArea
-      console.log({ newArea, props: ownProps })
       if (newArea != null) {
         dispatch(mapActions.saveNewArea(newArea))
       }
