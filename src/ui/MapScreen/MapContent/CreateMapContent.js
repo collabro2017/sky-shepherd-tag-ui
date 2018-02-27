@@ -6,7 +6,8 @@ import ModificationMarker from "./ModificationMarker"
 import type { NewArea } from "../../../data/types"
 
 export default function CreateMapContent({ newArea }: Props) {
-  if (newArea != null) {
+  // Google Maps crashes if a polygon has no coordinates
+  if (newArea != null && newArea.coordinates.length > 0) {
     return (
       <View>
         <Polygon coordinates={newArea.coordinates} />

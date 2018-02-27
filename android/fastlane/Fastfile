@@ -49,7 +49,7 @@ platform :android do
 
   desc "Ship to PlayStore Beta"
   lane :beta do
-    ensure_git_branch(branch: "develop")
+    # ensure_git_branch(branch: "develop")
     build
     upload_to_play_store(track: "beta")
     git_commit(path: [app_build_gradle], message: 'Bump android version code')
