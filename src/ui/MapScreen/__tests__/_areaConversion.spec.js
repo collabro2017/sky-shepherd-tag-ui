@@ -1,6 +1,7 @@
 import {
   coordinatesFromArea,
-  areaFromNameAndCoordinates
+  areaFromNameAndCoordinates,
+  regionFromArea
 } from "../areaConversion"
 
 describe("Chester hill", () => {
@@ -51,5 +52,16 @@ describe("Chester hill", () => {
       chesterHillCoordinates
     )
     expect(areaData).toEqual(chesterHillAreaData)
+  })
+
+  it("converts area to region", () => {
+    let region = {
+      latitude: 46.81204,
+      latitudeDelta: 0.0022220000000000005,
+      longitude: -92.0957,
+      longitudeDelta: 0.001276
+    }
+
+    expect(regionFromArea(chesterHillArea)).toEqual(region)
   })
 })
