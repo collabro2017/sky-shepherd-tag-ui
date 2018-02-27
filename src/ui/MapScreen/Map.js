@@ -142,7 +142,7 @@ type Props = {
   mode: MapMode,
   navigateToArea: Area => void,
   areaChanges: ?AreaChanges,
-  onLongPress: () => void,
+  onLongPress: PressEvent => void,
   onPress: PressEvent => void,
   saveRegion: RegionHandler,
   tag: ?Tag

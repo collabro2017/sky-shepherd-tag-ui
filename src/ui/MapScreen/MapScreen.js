@@ -10,6 +10,7 @@ import SlideDownFromTopView from "../SlideDownFromTopView"
 import StatusBar from "../StatusBar"
 import { headerLeft, headerRight, headerTitle } from "../../nav"
 import { inputBarHeight } from "../../styles"
+import { isInside } from "./areaConversion"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
@@ -54,8 +55,15 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
         }
       }
     },
-    onLongPress: () => {
-      ownProps.navigation.navigate("map", { mode: "create" })
+    onLongPress: (mapScreen: MapScreen): PressEventHandler => {
+      return ({ nativeEvent: { coordinate } }: PressEvent) => {
+        let area = mapScreen.props.area
+        if (area != null && isInside(area, coordinate)) {
+          ownProps.navigation.navigate("map", { mode: "edit" })
+        } else {
+          ownProps.navigation.navigate("map", { mode: "create" })
+        }
+      }
     },
 
     onAreaNameChanged: (name: string) => {
@@ -80,10 +88,12 @@ class MapScreen extends Component<Props> {
   }
 
   _onPress: PressEvent => void
+  _onLongPress: PressEvent => void
 
   constructor(props: Props) {
     super(props)
     this._onPress = this.props.onPress(this)
+    this._onLongPress = this.props.onLongPress(this)
   }
 
   render() {
@@ -107,7 +117,7 @@ class MapScreen extends Component<Props> {
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
           areaChanges={this.props.areaChanges}
-          onLongPress={this.props.onLongPress}
+          onLongPress={this._onLongPress}
           onPress={this._onPress}
           saveRegion={this.props.saveRegion}
           tag={this.props.tag}
@@ -128,7 +138,7 @@ type Props = {
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
   onAreaNameChanged: string => void,
-  onLongPress: () => void,
+  onLongPress: MapScreen => PressEventHandler,
   onPress: MapScreen => PressEventHandler,
   saveRegion: Region => void,
   tag: ?Tag

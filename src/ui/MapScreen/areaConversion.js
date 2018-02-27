@@ -134,6 +134,16 @@ const minMaxCoordinates = (coordinates: Coordinate[]): MinMaxCoordinates => {
   }
 }
 
+const isInside = (area: Area, coordinate: Coordinate): boolean => {
+  let { latitude, longitude } = integerFromDecimal(coordinate)
+  return (
+    latitude > area.minPos.y &&
+    latitude < area.maxPos.y &&
+    longitude > area.minPos.x &&
+    longitude < area.maxPos.x
+  )
+}
+
 const integerFromDecimal = (decimal: Coordinate): Coordinate => {
   return {
     latitude: decimal.latitude * maxMinPosRatio,
@@ -339,4 +349,9 @@ const areaFromNameAndCoordinates = (
   }
 }
 
-export { coordinatesFromArea, regionFromArea, areaFromNameAndCoordinates }
+export {
+  areaFromNameAndCoordinates,
+  coordinatesFromArea,
+  isInside,
+  regionFromArea
+}
