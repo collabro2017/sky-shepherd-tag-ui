@@ -2,6 +2,7 @@
 import Promise from "promise"
 import { Alert } from "react-native"
 import { calculateLongitudeDelta } from "../utils/map"
+import { coordinatesFromArea } from "../ui/MapScreen/areaConversion"
 import type {
   Dispatch,
   GetState,
@@ -101,6 +102,20 @@ const saveAreaChangesNextMode = (lastMode: MapMode): MapMode => {
   }
 }
 
+const areaChanges = (area: ?Area): AreaChanges => {
+  if (area != null) {
+    return {
+      name: area.name,
+      coordinates: coordinatesFromArea(area)
+    }
+  } else {
+    return {
+      name: "",
+      coordinates: []
+    }
+  }
+}
+
 const reducer = (
   state: MapState = initialMapState,
   action: MapAction
@@ -154,13 +169,14 @@ const reducer = (
           if (action.params != null && action.params.mode === "create") {
             // Create mode
             const lastMode = nextLastMode(state, "create")
-            const areaChanges = state.areaChanges || {
-              name: "",
-              coordinates: []
-            }
-            return { ...state, lastMode, mode: "create", areaChanges }
-          }
-          if (action.params != null && action.params.area != null) {
+            const changes = areaChanges(null)
+            return { ...state, lastMode, mode: "create", areaChanges: changes }
+          } else if (action.params != null && action.params.mode === "edit") {
+            // Create mode
+            const lastMode = nextLastMode(state, "edit")
+            const changes = areaChanges(state.area)
+            return { ...state, lastMode, mode: "edit", areaChanges: changes }
+          } else if (action.params != null && action.params.area != null) {
             // Area was selected to show on the map
             const area = action.params.area
             const mode = action.params.mode || "area"

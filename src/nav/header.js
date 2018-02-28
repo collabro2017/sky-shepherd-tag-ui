@@ -22,6 +22,8 @@ const headerTitle = (routeName: string, params: Params): string => {
         switch (mode) {
           case "create":
             return "New area"
+          case "edit":
+            return "Edit area"
           case "area":
             return nameFromParam(params.area, defaultMapTitle)
           case "tag":
@@ -74,6 +76,7 @@ const headerLeft = (navigation: NavigationScreenProp<*>): React.Node => {
         const mode = mapMode(params.mode)
         switch (mode) {
           case "create":
+          case "edit":
             return (
               <CancelButton
                 style={styles.headerButtonLeft}
@@ -112,6 +115,7 @@ const headerRight = (routeName: string, params: Params): ?React.Node => {
         const mode = mapMode(params.mode)
         switch (mode) {
           case "create":
+          case "edit":
             return <SaveAreaChangesButton style={styles.headerButtonRight} />
           default:
             return null

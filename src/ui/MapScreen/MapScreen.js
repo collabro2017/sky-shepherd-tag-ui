@@ -76,6 +76,14 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   }
 }
 
+const inputBarPlaceholder = (mode: MapMode): string => {
+  if (mode === "edit") {
+    return "Edit area"
+  } else {
+    return "New area"
+  }
+}
+
 class MapScreen extends Component<Props> {
   static navigationOptions = ({ navigation }: NavigationScreenConfigProps) => {
     const { routeName, params } = navigation.state
@@ -100,11 +108,11 @@ class MapScreen extends Component<Props> {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />
-        {this.props.mode == "create" && (
+        {(this.props.mode == "create" || this.props.mode == "edit") && (
           <SlideDownFromTopView height={inputBarHeight}>
             <InputBar
               onChangeText={this.props.onAreaNameChanged}
-              placeholder="New area"
+              placeholder={inputBarPlaceholder(this.props.mode)}
               value={this.props.areaChangesName}
             />
           </SlideDownFromTopView>
