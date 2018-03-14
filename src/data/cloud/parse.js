@@ -74,14 +74,6 @@ const getAreas = (): ThunkAction => {
 // }
 
 const tagFromParse = (boundary: Object): Tag => {
-  let updatedAt = boundary.get("updatedAt")
-  let updatedDate = new Date(updatedAt)
-  console.log({
-    updatedAt,
-    type: typeof updatedAt,
-    updatedDate,
-    dateType: typeof updatedDate
-  })
   return {
     boundaryId: boundary.get("boundaryId"),
     coreId: boundary.get("coreId"),
