@@ -38,4 +38,3 @@ const loadAreas = (state: AreaState, areas: Area[]): AreaState => {
 export default reducer
 export { selectors as areaSelectors }
 export { initialState as initialAreaState }
-export type { AreaState, AreaAction }

@@ -12,8 +12,7 @@ import map, { initialMapState } from "./map"
 import nav, { initialNavState } from "./nav"
 
 import type { Reducer, Store, StoreCreator } from "redux"
-import type { Action, Region, State, TagState } from "../types"
-import type { AreaState } from "./area"
+import type { State } from "../types"
 
 const rootReducer: Reducer = combineReducers({
   data,
@@ -49,7 +48,7 @@ function createTagStore(initialState = {}): StoreCreator {
   return createStore(reducer, state, enhancer)
 }
 
-export type StoreWithPersistor = {
+type StoreWithPersistor = {
   store: Store,
   persistor: Object
 }
@@ -61,5 +60,3 @@ function configureStore(): StoreWithPersistor {
 }
 
 export { configureStore, areaSelectors, tagSelectors }
-export type { AreaState, State, TagState }
-export type { Action, Region }
