@@ -88,6 +88,9 @@ const styles = StyleSheet.create({
   listItemText: {
     fontSize: fontSize.four
   },
+  listItemSubtext: {
+    fontSize: fontSize.five
+  },
   listItemSeparator: {
     backgroundColor: colors.lightGray,
     height: 1,
@@ -113,6 +116,47 @@ const styles = StyleSheet.create({
     borderRadius: modificationMarkerSize * 0.5,
     height: modificationMarkerSize,
     width: modificationMarkerSize
+  },
+  tagListItem: {
+    padding: spacing.three,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  tagListItemIcon: {
+    flexDirection: "column",
+    alignItems: "center",
+    marginRight: spacing.three
+  },
+  tagListItemStatus: {
+    flexDirection: "column",
+    alignItems: "center",
+    marginLeft: spacing.three
+  },
+  tagListItemStatusIndicator: {
+    backgroundColor: colors.statusRed,
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    margin: spacing.one
+  },
+  tagListItemTitle: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start"
+  },
+  tagListItemTitleLastSeen: {
+    fontSize: fontSize.six,
+    color: colors.logoGray
+  },
+  tagListItemTitleText: {
+    fontSize: fontSize.four
+  },
+  tagListItemSubtitleText: {
+    fontSize: fontSize.five,
+    color: colors.logoGray,
+    marginBottom: spacing.one
   },
   inputBar: {
     alignItems: "flex-start",
