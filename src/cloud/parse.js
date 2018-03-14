@@ -6,7 +6,7 @@ import Parse from "parse/react-native"
 import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
 import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
 
-import { dataActions } from "../../state/data"
+import { dataActions } from "../state/data"
 
 import type {
   Action,
@@ -17,7 +17,7 @@ import type {
   GetState,
   Tag,
   ThunkAction
-} from "../../types"
+} from "../types"
 
 Parse.setAsyncStorage(AsyncStorage)
 Parse.initialize(PARSE_APPLICATION_ID)

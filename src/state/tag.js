@@ -1,5 +1,4 @@
 // @flow
-import { Cloud } from "../data"
 import type { Reducer } from "redux"
 import type { State, Tag, TagAction, TagState } from "../types"
 
@@ -9,7 +8,7 @@ const selectors = {
 }
 
 const initialState: TagState = {
-  tags: Cloud.tagStubs()
+  tags: []
 }
 
 // REDUCERS
