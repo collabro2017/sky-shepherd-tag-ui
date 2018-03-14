@@ -2,7 +2,7 @@
 import React from "react"
 import { Polygon as MapViewPolygon } from "react-native-maps"
 import { colors } from "../../../styles"
-import type { Coordinate } from "../../../state/types"
+import type { Coordinate } from "../../../types"
 
 const fillColor = colors.statusGreenAlpha50
 const strokeColor = colors.logoBlue

@@ -1,5 +1,12 @@
 import type { Reducer } from "redux"
-import type { Area, DataAction, DataState, Dispatch, State, Tag } from "./types"
+import type {
+  Area,
+  DataAction,
+  DataState,
+  Dispatch,
+  State,
+  Tag
+} from "../types"
 
 // ACTIONS
 const actions = {

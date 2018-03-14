@@ -1,7 +1,7 @@
 // @flow
 import React from "react"
 import { Text, View, TouchableOpacity } from "react-native"
-import type { Area } from "../../state/types"
+import type { Area } from "../../types"
 import styles from "../../styles"
 
 type Props = {

@@ -24,7 +24,7 @@ import type {
   PressEvent,
   State,
   Tag
-} from "../../state/types"
+} from "../../types"
 
 const mapStateToProps = (state: State, ownProps: Props) => {
   const newArea = mapSelectors.getNewArea(state)

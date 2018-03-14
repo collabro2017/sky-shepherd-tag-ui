@@ -8,9 +8,16 @@ import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
 
 import { dataActions } from "../../state/data"
 
-import type { Cloud } from "./types"
-import type { Area, Coordinate, Tag } from "../types"
-import type { Action, Dispatch, GetState, ThunkAction } from "../../state/types"
+import type {
+  Action,
+  Area,
+  Cloud,
+  Coordinate,
+  Dispatch,
+  GetState,
+  Tag,
+  ThunkAction
+} from "../../types"
 
 Parse.setAsyncStorage(AsyncStorage)
 Parse.initialize(PARSE_APPLICATION_ID)

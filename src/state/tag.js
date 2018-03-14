@@ -1,8 +1,7 @@
 // @flow
 import { Cloud } from "../data"
 import type { Reducer } from "redux"
-import type { State, TagAction, TagState } from "./types"
-import type { Tag } from "../data"
+import type { State, Tag, TagAction, TagState } from "../types"
 
 // SELECTORS
 const selectors = {

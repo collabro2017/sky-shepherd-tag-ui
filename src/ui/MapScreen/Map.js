@@ -17,7 +17,7 @@ import type {
   PressEvent,
   Region,
   Tag
-} from "../../state/types"
+} from "../../types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void

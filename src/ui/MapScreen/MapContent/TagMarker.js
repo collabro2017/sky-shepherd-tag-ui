@@ -2,7 +2,7 @@
 import React from "react"
 import { Marker } from "react-native-maps"
 import { colors } from "../../../styles"
-import type { Tag } from "../../../state/types"
+import type { Tag } from "../../../types"
 
 export default function TagMarker({ tag }: Props) {
   return (

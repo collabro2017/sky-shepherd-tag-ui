@@ -7,7 +7,7 @@ import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
 import type { NavigationScreenProp } from "react-navigation"
 import type { Dispatch, GetState } from "redux-thunk"
-import type { MapMode } from "../state/types"
+import type { MapMode } from "../types"
 
 type Params = { [string]: mixed }
 const headerTitle = (routeName: string, params: Params): string => {

@@ -1,6 +1,6 @@
 // @flow
 import ParseBackend from "./parse"
-import type { Cloud } from "./types"
+import type { Cloud } from "../../types"
 
 const cloud: Cloud = {
   ...ParseBackend

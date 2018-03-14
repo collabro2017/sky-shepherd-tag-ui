@@ -3,7 +3,7 @@ import React from "react"
 import { View } from "react-native"
 import { Marker } from "react-native-maps"
 import styles from "../../../styles"
-import type { Coordinate } from "../../../state/types"
+import type { Coordinate } from "../../../types"
 
 export default function ModificationMarker(props: Props) {
   return (

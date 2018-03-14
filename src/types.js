@@ -1,13 +1,71 @@
 // @flow
 import Promise from "promise"
 import type { NavigationAction, NavigationState } from "react-navigation"
-import type { Area, Coordinate, NewArea, Point, Tag } from "../data/types"
 
 export type Region = {
   latitude: number,
   longitude: number,
   latitudeDelta: number,
   longitudeDelta: number
+}
+
+// @flow
+export type Tag = {
+  boundaryId: string,
+  coreId: number,
+  id: string,
+  name: string,
+  position: Coordinate,
+  region: number,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+// Unsaved Area data
+export type AreaData = {
+  centroid: Coordinate,
+  identifier: number,
+  maxIdx: Point,
+  maxPos: Point,
+  minPos: Point,
+  name: string,
+  points: {
+    pointsArray: Point[]
+  },
+  ptCnt: number,
+  scale: number
+}
+
+export type Area = {
+  centroid: Coordinate,
+  identifier: number,
+  maxIdx: Point,
+  maxPos: Point,
+  minPos: Point,
+  name: string,
+  points: {
+    pointsArray: Point[]
+  },
+  ptCnt: number,
+  scale: number,
+  id: string,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+export type NewArea = {
+  coordinates: Coordinate[],
+  name: string
+}
+
+export type Point = {
+  x: number,
+  y: number
+}
+
+export type Coordinate = {
+  latitude: number,
+  longitude: number
 }
 
 export type DataState = {
@@ -92,3 +150,10 @@ export type Dispatch = (
 export type GetState = () => State
 export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any
 export type PromiseAction = Promise<Action>
+
+export interface Cloud {
+  authenticate(): ThunkAction;
+  getAreas(): ThunkAction;
+  getActiveBoundaries(): ThunkAction;
+  tagStubs(): Tag[];
+}

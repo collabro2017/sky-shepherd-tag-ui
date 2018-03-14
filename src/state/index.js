@@ -12,7 +12,7 @@ import map, { initialMapState } from "./map"
 import nav, { initialNavState } from "./nav"
 
 import type { Reducer, Store, StoreCreator } from "redux"
-import type { Action, Region, State, TagState } from "./types"
+import type { Action, Region, State, TagState } from "../types"
 import type { AreaState } from "./area"
 
 const rootReducer: Reducer = combineReducers({

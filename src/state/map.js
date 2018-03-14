@@ -11,7 +11,7 @@ import type {
   Region,
   State,
   Tag
-} from "./types"
+} from "../types"
 
 // ACTIONS
 const actions = {
