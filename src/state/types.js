@@ -10,6 +10,11 @@ export type Region = {
   longitudeDelta: number
 }
 
+export type DataState = {
+  areas: { [key: string]: Area },
+  tags: { [key: string]: Tag }
+}
+
 export type AreaState = {
   areas: Area[]
 }
@@ -29,6 +34,7 @@ export type TagState = {
 
 export type State = {
   +area: AreaState,
+  +data: DataState,
   +map: MapState,
   +nav: NavigationState,
   +tag: TagState

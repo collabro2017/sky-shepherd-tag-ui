@@ -21,9 +21,15 @@ const rootReducer: Reducer = combineReducers({
   tag
 })
 
+let initialDataState = {
+  areas: {},
+  tags: {}
+}
+
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
 const defaultState: State = {
+  data: initialDataState,
   map: initialMapState,
   nav: initialNavState,
   area: initialAreaState,
