@@ -19,7 +19,7 @@ const TagListItem = ({ tag, onPress }: Props) => {
     <TouchableOpacity onPress={onPressThis}>
       <View style={styles.tagListItem}>
         <View style={styles.tagListItemIcon}>
-          <Icon color={colors.logoGray} name="tag" size={30} />
+          <Icon color={colors.statusRed} name="tag" size={30} />
         </View>
         <View style={styles.tagListItemTitle}>
           <Text style={styles.tagListItemTitleText}>{tag.name}</Text>
@@ -27,10 +27,6 @@ const TagListItem = ({ tag, onPress }: Props) => {
           <Text style={styles.tagListItemTitleLastSeen}>
             Last seen {humanDateTime(tag.updatedAt)}
           </Text>
-        </View>
-        <View style={styles.tagListItemStatus}>
-          <View style={styles.tagListItemStatusIndicator} />
-          <Text style={styles.tagListItemSubtitleText}>Out!</Text>
         </View>
       </View>
     </TouchableOpacity>

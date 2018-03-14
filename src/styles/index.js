@@ -129,18 +129,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: spacing.three
   },
-  tagListItemStatus: {
-    flexDirection: "column",
-    alignItems: "center",
-    marginLeft: spacing.three
-  },
-  tagListItemStatusIndicator: {
-    backgroundColor: colors.statusRed,
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    margin: spacing.one
-  },
   tagListItemTitle: {
     flex: 1,
     flexDirection: "column",
