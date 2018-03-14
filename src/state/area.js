@@ -20,12 +20,19 @@ const reducer: Reducer<AreaState, AreaAction> = (
 ): AreaState => {
   switch (action.type) {
     case "tag/area/LOADED":
-      return { ...state, areas: (action.payload: Area[]) }
+      return loadAreas(state, action.payload)
     case "tag/area/SELECTED":
       return { ...state, selectedId: action.payload }
     default:
       return state
   }
+}
+
+const loadAreas = (state: AreaState, areas: Area[]): AreaState => {
+  let sorted = areas.sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  )
+  return { ...state, areas: sorted }
 }
 
 // INTERFACE

@@ -44,6 +44,10 @@ export type AreaAction =
   | { type: "tag/area/LOADED", payload: Area[] }
   | { type: "tag/area/SELECTED", payload: string }
 
+export type DataAction =
+  | { type: "tag/data/AREAS_LOADED", payload: Area[] }
+  | { type: "tag/data/TAGS_LOADED", payload: Tag[] }
+
 export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
@@ -60,8 +64,14 @@ export type TagAction =
   | { type: "tag/tag/SELECTED", payload: string }
   | { type: "tag/tag/SUBSCRIBED" }
   | { type: "tag/tag/UPDATED", payload: Tag }
+  | DataAction
 
-export type Action = AreaAction | MapAction | NavigationAction | TagAction
+export type Action =
+  | AreaAction
+  | DataAction
+  | MapAction
+  | NavigationAction
+  | TagAction
 
 export type MapMode =
   | "view"

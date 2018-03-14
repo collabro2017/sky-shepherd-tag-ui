@@ -5,6 +5,7 @@ import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
 import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
+import data, { initialDataState } from "./data"
 import area, { initialAreaState, areaSelectors } from "./area"
 import tag, { initialTagState, tagSelectors } from "./tag"
 import map, { initialMapState } from "./map"
@@ -15,16 +16,12 @@ import type { Action, Region, State, TagState } from "./types"
 import type { AreaState } from "./area"
 
 const rootReducer: Reducer = combineReducers({
+  data,
   map,
   nav,
   area,
   tag
 })
-
-let initialDataState = {
-  areas: {},
-  tags: {}
-}
 
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
