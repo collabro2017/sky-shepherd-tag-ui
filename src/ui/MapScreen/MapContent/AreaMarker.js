@@ -1,7 +1,7 @@
 // @flow
 import React from "react"
 import { Marker } from "react-native-maps"
-import type { Area } from "../../../data/types"
+import type { Area } from "../../../state/types"
 
 export default function AreaMarker({ area, onMarkerPress }: Props) {
   return (

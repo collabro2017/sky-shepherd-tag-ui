@@ -14,14 +14,16 @@ import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
 } from "react-navigation"
-import type { Area, NewArea, Tag } from "../../data/types"
 import type {
+  Area,
   Dispatch,
   Region,
   MapMode,
   MapType,
+  NewArea,
   PressEvent,
-  State
+  State,
+  Tag
 } from "../../state/types"
 
 const mapStateToProps = (state: State, ownProps: Props) => {

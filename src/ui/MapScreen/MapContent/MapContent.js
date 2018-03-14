@@ -2,8 +2,7 @@
 import React from "react"
 import CreateMapContent from "./CreateMapContent"
 import ViewMapContent from "./ViewMapContent"
-import type { Area, NewArea, Tag } from "../../../data/types"
-import type { MapMode } from "../../../state/types"
+import type { Area, MapMode, NewArea, Tag } from "../../../state/types"
 
 export default function MapContent(props: Props) {
   const { area, areas, mode, newArea, onAreaMarkerPress, tag } = props

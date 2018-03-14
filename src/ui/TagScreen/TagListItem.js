@@ -3,7 +3,7 @@ import React from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/Feather"
 import { humanDateTime } from "../../utils/format"
-import type { Tag } from "../../data/types"
+import type { Tag } from "../../state/types"
 import styles, { colors } from "../../styles"
 
 type Props = {

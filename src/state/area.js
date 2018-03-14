@@ -1,7 +1,6 @@
 // @flow
 import type { Reducer } from "redux"
-import type { Area } from "../data/types"
-import type { AreaAction, AreaState, State } from "./types"
+import type { Area, AreaAction, AreaState, State } from "./types"
 
 // SELECTORS
 const selectors = {

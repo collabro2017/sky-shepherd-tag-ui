@@ -1,14 +1,17 @@
 // @flow
 import { calculateLongitudeDelta } from "../utils/map"
 import type {
+  Area,
+  Coordinate,
   MapAction,
   MapMode,
   MapRouteParams,
   MapState,
+  NewArea,
   Region,
-  State
+  State,
+  Tag
 } from "./types"
-import type { Area, Coordinate, NewArea, Tag } from "../data/types"
 
 // ACTIONS
 const actions = {

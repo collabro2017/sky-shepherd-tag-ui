@@ -9,8 +9,15 @@ import { defaultLatitudeDelta } from "../../state/map"
 import { calculateLongitudeDelta } from "../../utils/map"
 import styles from "../../styles"
 
-import type { MapMode, MapType, PressEvent, Region } from "../../state/types"
-import type { Area, NewArea, Tag } from "../../data/types"
+import type {
+  Area,
+  NewArea,
+  MapMode,
+  MapType,
+  PressEvent,
+  Region,
+  Tag
+} from "../../state/types"
 
 type MapViewType = {
   animateToRegion: (region: Region) => void

@@ -5,7 +5,7 @@ import AreaMarker from "./AreaMarker"
 import Polygon from "./Polygon"
 import TagMarker from "./TagMarker"
 import { coordinatesFromArea } from "../areaConversion"
-import type { Area, Coordinate, Tag } from "../../../data/types"
+import type { Area, Coordinate, Tag } from "../../../state/types"
 
 export default function ViewMapContent(props: Props) {
   const { area, areas, tag, onAreaMarkerPress } = props

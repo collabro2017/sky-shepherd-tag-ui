@@ -12,8 +12,7 @@ import type {
   NavigationScreenProp
 } from "react-navigation"
 import type { Dispatch } from "redux-thunk"
-import type { Area } from "../../data/types"
-import type { State } from "../../state/types"
+import type { Area, State } from "../../state/types"
 
 type Props = {
   data: Area[],

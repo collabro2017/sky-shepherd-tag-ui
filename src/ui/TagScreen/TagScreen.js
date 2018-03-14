@@ -11,8 +11,7 @@ import type {
   NavigationScreenProp,
   NavigationScreenConfigProps
 } from "react-navigation"
-import type { Tag } from "../../data/types"
-import type { State } from "../../state/types"
+import type { State, Tag } from "../../state/types"
 
 type Props = {
   data: Tag[],

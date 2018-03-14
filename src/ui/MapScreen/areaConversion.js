@@ -1,6 +1,11 @@
 // @flow
-import type { Area, AreaData, Coordinate, Point } from "../../data/types"
-import type { Region } from "../../state/types"
+import type {
+  Area,
+  AreaData,
+  Coordinate,
+  Point,
+  Region
+} from "../../state/types"
 
 type IndexesAndScale = {
   index: number,
