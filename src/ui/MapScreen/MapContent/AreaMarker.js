@@ -1,6 +1,7 @@
 // @flow
 import React from "react"
 import { Marker } from "react-native-maps"
+import { colors } from "../../../styles"
 import type { Area } from "../../../types"
 
 export default function AreaMarker({ area, onMarkerPress }: Props) {
@@ -9,6 +10,7 @@ export default function AreaMarker({ area, onMarkerPress }: Props) {
       coordinate={area.centroid}
       title={area.name}
       onPress={onMarkerPress}
+      pinColor={colors.logoBlue}
     />
   )
 }
