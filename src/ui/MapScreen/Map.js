@@ -11,7 +11,7 @@ import styles from "../../styles"
 
 import type {
   Area,
-  NewArea,
+  AreaChanges,
   MapMode,
   MapType,
   PressEvent,
@@ -131,7 +131,7 @@ class Map extends Component<Props, MapComponentState> {
             area={this.state.area}
             areas={this.props.areas}
             mode={this.props.mode}
-            newArea={this.props.newArea}
+            areaChanges={this.props.areaChanges}
             tag={this.props.tag}
             onAreaMarkerPress={this._onAreaMarkerPress}
           />
@@ -148,8 +148,8 @@ type Props = {
   mapType: MapType,
   mode: MapMode,
   navigateToArea: Area => void,
-  newArea: ?NewArea,
-  onLongPress: () => void,
+  areaChanges: ?AreaChanges,
+  onLongPress: PressEvent => void,
   onPress: PressEvent => void,
   saveRegion: RegionHandler,
   tag: ?Tag

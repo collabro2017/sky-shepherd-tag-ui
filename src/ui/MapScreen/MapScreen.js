@@ -10,31 +10,32 @@ import SlideDownFromTopView from "../SlideDownFromTopView"
 import StatusBar from "../StatusBar"
 import { headerLeft, headerRight, headerTitle } from "../../nav"
 import { inputBarHeight } from "../../styles"
+import { isInside } from "./areaConversion"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp
 } from "react-navigation"
 import type {
   Area,
+  AreaChanges,
   Dispatch,
   Region,
   MapMode,
   MapType,
-  NewArea,
   PressEvent,
   State,
   Tag
 } from "../../types"
 
 const mapStateToProps = (state: State, ownProps: Props) => {
-  const newArea = mapSelectors.getNewArea(state)
-  const newAreaName = newArea != null ? newArea.name : ""
+  const areaChanges = mapSelectors.getAreaChanges(state)
+  const areaChangesName = areaChanges != null ? areaChanges.name : ""
   return {
     ...ownProps,
     area: mapSelectors.getArea(state),
     areas: areaSelectors.getAreas(state),
-    newArea,
-    newAreaName,
+    areaChanges,
+    areaChangesName,
     lastRegion: mapSelectors.getLastRegion(state),
     mode: mapSelectors.getMode(state),
     mapType: "hybrid",
@@ -52,21 +53,36 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     onPress: (mapScreen: MapScreen): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
         if (mapScreen.props.mode === "create") {
-          dispatch(mapActions.addCoordinateToNewArea(coordinate))
+          dispatch(mapActions.addCoordinateToAreaChanges(coordinate))
         }
       }
     },
-    onLongPress: () => {
-      ownProps.navigation.navigate("map", { mode: "create" })
+    onLongPress: (mapScreen: MapScreen): PressEventHandler => {
+      return ({ nativeEvent: { coordinate } }: PressEvent) => {
+        let area = mapScreen.props.area
+        if (area != null && isInside(area, coordinate)) {
+          ownProps.navigation.navigate("map", { mode: "edit" })
+        } else {
+          ownProps.navigation.navigate("map", { mode: "create" })
+        }
+      }
     },
 
     onAreaNameChanged: (name: string) => {
-      dispatch(mapActions.updateNewAreaName(name))
+      dispatch(mapActions.updateAreaChangesName(name))
     },
 
     saveRegion: (region: Region) => {
       dispatch(mapActions.regionChanged(region))
     }
+  }
+}
+
+const inputBarPlaceholder = (mode: MapMode): string => {
+  if (mode === "edit") {
+    return "Edit area"
+  } else {
+    return "New area"
   }
 }
 
@@ -82,22 +98,24 @@ class MapScreen extends Component<Props> {
   }
 
   _onPress: PressEvent => void
+  _onLongPress: PressEvent => void
 
   constructor(props: Props) {
     super(props)
     this._onPress = this.props.onPress(this)
+    this._onLongPress = this.props.onLongPress(this)
   }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />
-        {this.props.mode == "create" && (
+        {(this.props.mode == "create" || this.props.mode == "edit") && (
           <SlideDownFromTopView height={inputBarHeight}>
             <InputBar
               onChangeText={this.props.onAreaNameChanged}
-              placeholder="New area"
-              value={this.props.newAreaName}
+              placeholder={inputBarPlaceholder(this.props.mode)}
+              value={this.props.areaChangesName}
             />
           </SlideDownFromTopView>
         )}
@@ -108,8 +126,8 @@ class MapScreen extends Component<Props> {
           mapType={this.props.mapType}
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
-          newArea={this.props.newArea}
-          onLongPress={this.props.onLongPress}
+          areaChanges={this.props.areaChanges}
+          onLongPress={this._onLongPress}
           onPress={this._onPress}
           saveRegion={this.props.saveRegion}
           tag={this.props.tag}
@@ -125,12 +143,12 @@ type Props = {
   lastRegion: Region,
   mapType: MapType,
   mode: MapMode,
-  newArea: ?NewArea,
-  newAreaName: string,
+  areaChanges: ?AreaChanges,
+  areaChangesName: string,
   navigateToArea: Area => void,
   navigation: NavigationScreenProp<*>,
   onAreaNameChanged: string => void,
-  onLongPress: () => void,
+  onLongPress: MapScreen => PressEventHandler,
   onPress: MapScreen => PressEventHandler,
   saveRegion: Region => void,
   tag: ?Tag

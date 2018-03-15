@@ -5,10 +5,10 @@ import { Marker } from "react-native-maps"
 import styles from "../../../styles"
 import type { Coordinate } from "../../../types"
 
-export default function ModificationMarker(props: Props) {
+export default function AreaCoordinateMarker(props: Props) {
   return (
     <Marker anchor={{ x: 0.5, y: 0.5 }} {...props}>
-      <View style={styles.mapModificationMarker} />
+      <View style={styles.mapAreaCoordinateMarker} />
     </Marker>
   )
 }

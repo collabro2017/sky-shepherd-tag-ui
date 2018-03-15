@@ -54,7 +54,7 @@ export type Area = {
   updatedAt: Date
 }
 
-export type NewArea = {
+export type AreaChanges = {
   coordinates: Coordinate[],
   name: string
 }
@@ -83,7 +83,7 @@ export type MapState = {
   lastMode: MapMode,
   lastRegion: Region,
   mode: MapMode,
-  newArea: ?NewArea,
+  areaChanges: ?NewArea,
   tag: ?Tag
 }
 
@@ -111,7 +111,7 @@ export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
   | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-  | { type: "tag/map/SAVE_NEW_AREA", payload: NewArea }
+  | { type: "tag/map/SAVE_NEW_AREA", payload: AreaChanges }
   | { type: "tag/map/CANCEL_NEW_AREA" }
   | { type: "tag/map/ADD_COORDINATE_TO_NEW_AREA", payload: Coordinate }
   | { type: "tag/map/UPDATE_NEW_AREA_NAME", payload: string }

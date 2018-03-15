@@ -189,8 +189,7 @@ const authenticate = (): ThunkAction => {
 const ParseBackend: Cloud = {
   authenticate,
   getAreas,
-  getActiveBoundaries,
-  tagStubs: () => []
+  getActiveBoundaries
 }
 
 export default ParseBackend
