@@ -189,7 +189,7 @@ const reducer = (
           } else if (action.params != null && action.params.tag != null) {
             // Tag was selected to show on the map
             const tag = action.params.tag
-            const mode = action.params.mode || "area"
+            const mode = action.params.mode || "tag"
             const lastMode: MapMode = nextLastMode(state, mode)
             return { ...state, tag, lastMode, mode }
           } else if (action.params != null) {

@@ -5,7 +5,15 @@ import ViewMapContent from "./ViewMapContent"
 import type { Area, AreaChanges, MapMode, Tag } from "../../../types"
 
 export default function MapContent(props: Props) {
-  const { area, areas, mode, areaChanges, onAreaMarkerPress, tag } = props
+  const {
+    area,
+    areas,
+    mode,
+    areaChanges,
+    onAreaMarkerPress,
+    onTagMarkerPress,
+    tag
+  } = props
   switch (mode) {
     case "create":
     case "edit":
@@ -17,6 +25,7 @@ export default function MapContent(props: Props) {
           areas={areas}
           tag={tag}
           onAreaMarkerPress={onAreaMarkerPress}
+          onTagMarkerPress={onTagMarkerPress}
         />
       )
   }
@@ -28,5 +37,6 @@ type Props = {
   mode: MapMode,
   areaChanges: ?AreaChanges,
   onAreaMarkerPress: Area => () => void,
+  onTagMarkerPress: Tag => () => void,
   tag: ?Tag
 }

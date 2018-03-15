@@ -50,6 +50,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     navigateToArea: (area: Area) => {
       ownProps.navigation.navigate("map", { mode: "area", area })
     },
+    navigateToTag: (tag: Tag) => {
+      ownProps.navigation.navigate("map", { mode: "tag", tag })
+    },
     onPress: (mapScreen: MapScreen): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
         if (mapScreen.props.mode === "create") {
@@ -126,6 +129,7 @@ class MapScreen extends Component<Props> {
           mapType={this.props.mapType}
           mode={this.props.mode}
           navigateToArea={this.props.navigateToArea}
+          navigateToTag={this.props.navigateToTag}
           areaChanges={this.props.areaChanges}
           onLongPress={this._onLongPress}
           onPress={this._onPress}
@@ -146,6 +150,7 @@ type Props = {
   areaChanges: ?AreaChanges,
   areaChangesName: string,
   navigateToArea: Area => void,
+  navigateToTag: Tag => void,
   navigation: NavigationScreenProp<*>,
   onAreaNameChanged: string => void,
   onLongPress: MapScreen => PressEventHandler,

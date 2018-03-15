@@ -23,14 +23,19 @@ type MapViewType = {
   animateToRegion: (region: Region) => void
 }
 
-// For now, just pick default deltas
+// Use the tag's area if it's available. Else a default region centered on the tag.
 const regionFromTag = (tag: Tag): Region => {
   const { latitude, longitude } = tag.position
-  return {
-    latitude,
-    longitude,
-    latitudeDelta: defaultLatitudeDelta,
-    longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
+  if (tag.area != null) {
+    let areaRegion = regionFromArea(tag.area)
+    return { ...areaRegion, latitude, longitude }
+  } else {
+    return {
+      latitude,
+      longitude,
+      latitudeDelta: defaultLatitudeDelta,
+      longitudeDelta: calculateLongitudeDelta(defaultLatitudeDelta)
+    }
   }
 }
 
@@ -52,11 +57,11 @@ const pickRegion = (props: Props): Region => {
   }
 }
 
-type AreaHandler = Area => () => void
+type AreaMarkerPressHandler = Area => () => void
 const onAreaMarkerPress = (
   map: Map,
   navigateToArea: Area => void
-): AreaHandler => {
+): AreaMarkerPressHandler => {
   return (area: Area) => {
     return () => {
       map.setState({ area })
@@ -64,6 +69,27 @@ const onAreaMarkerPress = (
       // Ensure the animation doesn't get swallowed by re-render
       InteractionManager.runAfterInteractions(() => {
         const region = regionFromArea(area)
+        const mapView = map._map
+        if (mapView != null) {
+          mapView.animateToRegion(region)
+        }
+      })
+    }
+  }
+}
+
+type TagMarkerPressHandler = Tag => () => void
+const onTagMarkerPress = (
+  map: Map,
+  navigateToTag: Tag => void
+): TagMarkerPressHandler => {
+  return (tag: Tag) => {
+    return () => {
+      map.setState({ tag })
+      navigateToTag(tag)
+      // Ensure the animation doesn't get swallowed by re-render
+      InteractionManager.runAfterInteractions(() => {
+        const region = regionFromTag(tag)
         const mapView = map._map
         if (mapView != null) {
           mapView.animateToRegion(region)
@@ -83,14 +109,16 @@ const onRegionChangeComplete = (map: Map): RegionHandler => {
 class Map extends Component<Props, MapComponentState> {
   _map: ?MapViewType
   _onRegionChangeComplete: RegionHandler
-  _onAreaMarkerPress: AreaHandler
+  _onAreaMarkerPress: AreaMarkerPressHandler
+  _onTagMarkerPress: TagMarkerPressHandler
 
   constructor(props: Props) {
     super(props)
     const region = pickRegion(props)
-    const { area } = props
-    this.state = { area, region }
+    const { area, tag } = props
+    this.state = { area, region, tag }
     this._onAreaMarkerPress = onAreaMarkerPress(this, props.navigateToArea)
+    this._onTagMarkerPress = onTagMarkerPress(this, props.navigateToTag)
     this._onRegionChangeComplete = onRegionChangeComplete(this)
   }
 
@@ -134,6 +162,7 @@ class Map extends Component<Props, MapComponentState> {
             areaChanges={this.props.areaChanges}
             tag={this.props.tag}
             onAreaMarkerPress={this._onAreaMarkerPress}
+            onTagMarkerPress={this._onTagMarkerPress}
           />
         </MapView>
       </View>
@@ -148,6 +177,7 @@ type Props = {
   mapType: MapType,
   mode: MapMode,
   navigateToArea: Area => void,
+  navigateToTag: Tag => void,
   areaChanges: ?AreaChanges,
   onLongPress: PressEvent => void,
   onPress: PressEvent => void,
@@ -157,7 +187,8 @@ type Props = {
 
 type MapComponentState = {
   area: ?Area,
-  region: Region
+  region: Region,
+  tag: ?Tag
 }
 
 export default Map
