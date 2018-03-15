@@ -83,7 +83,7 @@ export type MapState = {
   lastMode: MapMode,
   lastRegion: Region,
   mode: MapMode,
-  areaChanges: ?NewArea,
+  areaChanges: ?AreaChanges,
   tag: ?Tag
 }
 
