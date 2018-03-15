@@ -1,19 +1,21 @@
 // @flow
 import React from "react"
 import { Marker } from "react-native-maps"
-import { colors } from "../../../styles"
+import { tagStatusColor } from "../../tagDisplay"
 import type { Tag } from "../../../types"
 
-export default function TagMarker({ tag }: Props) {
+export default function TagMarker({ tag, onPress }: Props) {
   return (
     <Marker
       coordinate={tag.position}
       title={tag.name}
-      pinColor={colors.logoBlue}
+      pinColor={tagStatusColor(tag)}
+      onPress={onPress}
     />
   )
 }
 
 type Props = {
-  tag: Tag
+  tag: Tag,
+  onPress: () => void
 }
