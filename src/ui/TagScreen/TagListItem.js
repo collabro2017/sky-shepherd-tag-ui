@@ -3,8 +3,9 @@ import React from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/Feather"
 import { humanDateTime } from "../../utils/format"
+import { tagStatusColor } from "../tagDisplay"
+import styles from "../../styles"
 import type { Area, Tag } from "../../types"
-import styles, { colors } from "../../styles"
 
 type Props = {
   tag: Tag,
@@ -27,7 +28,7 @@ const TagListItem = ({ tag, onPress }: Props) => {
     <TouchableOpacity onPress={onPressThis}>
       <View style={styles.tagListItem}>
         <View style={styles.tagListItemIcon}>
-          <Icon color={colors.statusRed} name="tag" size={30} />
+          <Icon color={tagStatusColor(tag)} name="tag" size={30} />
         </View>
         <View style={styles.tagListItemTitle}>
           <Text style={styles.tagListItemTitleText}>{tag.name}</Text>
