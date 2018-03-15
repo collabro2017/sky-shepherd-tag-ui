@@ -6,9 +6,11 @@ import type { Area, AreaAction, AreaState, State } from "../types"
 // SELECTORS
 const selectors = {
   getAreas: (state: State): Area[] =>
-    dataSelectors.getAreas(state).sort((a, b) => {
-      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-    })
+    dataSelectors
+      .getAreas(state)
+      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+      // Don't display areas with blank names
+      .filter(area => area.name.trim().length > 0)
 }
 
 const initialState: AreaState = {
