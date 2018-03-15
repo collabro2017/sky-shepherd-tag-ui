@@ -1,6 +1,6 @@
 // @flow
 import { applyMiddleware, combineReducers, compose, createStore } from "redux"
-import { persistStore, persistReducer } from "redux-persist"
+import { createMigrate, persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
 import logger from "redux-logger"
@@ -10,6 +10,7 @@ import area, { initialAreaState, areaSelectors } from "./area"
 import tag, { initialTagState, tagSelectors } from "./tag"
 import map, { initialMapState } from "./map"
 import nav, { initialNavState } from "./nav"
+import migrations from "./migrations"
 
 import type { Reducer, Store, StoreCreator } from "redux"
 import type { State } from "../types"
@@ -34,7 +35,10 @@ const defaultState: State = {
 
 const persistConfig = {
   key: "root",
-  storage
+  storage,
+  version: 0,
+  // migrate: createMigrate(migrations, { debug: true })
+  migrate: createMigrate(migrations)
 }
 
 const reducer = persistReducer(persistConfig, rootReducer)
