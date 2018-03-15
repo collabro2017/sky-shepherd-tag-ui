@@ -3,8 +3,12 @@ import { AsyncStorage, InteractionManager } from "react-native"
 import Parse from "parse/react-native"
 
 // Consider different settings for development/staging/production
-import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
-import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
+import {
+  PARSE_APPLICATION_ID,
+  PARSE_SERVER_URL,
+  PARSE_EMAIL,
+  PARSE_PASSWORD
+} from "./env-staging"
 
 import { dataActions } from "../state/data"
 
