@@ -17,4 +17,12 @@ const tagStatusColor = (tag: Tag): Color => {
   }
 }
 
-export { tagStatusColor }
+const tagAreaName = ({ area }: Tag): string => {
+  if (area != null) {
+    return area.name
+  } else {
+    return "Inactive"
+  }
+}
+
+export { tagAreaName, tagStatusColor }
