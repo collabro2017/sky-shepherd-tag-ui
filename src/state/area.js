@@ -1,10 +1,14 @@
 // @flow
+import { dataSelectors } from "./data"
 import type { Reducer } from "redux"
 import type { Area, AreaAction, AreaState, State } from "../types"
 
 // SELECTORS
 const selectors = {
-  getAreas: (state: State): Area[] => state.area.areas
+  getAreas: (state: State): Area[] =>
+    dataSelectors.getAreas(state).sort((a, b) => {
+      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+    })
 }
 
 const initialState: AreaState = {
@@ -19,7 +23,8 @@ const reducer: Reducer<AreaState, AreaAction> = (
 ): AreaState => {
   switch (action.type) {
     case "tag/area/LOADED":
-      return loadAreas(state, action.payload)
+      return state
+    // return loadAreas(state, action.payload)
     case "tag/area/SELECTED":
       return { ...state, selectedId: action.payload }
     default:

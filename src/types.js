@@ -11,6 +11,7 @@ export type Region = {
 
 // @flow
 export type Tag = {
+  area: ?Area,
   boundaryId: string,
   coreId: number,
   id: string,

@@ -3,12 +3,20 @@ import React from "react"
 import { Text, TouchableOpacity, View } from "react-native"
 import Icon from "react-native-vector-icons/Feather"
 import { humanDateTime } from "../../utils/format"
-import type { Tag } from "../../types"
+import type { Area, Tag } from "../../types"
 import styles, { colors } from "../../styles"
 
 type Props = {
   tag: Tag,
   onPress: Tag => void
+}
+
+const areaName = (area: ?Area): string => {
+  if (area != null) {
+    return area.name
+  } else {
+    return "Inactive"
+  }
 }
 
 const TagListItem = ({ tag, onPress }: Props) => {
@@ -23,7 +31,9 @@ const TagListItem = ({ tag, onPress }: Props) => {
         </View>
         <View style={styles.tagListItemTitle}>
           <Text style={styles.tagListItemTitleText}>{tag.name}</Text>
-          <Text style={styles.tagListItemSubtitleText}>Back yard</Text>
+          <Text style={styles.tagListItemSubtitleText}>
+            {areaName(tag.area)}
+          </Text>
           <Text style={styles.tagListItemTitleLastSeen}>
             Last seen {humanDateTime(tag.updatedAt)}
           </Text>

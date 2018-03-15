@@ -63,7 +63,7 @@ const loadParseList = (
 const ParseArea = Parse.Object.extend("Boundary")
 const getAreas = (): ThunkAction => {
   return loadParseList(
-    new Parse.Query(ParseArea),
+    new Parse.Query(ParseArea).limit(500),
     (list: Array<Object>, dispatch: Dispatch) => {
       const areas = list.map(areaFromParse)
       dispatch(dataActions.saveAreas(areas))
@@ -75,8 +75,10 @@ const getAreas = (): ThunkAction => {
 //   return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
 // }
 
+// Note: We don't fetch the active boundary from Parse, we do the join locally
 const tagFromParse = (boundary: Object): Tag => {
   return {
+    area: null,
     boundaryId: boundary.get("boundaryId"),
     coreId: boundary.get("coreId"),
     id: boundary.id,

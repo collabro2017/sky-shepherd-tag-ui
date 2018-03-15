@@ -34,6 +34,7 @@ const initialState = {
 
 // SELECTORS
 const selectors = {
+  getArea: (state: State, id: string): ?Area => state.data.areas[id],
   getAreas: (state: State): Area[] => all(state.data.areas),
   getTags: (state: State): Tag[] => all(state.data.tags)
 }
