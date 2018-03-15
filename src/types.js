@@ -110,11 +110,11 @@ export type DataAction =
 export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
-  | { type: "tag/map/CREATE_BOUNDARY", payload: {} }
-  | { type: "tag/map/SAVE_NEW_AREA", payload: AreaChanges }
-  | { type: "tag/map/CANCEL_NEW_AREA" }
-  | { type: "tag/map/ADD_COORDINATE_TO_NEW_AREA", payload: Coordinate }
-  | { type: "tag/map/UPDATE_NEW_AREA_NAME", payload: string }
+  | { type: "tag/map/CREATE_AREA", payload: {} }
+  | { type: "tag/map/SAVE_AREA_CHANGES", payload: AreaChanges }
+  | { type: "tag/map/CANCEL_AREA_CHANGES" }
+  | { type: "tag/map/ADD_COORDINATE_TO_AREA", payload: Coordinate }
+  | { type: "tag/map/UPDATE_AREA_NAME", payload: string }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
 
 export type TagAction =
@@ -137,6 +137,7 @@ export type MapMode =
   | "create"
   | "create:save"
   | "edit"
+  | "edit:save"
   | "area"
   | "tag"
 export type MapType = "hybrid"

@@ -3,7 +3,7 @@ import React from "react"
 import { View } from "react-native"
 import Polygon from "./Polygon"
 import AreaCoordinateMarker from "./AreaCoordinateMarker"
-import type { AreaChanges } from "../../../data/types"
+import type { AreaChanges } from "../../../types"
 
 export default function AreaChangesMapContent({ areaChanges }: Props) {
   // Google Maps crashes if a polygon has no coordinates

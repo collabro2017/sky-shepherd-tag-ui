@@ -5,8 +5,7 @@ import { connect } from "react-redux"
 import { mapSelectors, mapActions } from "../state/map"
 import SaveButton from "./SaveButton"
 import type { StyleObj } from "react-native/Libraries/StyleSheet/StyleSheetTypes"
-import type { Dispatch, State } from "../types"
-import type { AreaChanges } from "../data/types"
+import type { AreaChanges, Dispatch, State } from "../types"
 
 const mapStateToProps = (state: State, ownProps: Props): Props => {
   return {
