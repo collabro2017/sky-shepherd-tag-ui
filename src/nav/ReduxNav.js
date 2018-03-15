@@ -3,10 +3,10 @@ import React from "react"
 import { connect } from "react-redux"
 import { addNavigationHelpers } from "react-navigation"
 import AppNav from "./AppNav"
-import Cloud from "../data/cloud"
+import Cloud from "../cloud"
 // import type { Dispatch } from "redux"
 import type { NavigationState } from "react-navigation"
-import type { Dispatch, State } from "../state/types"
+import type { Dispatch, State } from "../types"
 
 const mapStateToProps = (state: State, ownProps: Props): Props => {
   return {

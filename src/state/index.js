@@ -1,20 +1,22 @@
 // @flow
 import { applyMiddleware, combineReducers, compose, createStore } from "redux"
-import { persistStore, persistReducer } from "redux-persist"
+import { createMigrate, persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/es/storage"
 import thunk from "redux-thunk"
 import logger from "redux-logger"
 import { composeWithDevTools } from "redux-devtools-extension"
+import data, { initialDataState } from "./data"
 import area, { initialAreaState, areaSelectors } from "./area"
 import tag, { initialTagState, tagSelectors } from "./tag"
 import map, { initialMapState } from "./map"
 import nav, { initialNavState } from "./nav"
+import migrations from "./migrations"
 
 import type { Reducer, Store, StoreCreator } from "redux"
-import type { Action, Region, State, TagState } from "./types"
-import type { AreaState } from "./area"
+import type { State } from "../types"
 
 const rootReducer: Reducer = combineReducers({
+  data,
   map,
   nav,
   area,
@@ -24,6 +26,7 @@ const rootReducer: Reducer = combineReducers({
 // TODO: Prefer to load last region from storage instead or current location, if available,
 // instead of using a default region
 const defaultState: State = {
+  data: initialDataState,
   map: initialMapState,
   nav: initialNavState,
   area: initialAreaState,
@@ -32,7 +35,10 @@ const defaultState: State = {
 
 const persistConfig = {
   key: "root",
-  storage
+  storage,
+  version: 0,
+  // migrate: createMigrate(migrations, { debug: true })
+  migrate: createMigrate(migrations)
 }
 
 const reducer = persistReducer(persistConfig, rootReducer)
@@ -46,7 +52,7 @@ function createTagStore(initialState = {}): StoreCreator {
   return createStore(reducer, state, enhancer)
 }
 
-export type StoreWithPersistor = {
+type StoreWithPersistor = {
   store: Store,
   persistor: Object
 }
@@ -58,5 +64,3 @@ function configureStore(): StoreWithPersistor {
 }
 
 export { configureStore, areaSelectors, tagSelectors }
-export type { AreaState, State, TagState }
-export type { Action, Region }

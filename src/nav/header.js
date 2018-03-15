@@ -1,13 +1,13 @@
 // @flow
 import * as React from "react"
 import { mapSelectors } from "../state/map"
-import SaveNewAreaButton from "../ui/SaveNewAreaButton"
+import SaveAreaChangesButton from "../ui/SaveAreaChangesButton"
 import DrawerButton from "../ui/DrawerButton"
 import CancelButton from "../ui/CancelButton"
 import styles from "../styles"
 import type { NavigationScreenProp } from "react-navigation"
-import type { GetState } from "redux-thunk"
-import type { MapMode } from "../state/types"
+import type { Dispatch, GetState } from "redux-thunk"
+import type { MapMode } from "../types"
 
 type Params = { [string]: mixed }
 const headerTitle = (routeName: string, params: Params): string => {
@@ -22,6 +22,8 @@ const headerTitle = (routeName: string, params: Params): string => {
         switch (mode) {
           case "create":
             return "New area"
+          case "edit":
+            return "Edit area"
           case "area":
             return nameFromParam(params.area, defaultMapTitle)
           case "tag":
@@ -74,6 +76,7 @@ const headerLeft = (navigation: NavigationScreenProp<*>): React.Node => {
         const mode = mapMode(params.mode)
         switch (mode) {
           case "create":
+          case "edit":
             return (
               <CancelButton
                 style={styles.headerButtonLeft}
@@ -81,7 +84,7 @@ const headerLeft = (navigation: NavigationScreenProp<*>): React.Node => {
                   // Flow doesn't like this, but it dispatches fine
                   navigation.dispatch(
                     (_dispatch: Dispatch, getState: GetState) => {
-                      _dispatch({ type: "tag/map/CANCEL_NEW_AREA" })
+                      _dispatch({ type: "tag/map/CANCEL_AREA_CHANGES" })
                       _dispatch({
                         type: "Navigation/NAVIGATE",
                         routeName: "map",
@@ -112,7 +115,8 @@ const headerRight = (routeName: string, params: Params): ?React.Node => {
         const mode = mapMode(params.mode)
         switch (mode) {
           case "create":
-            return <SaveNewAreaButton style={styles.headerButtonRight} />
+          case "edit":
+            return <SaveAreaChangesButton style={styles.headerButtonRight} />
           default:
             return null
         }

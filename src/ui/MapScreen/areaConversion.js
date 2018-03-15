@@ -1,6 +1,5 @@
 // @flow
-import type { Area, AreaData, Coordinate, Point } from "../../data/types"
-import type { Region } from "../../state/types"
+import type { Area, AreaData, Coordinate, Point, Region } from "../../types"
 
 type IndexesAndScale = {
   index: number,
@@ -132,6 +131,16 @@ const minMaxCoordinates = (coordinates: Coordinate[]): MinMaxCoordinates => {
     min: integerFromDecimal(min),
     max: integerFromDecimal(max)
   }
+}
+
+const isInside = (area: Area, coordinate: Coordinate): boolean => {
+  let { latitude, longitude } = integerFromDecimal(coordinate)
+  return (
+    latitude > area.minPos.y &&
+    latitude < area.maxPos.y &&
+    longitude > area.minPos.x &&
+    longitude < area.maxPos.x
+  )
 }
 
 const integerFromDecimal = (decimal: Coordinate): Coordinate => {
@@ -339,4 +348,9 @@ const areaFromNameAndCoordinates = (
   }
 }
 
-export { coordinatesFromArea, regionFromArea, areaFromNameAndCoordinates }
+export {
+  areaFromNameAndCoordinates,
+  coordinatesFromArea,
+  isInside,
+  regionFromArea
+}

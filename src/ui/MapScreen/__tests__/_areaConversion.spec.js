@@ -1,6 +1,7 @@
 import {
-  coordinatesFromArea,
   areaFromNameAndCoordinates,
+  coordinatesFromArea,
+  isInside,
   regionFromArea
 } from "../areaConversion"
 
@@ -63,5 +64,22 @@ describe("Chester hill", () => {
     }
 
     expect(regionFromArea(chesterHillArea)).toEqual(region)
+  })
+
+  it("detects a lat/long point inside area", () => {
+    let coordinate = {
+      latitude: 46.812,
+      longitude: -92.096
+    }
+
+    expect(isInside(chesterHillArea, coordinate)).toBe(true)
+  })
+
+  it("detects a lat/long coordinate outside area", () => {
+    let coordinate = {
+      latitude: 46.8,
+      longitude: -92.1
+    }
+    expect(isInside(chesterHillArea, coordinate)).toBe(false)
   })
 })

@@ -3,18 +3,25 @@ import { AsyncStorage, InteractionManager } from "react-native"
 import Parse from "parse/react-native"
 
 // Consider different settings for development/staging/production
-import { PARSE_APPLICATION_ID, PARSE_SERVER_URL } from "./env-production"
-import { PARSE_EMAIL, PARSE_PASSWORD } from "./env-production"
+import {
+  PARSE_APPLICATION_ID,
+  PARSE_SERVER_URL,
+  PARSE_EMAIL,
+  PARSE_PASSWORD
+} from "./env-staging"
 
-import type { Cloud } from "./types"
-import type { Area, Coordinate, Tag } from "../types"
+import { dataActions } from "../state/data"
+
 import type {
   Action,
-  AreaAction,
+  Area,
+  Cloud,
+  Coordinate,
   Dispatch,
-  TagAction,
+  GetState,
+  Tag,
   ThunkAction
-} from "../../state/types"
+} from "../types"
 
 Parse.setAsyncStorage(AsyncStorage)
 Parse.initialize(PARSE_APPLICATION_ID)
@@ -24,13 +31,17 @@ const logError = (error: any) => console.log(error)
 
 const loadParseList = (
   query: Object,
-  transform: (list: Array<Object>, dispatch: Dispatch) => typeof undefined
+  transform: (
+    list: Array<Object>,
+    dispatch: Dispatch,
+    getState: GetState
+  ) => void
 ): ThunkAction => {
-  return dispatch => {
+  return (dispatch, getState) => {
     return query.find().then((list: Array<Object>) => {
       // We don't want data loading to interfere with smooth animations
       InteractionManager.runAfterInteractions(() => {
-        transform(list, dispatch)
+        transform(list, dispatch, getState)
       })
     }, logError)
   }
@@ -56,15 +67,10 @@ const loadParseList = (
 const ParseArea = Parse.Object.extend("Boundary")
 const getAreas = (): ThunkAction => {
   return loadParseList(
-    new Parse.Query(ParseArea),
+    new Parse.Query(ParseArea).limit(500),
     (list: Array<Object>, dispatch: Dispatch) => {
-      const areas = list
-        .map(areaFromParse)
-        .sort((a, b) =>
-          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        )
-      const action: AreaAction = { type: "tag/area/LOADED", payload: areas }
-      dispatch(action)
+      const areas = list.map(areaFromParse)
+      dispatch(dataActions.saveAreas(areas))
     }
   )
 }
@@ -73,8 +79,10 @@ const getAreas = (): ThunkAction => {
 //   return runParseCloudFunction("tag/tag/LOADED_TAGS", "getDevicesForUser", {})
 // }
 
+// Note: We don't fetch the active boundary from Parse, we do the join locally
 const tagFromParse = (boundary: Object): Tag => {
   return {
+    area: null,
     boundaryId: boundary.get("boundaryId"),
     coreId: boundary.get("coreId"),
     id: boundary.id,
@@ -134,11 +142,7 @@ const getActiveBoundaries = (): ThunkAction => {
     activeBoundaryQuery,
     (list: Array<Object>, dispatch: Dispatch) => {
       const tags: Array<Tag> = list.map(tagFromParse)
-      const action: TagAction = {
-        type: "tag/tag/LOADED",
-        payload: tags
-      }
-      dispatch(action)
+      dispatch(dataActions.saveTags(tags))
     }
   )
 }
@@ -185,8 +189,7 @@ const authenticate = (): ThunkAction => {
 const ParseBackend: Cloud = {
   authenticate,
   getAreas,
-  getActiveBoundaries,
-  tagStubs: () => []
+  getActiveBoundaries
 }
 
 export default ParseBackend

@@ -2,7 +2,7 @@
 import React from "react"
 import MapView from "react-native-maps"
 import { colors } from "../../../styles"
-import type { Coordinate } from "../../../data/types"
+import type { Coordinate } from "../../../types"
 
 const strokeWidth = 3
 
