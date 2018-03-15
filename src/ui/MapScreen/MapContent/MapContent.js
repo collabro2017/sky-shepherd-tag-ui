@@ -7,7 +7,8 @@ import type { Area, AreaChanges, MapMode, Tag } from "../../../types"
 export default function MapContent(props: Props) {
   const { area, areas, mode, areaChanges, onAreaMarkerPress, tag } = props
   switch (mode) {
-    case "create" || "edit":
+    case "create":
+    case "edit":
       return <AreaChangesMapContent areaChanges={areaChanges} />
     default:
       return (
