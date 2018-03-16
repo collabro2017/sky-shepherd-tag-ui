@@ -157,5 +157,4 @@ export interface Cloud {
   authenticate(): ThunkAction;
   getAreas(): ThunkAction;
   getActiveBoundaries(): ThunkAction;
-  tagStubs(): Tag[];
 }
