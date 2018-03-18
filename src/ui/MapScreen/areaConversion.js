@@ -150,31 +150,12 @@ const integerFromDecimal = (decimal: Coordinate): Coordinate => {
   }
 }
 
-const unsignedInt = (number: number): number => {
-  return Uint32Array.from([number])[0]
-}
-
-type IdentifierParams = { min: Point, points: Point[], scale: number }
-const generateIdentifier = ({
-  min,
-  points,
-  scale
-}: IdentifierParams): number => {
-  const applyValueToHash = (value: number, hash: number): number => {
-    hash = value + (hash << 6) + (hash << 16) - hash
-    hash >>>= 0
-    return hash
-  }
-  const applyPointToHash = ({ x, y }: Point, hash: number): number => {
-    const value = (x << 16 | y)
-    return applyValueToHash(value, hash)
-  }
-
-  let hash = 0
-  for (let pt of [min, {x:0, y:scale}, ...points]) {
-    hash = applyPointToHash(pt, hash)
-  }
-  return hash
+type IdParams = { min: Point, points: Point[], scale: number }
+const generateIdentifier = ({ min, points, scale }: IdParams): number => {
+  return [min, { x: 0, y: scale }, ...points].reduce((hash, { x, y }) => {
+    const encodedPoint = (x << 16) | y
+    return (encodedPoint + (hash << 6) + (hash << 16) - hash) >>> 0
+  }, 0)
 }
 
 const areaFromNameAndCoordinates = (
