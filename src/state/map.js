@@ -13,7 +13,6 @@ import type {
   GetState,
   MapAction,
   MapMode,
-  MapRouteParams,
   MapState,
   Region,
   State,
@@ -38,10 +37,10 @@ const actions = {
     payload: {}
   }),
 
-  changeMode: (params: MapRouteParams): MapAction => ({
+  navigateToArea: (area: Area): MapAction => ({
     type: "Navigation/NAVIGATE",
     routeName: "map",
-    params
+    params: { mode: "area", area }
   }),
 
   // TODO: Actually save the changes (replace Promise with an action)
@@ -61,7 +60,7 @@ const actions = {
       return cloud.saveArea(id, name, coordinates).then(
         (area: Area) => {
           dispatch({ type: "AREA_SAVE_SUCCESS", payload: area })
-          dispatch(actions.changeMode({ area: area, tag: null, mode: "area" }))
+          dispatch(actions.navigateToArea(area))
         },
         error => {
           const err = createErrorAction("AREA_SAVE_FAILURE", error)
@@ -180,18 +179,16 @@ const reducer = (
             const lastMode = nextLastMode(state, "edit")
             const changes = areaChanges(state.area)
             return { ...state, lastMode, mode: "edit", areaChanges: changes }
-          } else if (action.params != null && action.params.area != null) {
+          } else if (action.params != null && action.params.mode == "area") {
             // Area was selected to show on the map
             const area = action.params.area
-            const mode = action.params.mode || "area"
-            const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, area, lastMode, mode, areaChanges: null }
-          } else if (action.params != null && action.params.tag != null) {
+            const lastMode: MapMode = nextLastMode(state, "area")
+            return { ...state, area, lastMode, mode: "area", areaChanges: null }
+          } else if (action.params != null && action.params.mode == "tag") {
             // Tag was selected to show on the map
             const tag = action.params.tag
-            const mode = action.params.mode || "tag"
-            const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, tag, lastMode, mode, areaChanges: null }
+            const lastMode: MapMode = nextLastMode(state, "tag")
+            return { ...state, tag, lastMode, mode: "tag", areaChanges: null }
           } else if (action.params != null) {
             // Nothing selected, just viewing the map
             const mode = action.params.mode || state.mode
