@@ -56,6 +56,7 @@ export type Area = {
 
 export type AreaChanges = {
   coordinates: Coordinate[],
+  id: ?string,
   name: string
 }
 

@@ -109,13 +109,15 @@ const saveAreaChangesNextMode = (lastMode: MapMode): MapMode => {
 const areaChanges = (area: ?Area): AreaChanges => {
   if (area != null) {
     return {
-      name: area.name,
-      coordinates: coordinatesFromArea(area)
+      coordinates: coordinatesFromArea(area),
+      id: area.id,
+      name: area.name
     }
   } else {
     return {
-      name: "",
-      coordinates: []
+      coordinates: [],
+      id: null,
+      name: ""
     }
   }
 }
