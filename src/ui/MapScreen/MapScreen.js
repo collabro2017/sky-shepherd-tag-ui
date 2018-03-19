@@ -10,7 +10,7 @@ import SlideDownFromTopView from "../SlideDownFromTopView"
 import StatusBar from "../StatusBar"
 import { headerLeft, headerRight, headerTitle } from "../../nav"
 import { inputBarHeight } from "../../styles"
-import { isInside } from "./areaConversion"
+import { isInside } from "../../utils/area"
 import type {
   NavigationScreenConfigProps,
   NavigationScreenProp

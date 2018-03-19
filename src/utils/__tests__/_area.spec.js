@@ -3,7 +3,7 @@ import {
   coordinatesFromArea,
   isInside,
   regionFromArea
-} from "../areaConversion"
+} from "../area"
 
 describe("Chester hill", () => {
   const chesterHillAreaData = {
@@ -11,7 +11,7 @@ describe("Chester hill", () => {
       latitude: 46.81204,
       longitude: -92.0957
     },
-    identifier: 304719280,//-570543923,
+    identifier: 304719280, //-570543923,
     maxIdx: { x: 116, y: 202 },
     maxPos: { x: -9209512, y: 4681305 },
     minPos: { x: -9209628, y: 4681103 },

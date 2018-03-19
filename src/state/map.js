@@ -2,7 +2,7 @@
 import Promise from "promise"
 import { Alert } from "react-native"
 import { calculateLongitudeDelta } from "../utils/map"
-import { coordinatesFromArea } from "../ui/MapScreen/areaConversion"
+import { coordinatesFromArea } from "../utils/area"
 import type {
   Area,
   AreaChanges,
