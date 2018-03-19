@@ -8,9 +8,9 @@ const selectors = {
   getAreas: (state: State): Area[] =>
     dataSelectors
       .getAreas(state)
-      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
       // Don't display areas with blank names
-      .filter(area => area.name.trim().length > 0)
+      .filter(area => area.name && area.name.trim().length > 0)
+      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
 }
 
 const initialState: AreaState = {
