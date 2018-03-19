@@ -203,7 +203,7 @@ const saveArea = (
   if (parseArea == null) {
     return Parse.Promise.error("invalid area data")
   } else {
-    return parseArea.save()
+    return parseArea.save().then(areaFromParse)
   }
 }
 
