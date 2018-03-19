@@ -166,19 +166,19 @@ const subscribeToAreaUpdates = (): ThunkAction => {
     const subscription = activeBoundaryQuery.subscribe()
     subscription.on("open", () => {
       InteractionManager.runAfterInteractions(() => {
-        dispatch({ type: "tag/tag/SUBSCRIBED" })
+        dispatch({ type: "TAG_SUBSCRIBED" })
       })
     })
     subscription.on("create", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
         const tag = tagFromParse(parseBoundary)
-        dispatch(({ type: "tag/tag/CREATED", payload: tag }: Action))
+        dispatch(({ type: "TAG_CREATED", payload: tag }: Action))
       })
     })
     subscription.on("update", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
         const tag = tagFromParse(parseBoundary)
-        dispatch(({ type: "tag/tag/UPDATED", payload: tag }: Action))
+        dispatch(({ type: "TAG_UPDATED", payload: tag }: Action))
       })
     })
   }

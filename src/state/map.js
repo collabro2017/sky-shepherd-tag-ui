@@ -22,17 +22,17 @@ import type {
 // ACTIONS
 const actions = {
   addCoordinateToAreaChanges: (coordinate: Coordinate): MapAction => ({
-    type: "tag/map/ADD_COORDINATE_TO_AREA",
+    type: "AREA_CHANGES_ADD_COORDINATE",
     payload: coordinate
   }),
 
   regionChanged: (region: Region): MapAction => ({
-    type: "tag/map/REGION_CHANGED",
+    type: "MAP_REGION_CHANGED",
     payload: { region }
   }),
 
   createBoundary: (): MapAction => ({
-    type: "tag/map/CREATE_AREA",
+    type: "AREA_CREATE",
     payload: {}
   }),
 
@@ -58,7 +58,7 @@ const actions = {
   },
 
   updateAreaChangesName: (name: string): MapAction => ({
-    type: "tag/map/UPDATE_AREA_NAME",
+    type: "AREA_CHANGES_UPDATE_NAME",
     payload: name
   })
 }
@@ -125,30 +125,30 @@ const reducer = (
   action: MapAction
 ): MapState => {
   switch (action.type) {
-    case "tag/map/REGION_CHANGED":
+    case "MAP_REGION_CHANGED":
       return {
         ...state,
         lastRegion: action.payload.region
       }
-    case "tag/map/CREATE_AREA":
+    case "AREA_CREATE":
       return {
         ...state,
         lastMode: state.mode,
         mode: "create"
       }
-    case "tag/map/CANCEL_AREA_CHANGES":
+    case "AREA_CHANGES_CANCEL":
       return {
         ...state,
         mode: state.lastMode,
         areaChanges: null
       }
-    case "tag/map/SAVE_AREA_CHANGES":
+    case "AREA_CHANGES_SAVE":
       return {
         ...state,
         lastMode: state.mode,
         mode: saveAreaChangesNextMode(state.mode)
       }
-    case "tag/map/ADD_COORDINATE_TO_AREA":
+    case "AREA_CHANGES_ADD_COORDINATE":
       return {
         ...state,
         areaChanges: {
@@ -159,7 +159,7 @@ const reducer = (
           ]
         }
       }
-    case "tag/map/UPDATE_AREA_NAME":
+    case "AREA_CHANGES_UPDATE_NAME":
       return {
         ...state,
         areaChanges: {
