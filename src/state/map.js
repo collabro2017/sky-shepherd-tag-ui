@@ -48,26 +48,26 @@ const actions = {
   saveAreaChanges: (): ThunkAction => {
     return (dispatch: Dispatch, getState: GetState) => {
       const areaChanges = selectors.getAreaChanges(getState())
-      if (areaChanges != null) {
-        const { id, name, coordinates } = areaChanges
-        return cloud.saveArea(id, name, coordinates).then(
-          (area: Area) => {
-            dispatch(
-              actions.changeMode({ area: area, tag: null, mode: "view" })
-            )
-          },
-          error => {
-            const err = createErrorAction("AREA_CHANGES_SAVE_FAILURE", error)
-            dispatch(err)
-          }
-        )
-      } else {
+      if (areaChanges == null) {
         const error = createErrorAction(
           "AREA_CHANGES_SAVE_FAILURE",
           "no area changes found"
         )
         dispatch(error)
+        return
       }
+
+      const { id, name, coordinates } = areaChanges
+      return cloud.saveArea(id, name, coordinates).then(
+        (area: Area) => {
+          dispatch({ type: "AREA_CHANGES_SAVE_SUCCESS", payload: area })
+          dispatch(actions.changeMode({ area: area, tag: null, mode: "area" }))
+        },
+        error => {
+          const err = createErrorAction("AREA_CHANGES_SAVE_FAILURE", error)
+          dispatch(err)
+        }
+      )
     }
   },
 
@@ -110,16 +110,6 @@ const nextLastMode = (state: MapState, nextMode: MapMode): MapMode => {
   return nextMode !== state.mode ? state.mode : state.lastMode
 }
 
-const saveAreaChangesNextMode = (lastMode: MapMode): MapMode => {
-  if (lastMode == "create") {
-    return "create:save"
-  } else if (lastMode == "edit") {
-    return "edit:save"
-  } else {
-    return lastMode
-  }
-}
-
 const areaChanges = (area: ?Area): AreaChanges => {
   if (area != null) {
     return {
@@ -158,12 +148,6 @@ const reducer = (
         mode: state.lastMode,
         areaChanges: null
       }
-    case "AREA_CHANGES_SAVE_SUCCESS":
-      return {
-        ...state,
-        lastMode: state.mode,
-        mode: saveAreaChangesNextMode(state.mode)
-      }
     case "AREA_CHANGES_ADD_COORDINATE":
       return {
         ...state,
@@ -201,18 +185,18 @@ const reducer = (
             const area = action.params.area
             const mode = action.params.mode || "area"
             const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, area, lastMode, mode }
+            return { ...state, area, lastMode, mode, areaChanges: null }
           } else if (action.params != null && action.params.tag != null) {
             // Tag was selected to show on the map
             const tag = action.params.tag
             const mode = action.params.mode || "tag"
             const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, tag, lastMode, mode }
+            return { ...state, tag, lastMode, mode, areaChanges: null }
           } else if (action.params != null) {
             // Nothing selected, just viewing the map
             const mode = action.params.mode || state.mode
             const lastMode: MapMode = nextLastMode(state, mode)
-            return { ...state, lastMode, mode }
+            return { ...state, lastMode, mode, areaChanges: null }
           } else {
             return state
           }

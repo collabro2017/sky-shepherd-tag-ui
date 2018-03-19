@@ -200,7 +200,11 @@ const saveArea = (
   coordinates: Coordinate[]
 ): PromiseAction => {
   const parseArea = parseAreaFromNameAndCoordinates(id, name, coordinates)
-  return parseArea.save()
+  if (parseArea == null) {
+    return Parse.Promise.error("invalid area data")
+  } else {
+    return parseArea.save()
+  }
 }
 
 const authenticate = (): ThunkAction => {
