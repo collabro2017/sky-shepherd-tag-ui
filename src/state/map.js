@@ -50,7 +50,7 @@ const actions = {
       const areaChanges = selectors.getAreaChanges(getState())
       if (areaChanges == null) {
         const error = createErrorAction(
-          "AREA_CHANGES_SAVE_FAILURE",
+          "AREA_SAVE_FAILURE",
           "no area changes found"
         )
         dispatch(error)
@@ -60,11 +60,11 @@ const actions = {
       const { id, name, coordinates } = areaChanges
       return cloud.saveArea(id, name, coordinates).then(
         (area: Area) => {
-          dispatch({ type: "AREA_CHANGES_SAVE_SUCCESS", payload: area })
+          dispatch({ type: "AREA_SAVE_SUCCESS", payload: area })
           dispatch(actions.changeMode({ area: area, tag: null, mode: "area" }))
         },
         error => {
-          const err = createErrorAction("AREA_CHANGES_SAVE_FAILURE", error)
+          const err = createErrorAction("AREA_SAVE_FAILURE", error)
           dispatch(err)
         }
       )

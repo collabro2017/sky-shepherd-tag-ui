@@ -111,14 +111,15 @@ export type AppError = {
 export type AreaAction = { type: "AREA_SELECTED", payload: string }
 export type ErrorAction = { type: string, error: AppError }
 
-type AreaChangesAction =
-  | { type: "AREA_CHANGES_SAVE_REQUEST" }
-  | { type: "AREA_CHANGES_SAVE_SUCCESS", payload: Area }
-  | { type: "AREA_CHANGES_SAVE_FAILURE", error: AppError }
+type AreaSaveAction =
+  | { type: "AREA_SAVE_REQUEST" }
+  | { type: "AREA_SAVE_SUCCESS", payload: Area }
+  | { type: "AREA_SAVE_FAILURE", error: AppError }
 
 export type DataAction =
   | { type: "AREAS_FETCH_SUCCESS", payload: Area[] }
   | { type: "TAGS_FETCH_SUCCESS", payload: Tag[] }
+  | AreaSaveAction
 
 export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
@@ -128,7 +129,6 @@ export type MapAction =
   | { type: "AREA_CHANGES_ADD_COORDINATE", payload: Coordinate }
   | { type: "AREA_CHANGES_UPDATE_NAME", payload: string }
   | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
-  | AreaChangesAction
 
 export type TagAction =
   | { type: "TAG_CREATED", payload: Tag }
