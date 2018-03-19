@@ -11,6 +11,7 @@ import {
 } from "./env-staging"
 
 import { dataActions } from "../state/data"
+import { areaFromNameAndCoordinates } from "../utils/area"
 
 import type {
   Action,
@@ -124,6 +125,19 @@ const areaFromParse = (boundary: Object): Area => {
   }
 }
 
+const parseAreaFromNameAndCoordinates = (
+  id: ?string,
+  name: string,
+  coordinates: Coordinate[]
+): ParseArea => {
+  let areaData = areaFromNameAndCoordinates(name, coordinates)
+  let parseArea = new ParseArea(areaData)
+  if (id != null) {
+    parseArea.set("id", id)
+  }
+  return parseArea
+}
+
 // Parse GeoPoints can be treated as Coordinates for type purposes
 const coordinateFromParse = (geoPoint: Coordinate): Coordinate => {
   return {
@@ -170,6 +184,25 @@ const subscribeToAreaUpdates = (): ThunkAction => {
   }
 }
 
+const saveArea = (
+  id: ?string,
+  name: string,
+  coordinates: Coordinate[]
+): ThunkAction => {
+  return dispatch => {
+    const parseArea = parseAreaFromNameAndCoordinates(id, name, coordinates)
+    return parseArea
+      .save()
+      .then(area => {
+        dispatch(dataActions.saveAreas([area]))
+      })
+      .catch(error => {
+        // Handle error
+        logError(error)
+      })
+  }
+}
+
 const authenticate = (): ThunkAction => {
   const type = "tag/auth/LOGGED_IN"
   return dispatch => {
@@ -189,7 +222,13 @@ const authenticate = (): ThunkAction => {
 const ParseBackend: Cloud = {
   authenticate,
   getAreas,
-  getActiveBoundaries
+  getActiveBoundaries,
+  saveArea
 }
 
 export default ParseBackend
+export {
+  // Parse extras (not included in Cloud interface)
+  areaFromParse,
+  parseAreaFromNameAndCoordinates
+}

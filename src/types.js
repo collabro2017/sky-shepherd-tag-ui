@@ -157,4 +157,5 @@ export interface Cloud {
   authenticate(): ThunkAction;
   getAreas(): ThunkAction;
   getActiveBoundaries(): ThunkAction;
+  saveArea(id: ?string, name: string, coordinates: Coordinate[]): ThunkAction;
 }
