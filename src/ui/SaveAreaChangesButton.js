@@ -1,6 +1,5 @@
 // @flow
 import React from "react"
-import { Alert } from "react-native"
 import { connect } from "react-redux"
 import { mapSelectors, mapActions } from "../state/map"
 import SaveButton from "./SaveButton"
@@ -18,17 +17,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
   return {
     ...ownProps,
     onPress: () => {
-      // areaChanges not passed into props yet
-      Alert.alert(
-        "Save not implemented",
-        "Pending identifier calculation",
-        [{ text: "OK" }],
-        { cancelable: false }
-      )
-      const areaChanges = ownProps.areaChanges
-      if (areaChanges != null) {
-        dispatch(mapActions.saveAreaChanges(areaChanges))
-      }
+      dispatch(mapActions.saveAreaChanges())
     }
   }
 }
@@ -39,14 +28,12 @@ const areaHasEnoughPoints = (area: AreaChanges): boolean =>
 const areaChangesValid = (areaChanges: AreaChanges): boolean =>
   areaHasEnoughPoints(areaChanges) && areaChanges.name.length > 0
 
-const SaveAreaChangesButton = (props: Props) => {
+const SaveAreaChangesButton = ({ onPress, style, areaChanges }: Props) => {
   return (
     <SaveButton
-      disabled={
-        props.areaChanges == null || !areaChangesValid(props.areaChanges)
-      }
-      onPress={props.onPress}
-      style={props.style}
+      disabled={areaChanges == null || !areaChangesValid(areaChanges)}
+      onPress={onPress}
+      style={style}
     />
   )
 }

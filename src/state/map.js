@@ -1,6 +1,8 @@
 // @flow
 import Promise from "promise"
 import { Alert } from "react-native"
+import cloud from "../cloud"
+import { createErrorAction } from "../utils/error"
 import { calculateLongitudeDelta } from "../utils/map"
 import { coordinatesFromArea } from "../utils/area"
 import type {
@@ -43,17 +45,29 @@ const actions = {
   }),
 
   // TODO: Actually save the changes (replace Promise with an action)
-  saveAreaChanges: (areaChanges: AreaChanges): ThunkAction => {
+  saveAreaChanges: (): ThunkAction => {
     return (dispatch: Dispatch, getState: GetState) => {
-      Promise.resolve({})
-        .then((area: Area) => {
-          dispatch(actions.changeMode({ area: area, tag: null, mode: "view" }))
-        })
-        .catch(error => {
-          Alert.alert("Error saving area", "", [{ text: "OK" }], {
-            cancelable: false
-          })
-        })
+      const areaChanges = selectors.getAreaChanges(getState())
+      if (areaChanges != null) {
+        const { id, name, coordinates } = areaChanges
+        return cloud.saveArea(id, name, coordinates).then(
+          (area: Area) => {
+            dispatch(
+              actions.changeMode({ area: area, tag: null, mode: "view" })
+            )
+          },
+          error => {
+            const err = createErrorAction("AREA_CHANGES_SAVE_FAILURE", error)
+            dispatch(err)
+          }
+        )
+      } else {
+        const error = createErrorAction(
+          "AREA_CHANGES_SAVE_FAILURE",
+          "no area changes found"
+        )
+        dispatch(error)
+      }
     }
   },
 
@@ -144,7 +158,7 @@ const reducer = (
         mode: state.lastMode,
         areaChanges: null
       }
-    case "AREA_CHANGES_SAVE":
+    case "AREA_CHANGES_SAVE_SUCCESS":
       return {
         ...state,
         lastMode: state.mode,

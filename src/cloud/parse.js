@@ -20,6 +20,7 @@ import type {
   Coordinate,
   Dispatch,
   GetState,
+  PromiseAction,
   Tag,
   ThunkAction
 } from "../types"
@@ -129,9 +130,18 @@ const parseAreaFromNameAndCoordinates = (
   id: ?string,
   name: string,
   coordinates: Coordinate[]
-): ParseArea => {
+): ?ParseArea => {
   let areaData = areaFromNameAndCoordinates(name, coordinates)
+  if (areaData == null) {
+    return null
+  }
+
   let parseArea = new ParseArea(areaData)
+  if (parseArea == null) {
+    return null
+  }
+
+  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
   if (id != null) {
     parseArea.set("id", id)
   }
@@ -188,19 +198,9 @@ const saveArea = (
   id: ?string,
   name: string,
   coordinates: Coordinate[]
-): ThunkAction => {
-  return dispatch => {
-    const parseArea = parseAreaFromNameAndCoordinates(id, name, coordinates)
-    return parseArea
-      .save()
-      .then(area => {
-        dispatch(dataActions.saveAreas([area]))
-      })
-      .catch(error => {
-        // Handle error
-        logError(error)
-      })
-  }
+): PromiseAction => {
+  const parseArea = parseAreaFromNameAndCoordinates(id, name, coordinates)
+  return parseArea.save()
 }
 
 const authenticate = (): ThunkAction => {
