@@ -57,7 +57,7 @@ const coordinateFromPoint = (params: PointsAndScale): Coordinate => {
 }
 
 const coordinatesFromArea = (area: ?Area): Coordinate[] => {
-  if (typeof area === "undefined" || area === null) {
+  if (area == null) {
     return []
   }
 

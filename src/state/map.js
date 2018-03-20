@@ -1,6 +1,4 @@
 // @flow
-import Promise from "promise"
-import { Alert } from "react-native"
 import cloud from "../cloud"
 import { createErrorAction } from "../utils/error"
 import { calculateLongitudeDelta } from "../utils/map"
