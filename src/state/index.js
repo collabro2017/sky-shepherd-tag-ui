@@ -36,9 +36,9 @@ const defaultState: State = {
 const persistConfig = {
   key: "root",
   storage,
-  version: 0,
-  // migrate: createMigrate(migrations, { debug: true })
-  migrate: createMigrate(migrations)
+  // migrate: createMigrate(migrations, { debug: true }),
+  migrate: createMigrate(migrations),
+  version: 1
 }
 
 const reducer = persistReducer(persistConfig, rootReducer)

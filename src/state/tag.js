@@ -12,9 +12,7 @@ const selectors = {
     })
 }
 
-const initialState: TagState = {
-  tags: []
-}
+const initialState: TagState = {}
 
 // REDUCERS
 

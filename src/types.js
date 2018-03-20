@@ -75,9 +75,7 @@ export type DataState = {
   tags: { [key: string]: Tag }
 }
 
-export type AreaState = {
-  areas: Area[]
-}
+export type AreaState = {}
 
 export type MapState = {
   area: ?Area,
@@ -88,9 +86,7 @@ export type MapState = {
   tag: ?Tag
 }
 
-export type TagState = {
-  tags: Tag[]
-}
+export type TagState = {}
 
 export type State = {
   +area: AreaState,
@@ -121,14 +117,21 @@ export type DataAction =
   | { type: "TAGS_FETCH_SUCCESS", payload: Tag[] }
   | AreaSaveAction
 
-export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
   | { type: "MAP_REGION_CHANGED", payload: { region: Region } }
   | { type: "AREA_CREATE", payload: {} }
   | { type: "AREA_CHANGES_CANCEL" }
   | { type: "AREA_CHANGES_ADD_COORDINATE", payload: Coordinate }
   | { type: "AREA_CHANGES_UPDATE_NAME", payload: string }
-  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
+  | {
+      type: "Navigation/NAVIGATE",
+      routeName: "map",
+      params:
+        | { area: Area, mode: "area" }
+        | { tag: Tag, mode: "tag" }
+        | { mode: "create" }
+        | { mode: "edit" }
+    }
 
 export type TagAction =
   | { type: "TAG_CREATED", payload: Tag }

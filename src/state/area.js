@@ -13,9 +13,7 @@ const selectors = {
       .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
 }
 
-const initialState: AreaState = {
-  areas: []
-}
+const initialState: AreaState = {}
 
 // REDUCERS
 
