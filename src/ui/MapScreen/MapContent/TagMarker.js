@@ -7,6 +7,7 @@ import type { Tag } from "../../../types"
 export default function TagMarker({ tag, onPress }: Props) {
   return (
     <Marker
+      // key={tag.id + " " + JSON.stringify(tag.position)}
       coordinate={tag.position}
       title={tag.name}
       description={tagAreaName(tag)}

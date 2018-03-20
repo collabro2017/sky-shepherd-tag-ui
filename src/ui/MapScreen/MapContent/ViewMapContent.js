@@ -7,7 +7,12 @@ import TagMarker from "./TagMarker"
 import { coordinatesFromArea } from "../../../utils/area"
 import type { Area, Coordinate, Tag } from "../../../types"
 
+const identifier = (area: ?Area): string =>
+  area != null ? area.identifier.toString() : "-1"
+
 export default function ViewMapContent(props: Props) {
+  console.log({ component: "viewmapcontent", area: props.area.id })
+
   const { area, areas, tag, onAreaMarkerPress, onTagMarkerPress } = props
   const coordinates: Coordinate[] = coordinatesFromArea(area)
   return (
@@ -19,10 +24,10 @@ export default function ViewMapContent(props: Props) {
           onMarkerPress={onAreaMarkerPress(area)}
         />
       ))}
-      {coordinates.length > 0 && <Polygon coordinates={coordinates} />}
-      {tag != null && (
-        <TagMarker tag={tag} key={tag.id} onPress={onTagMarkerPress(tag)} />
+      {coordinates.length > 0 && (
+        <Polygon coordinates={coordinates} identifier={identifier(area)} />
       )}
+      {tag != null && <TagMarker tag={tag} onPress={onTagMarkerPress(tag)} />}
     </View>
   )
 }
