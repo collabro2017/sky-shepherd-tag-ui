@@ -56,6 +56,7 @@ export type Area = {
 
 export type AreaChanges = {
   coordinates: Coordinate[],
+  id: ?string,
   name: string
 }
 
@@ -74,9 +75,7 @@ export type DataState = {
   tags: { [key: string]: Tag }
 }
 
-export type AreaState = {
-  areas: Area[]
-}
+export type AreaState = {}
 
 export type MapState = {
   area: ?Area,
@@ -87,9 +86,7 @@ export type MapState = {
   tag: ?Tag
 }
 
-export type TagState = {
-  tags: Tag[]
-}
+export type TagState = {}
 
 export type State = {
   +area: AreaState,
@@ -99,30 +96,47 @@ export type State = {
   +tag: TagState
 }
 
-export type AreaAction =
-  | { type: "tag/area/LOADED", payload: Area[] }
-  | { type: "tag/area/SELECTED", payload: string }
+export type AppError = {
+  message: string
+}
+
+// Action Types
+// These types are not for dispatch, but for handling. Reducers can declare that
+// they handle one of these action types, and the type checker will enforce a
+// comprehensive switch statement.
+export type AreaAction = { type: "AREA_SELECTED", payload: string }
+export type ErrorAction = { type: string, error: AppError }
+
+type AreaSaveAction =
+  | { type: "AREA_SAVE_REQUEST" }
+  | { type: "AREA_SAVE_SUCCESS", payload: Area }
+  | { type: "AREA_SAVE_FAILURE", error: AppError }
 
 export type DataAction =
-  | { type: "tag/data/AREAS_LOADED", payload: Area[] }
-  | { type: "tag/data/TAGS_LOADED", payload: Tag[] }
+  | { type: "AREAS_FETCH_SUCCESS", payload: Area[] }
+  | { type: "TAGS_FETCH_SUCCESS", payload: Tag[] }
+  | AreaSaveAction
 
-export type MapRouteParams = { area: ?Area, tag: ?Tag, mode: MapMode }
 export type MapAction =
-  | { type: "tag/map/REGION_CHANGED", payload: { region: Region } }
-  | { type: "tag/map/CREATE_AREA", payload: {} }
-  | { type: "tag/map/SAVE_AREA_CHANGES", payload: AreaChanges }
-  | { type: "tag/map/CANCEL_AREA_CHANGES" }
-  | { type: "tag/map/ADD_COORDINATE_TO_AREA", payload: Coordinate }
-  | { type: "tag/map/UPDATE_AREA_NAME", payload: string }
-  | { type: "Navigation/NAVIGATE", routeName: "map", params: ?MapRouteParams }
+  | { type: "MAP_REGION_CHANGED", payload: { region: Region } }
+  | { type: "AREA_CREATE", payload: {} }
+  | { type: "AREA_CHANGES_CANCEL" }
+  | { type: "AREA_CHANGES_ADD_COORDINATE", payload: Coordinate }
+  | { type: "AREA_CHANGES_UPDATE_NAME", payload: string }
+  | {
+      type: "Navigation/NAVIGATE",
+      routeName: "map",
+      params:
+        | { area: Area, mode: "area" }
+        | { tag: Tag, mode: "tag" }
+        | { mode: "create" }
+        | { mode: "edit" }
+    }
 
 export type TagAction =
-  | { type: "tag/tag/CREATED", payload: Tag }
-  | { type: "tag/tag/LOADED", payload: Tag[] }
-  | { type: "tag/tag/SELECTED", payload: string }
-  | { type: "tag/tag/SUBSCRIBED" }
-  | { type: "tag/tag/UPDATED", payload: Tag }
+  | { type: "TAG_CREATED", payload: Tag }
+  | { type: "TAG_SUBSCRIBED" }
+  | { type: "TAG_UPDATED", payload: Tag }
   | DataAction
 
 export type Action =
@@ -157,4 +171,5 @@ export interface Cloud {
   authenticate(): ThunkAction;
   getAreas(): ThunkAction;
   getActiveBoundaries(): ThunkAction;
+  saveArea(id: ?string, name: string, coordinates: Coordinate[]): ThunkAction;
 }

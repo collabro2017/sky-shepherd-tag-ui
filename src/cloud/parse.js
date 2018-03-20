@@ -11,6 +11,7 @@ import {
 } from "./env-staging"
 
 import { dataActions } from "../state/data"
+import { areaFromNameAndCoordinates } from "../utils/area"
 
 import type {
   Action,
@@ -19,6 +20,7 @@ import type {
   Coordinate,
   Dispatch,
   GetState,
+  PromiseAction,
   Tag,
   ThunkAction
 } from "../types"
@@ -124,6 +126,28 @@ const areaFromParse = (boundary: Object): Area => {
   }
 }
 
+const parseAreaFromNameAndCoordinates = (
+  id: ?string,
+  name: string,
+  coordinates: Coordinate[]
+): ?ParseArea => {
+  let areaData = areaFromNameAndCoordinates(name, coordinates)
+  if (areaData == null) {
+    return null
+  }
+
+  let parseArea = new ParseArea(areaData)
+  if (parseArea == null) {
+    return null
+  }
+
+  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
+  if (id != null) {
+    parseArea.set("id", id)
+  }
+  return parseArea
+}
+
 // Parse GeoPoints can be treated as Coordinates for type purposes
 const coordinateFromParse = (geoPoint: Coordinate): Coordinate => {
   return {
@@ -152,21 +176,34 @@ const subscribeToAreaUpdates = (): ThunkAction => {
     const subscription = activeBoundaryQuery.subscribe()
     subscription.on("open", () => {
       InteractionManager.runAfterInteractions(() => {
-        dispatch({ type: "tag/tag/SUBSCRIBED" })
+        dispatch({ type: "TAG_SUBSCRIBED" })
       })
     })
     subscription.on("create", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
         const tag = tagFromParse(parseBoundary)
-        dispatch(({ type: "tag/tag/CREATED", payload: tag }: Action))
+        dispatch(({ type: "TAG_CREATED", payload: tag }: Action))
       })
     })
     subscription.on("update", (parseBoundary: Object) => {
       InteractionManager.runAfterInteractions(() => {
         const tag = tagFromParse(parseBoundary)
-        dispatch(({ type: "tag/tag/UPDATED", payload: tag }: Action))
+        dispatch(({ type: "TAG_UPDATED", payload: tag }: Action))
       })
     })
+  }
+}
+
+const saveArea = (
+  id: ?string,
+  name: string,
+  coordinates: Coordinate[]
+): PromiseAction => {
+  const parseArea = parseAreaFromNameAndCoordinates(id, name, coordinates)
+  if (parseArea == null) {
+    return Parse.Promise.error("invalid area data")
+  } else {
+    return parseArea.save().then(areaFromParse)
   }
 }
 
@@ -189,7 +226,13 @@ const authenticate = (): ThunkAction => {
 const ParseBackend: Cloud = {
   authenticate,
   getAreas,
-  getActiveBoundaries
+  getActiveBoundaries,
+  saveArea
 }
 
 export default ParseBackend
+export {
+  // Parse extras (not included in Cloud interface)
+  areaFromParse,
+  parseAreaFromNameAndCoordinates
+}

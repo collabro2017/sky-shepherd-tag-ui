@@ -8,14 +8,12 @@ const selectors = {
   getAreas: (state: State): Area[] =>
     dataSelectors
       .getAreas(state)
-      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
       // Don't display areas with blank names
-      .filter(area => area.name.trim().length > 0)
+      .filter(area => area.name && area.name.trim().length > 0)
+      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
 }
 
-const initialState: AreaState = {
-  areas: []
-}
+const initialState: AreaState = {}
 
 // REDUCERS
 
@@ -24,21 +22,11 @@ const reducer: Reducer<AreaState, AreaAction> = (
   action: AreaAction
 ): AreaState => {
   switch (action.type) {
-    case "tag/area/LOADED":
-      return state
-    // return loadAreas(state, action.payload)
-    case "tag/area/SELECTED":
+    case "AREA_SELECTED":
       return { ...state, selectedId: action.payload }
     default:
       return state
   }
-}
-
-const loadAreas = (state: AreaState, areas: Area[]): AreaState => {
-  let sorted = areas.sort((a, b) =>
-    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-  )
-  return { ...state, areas: sorted }
 }
 
 // INTERFACE

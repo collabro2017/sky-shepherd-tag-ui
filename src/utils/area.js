@@ -1,5 +1,5 @@
 // @flow
-import type { Area, AreaData, Coordinate, Point, Region } from "../../types"
+import type { Area, AreaData, Coordinate, Point, Region } from "../types"
 
 type IndexesAndScale = {
   index: number,
@@ -57,7 +57,7 @@ const coordinateFromPoint = (params: PointsAndScale): Coordinate => {
 }
 
 const coordinatesFromArea = (area: ?Area): Coordinate[] => {
-  if (typeof area === "undefined" || area === null) {
+  if (area == null) {
     return []
   }
 

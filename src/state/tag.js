@@ -12,9 +12,7 @@ const selectors = {
     })
 }
 
-const initialState: TagState = {
-  tags: []
-}
+const initialState: TagState = {}
 
 // REDUCERS
 
@@ -23,8 +21,6 @@ const reducer: Reducer<TagState, TagAction> = (
   action: TagAction
 ): TagState => {
   switch (action.type) {
-    case "tag/tag/LOADED":
-      return { ...state, tags: action.payload }
     default:
       return state
   }
