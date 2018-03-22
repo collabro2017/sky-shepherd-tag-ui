@@ -136,15 +136,27 @@ const parseAreaFromNameAndCoordinates = (
     return null
   }
 
-  let parseArea = new ParseArea(areaData)
+  console.log({ areaData })
+
+  let parseArea = new ParseArea()
   if (parseArea == null) {
     return null
   }
 
-  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
   if (id != null) {
-    parseArea.set("id", id)
+    parseArea.id = id
   }
+
+  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
+  parseArea.set("identifier", areaData.identifier)
+  parseArea.set("maxIdx", areaData.maxIdx)
+  parseArea.set("maxPos", areaData.maxPos)
+  parseArea.set("minPos", areaData.minPos)
+  parseArea.set("name", areaData.name)
+  parseArea.set("points", { pointsArray: areaData.points })
+  parseArea.set("ptCnt", areaData.points.length)
+  parseArea.set("scale", areaData.scale)
+
   return parseArea
 }
 
@@ -203,6 +215,7 @@ const saveArea = (
   if (parseArea == null) {
     return Parse.Promise.error("invalid area data")
   } else {
+    console.log({ coordinates, points: parseArea.get("points") })
     return parseArea.save().then(areaFromParse)
   }
 }
