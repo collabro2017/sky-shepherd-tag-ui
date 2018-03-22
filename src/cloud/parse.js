@@ -136,8 +136,6 @@ const parseAreaFromNameAndCoordinates = (
     return null
   }
 
-  console.log({ areaData })
-
   let parseArea = new ParseArea()
   if (parseArea == null) {
     return null
@@ -215,7 +213,6 @@ const saveArea = (
   if (parseArea == null) {
     return Parse.Promise.error("invalid area data")
   } else {
-    console.log({ coordinates, points: parseArea.get("points") })
     return parseArea.save().then(areaFromParse)
   }
 }

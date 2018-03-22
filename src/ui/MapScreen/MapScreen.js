@@ -55,7 +55,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     },
     modifyAreaCoordinate: (index): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
-        console.log("MapScreen handling area changes marker " + index + " drag")
         dispatch(mapActions.modifyAreaChangesCoordinate(index, coordinate))
       }
     },

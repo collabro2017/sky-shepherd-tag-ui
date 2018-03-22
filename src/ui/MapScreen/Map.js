@@ -139,6 +139,7 @@ class Map extends Component<Props, MapComponentState> {
     const shouldUpdate =
       !isEqual(this.props, nextProps) ||
       !isEqual(this.state.area, nextState.area)
+    // console.log({ mapShouldUpdate: shouldUpdate })
     return shouldUpdate
   }
 

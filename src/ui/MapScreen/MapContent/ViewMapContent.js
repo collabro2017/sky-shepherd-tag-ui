@@ -11,8 +11,6 @@ const identifier = (area: ?Area): string =>
   area != null ? area.identifier.toString() : "-1"
 
 export default function ViewMapContent(props: Props) {
-  console.log({ component: "viewmapcontent", area: props.area.id })
-
   const { area, areas, tag, onAreaMarkerPress, onTagMarkerPress } = props
   const coordinates: Coordinate[] = coordinatesFromArea(area)
   return (

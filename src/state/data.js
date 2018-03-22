@@ -68,7 +68,6 @@ const intoMap = function<T: Identifiable>(array: T[]): { [key: string]: T } {
 }
 
 const addAreasToStore = (state: DataState, incoming: Area[]): DataState => {
-  console.log({ incoming })
   return { ...state, areas: { ...state.areas, ...intoMap(incoming) } }
 }
 

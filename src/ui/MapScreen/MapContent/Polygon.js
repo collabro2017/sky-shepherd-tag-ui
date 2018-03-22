@@ -9,7 +9,6 @@ const strokeColor = colors.logoBlue
 const strokeWidth = 3
 
 export default function Polygon({ identifier, coordinates }: Props) {
-  console.log({ component: "Polygon", identifier, coordinates })
   return (
     <MapViewPolygon
       // key={identifier}
