@@ -62,7 +62,7 @@ const coordinatesFromArea = (area: ?Area): Coordinate[] => {
   }
 
   const { minPos, scale, points } = area
-  return points.pointsArray.map((point: Point): Coordinate => {
+  return points.map(point => {
     return coordinateFromPoint({ point, scale, zeroPoint: minPos })
   })
 }
@@ -258,9 +258,7 @@ const areaFromNameAndCoordinates = (
     maxIdx,
     maxPos,
     name,
-    points: {
-      pointsArray: points
-    },
+    points,
     ptCnt: points.length,
     scale
   }

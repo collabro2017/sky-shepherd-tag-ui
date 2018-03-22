@@ -25,6 +25,14 @@ const actions = {
     payload: coordinate
   }),
 
+  modifyAreaChangesCoordinate: (
+    index: number,
+    coordinate: Coordinate
+  ): MapAction => ({
+    type: "AREA_CHANGES_MODIFY_COORDINATE",
+    payload: { index, coordinate }
+  }),
+
   regionChanged: (region: Region): MapAction => ({
     type: "MAP_REGION_CHANGED",
     payload: { region }
@@ -123,6 +131,18 @@ const areaChanges = (area: ?Area): AreaChanges => {
   }
 }
 
+const setCoordinateAtIndex = (
+  coordinates: Coordinate[],
+  coordinate: Coordinate,
+  index: number
+): Coordinate[] => {
+  return [
+    ...coordinates.slice(0, index),
+    coordinate,
+    ...coordinates.slice(index + 1)
+  ]
+}
+
 const reducer = (
   state: MapState = initialMapState,
   action: MapAction
@@ -156,6 +176,20 @@ const reducer = (
           ]
         }
       }
+    case "AREA_CHANGES_MODIFY_COORDINATE":
+      return {
+        ...state,
+        areaChanges: {
+          ...state.areaChanges,
+          coordinates: [
+            ...setCoordinateAtIndex(
+              state.areaChanges ? state.areaChanges.coordinates || [] : [],
+              action.payload.coordinate,
+              action.payload.index
+            )
+          ]
+        }
+      }
     case "AREA_CHANGES_UPDATE_NAME":
       return {
         ...state,
@@ -186,7 +220,15 @@ const reducer = (
             // Tag was selected to show on the map
             const tag = action.params.tag
             const lastMode: MapMode = nextLastMode(state, "tag")
-            return { ...state, tag, lastMode, mode: "tag", areaChanges: null }
+            const area = tag.area
+            return {
+              ...state,
+              area,
+              tag,
+              lastMode,
+              mode: "tag",
+              areaChanges: null
+            }
           } else if (action.params != null) {
             // Nothing selected, just viewing the map
             const mode = action.params.mode || state.mode

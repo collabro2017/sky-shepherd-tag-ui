@@ -8,15 +8,13 @@ export const chesterHillAreaData = {
   maxPos: { x: -9209512, y: 4681305 },
   minPos: { x: -9209628, y: 4681103 },
   name: "chester hill",
-  points: {
-    pointsArray: [
-      { x: 24, y: 202 },
-      { x: 89, y: 197 },
-      { x: 116, y: 63 },
-      { x: 70, y: 0 },
-      { x: 0, y: 45 }
-    ]
-  },
+  points: [
+    { x: 24, y: 202 },
+    { x: 89, y: 197 },
+    { x: 116, y: 63 },
+    { x: 70, y: 0 },
+    { x: 0, y: 45 }
+  ],
   ptCnt: 5,
   scale: 16
 }

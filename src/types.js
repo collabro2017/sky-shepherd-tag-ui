@@ -30,9 +30,7 @@ export type AreaData = {
   maxPos: Point,
   minPos: Point,
   name: string,
-  points: {
-    pointsArray: Point[]
-  },
+  points: Point[],
   ptCnt: number,
   scale: number
 }
@@ -44,9 +42,7 @@ export type Area = {
   maxPos: Point,
   minPos: Point,
   name: string,
-  points: {
-    pointsArray: Point[]
-  },
+  points: Point[],
   ptCnt: number,
   scale: number,
   id: string,
@@ -122,6 +118,10 @@ export type MapAction =
   | { type: "AREA_CREATE", payload: {} }
   | { type: "AREA_CHANGES_CANCEL" }
   | { type: "AREA_CHANGES_ADD_COORDINATE", payload: Coordinate }
+  | {
+      type: "AREA_CHANGES_MODIFY_COORDINATE",
+      payload: { index: number, coordinate: Coordinate }
+    }
   | { type: "AREA_CHANGES_UPDATE_NAME", payload: string }
   | {
       type: "Navigation/NAVIGATE",

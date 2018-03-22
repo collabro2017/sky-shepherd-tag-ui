@@ -118,7 +118,7 @@ const areaFromParse = (boundary: Object): Area => {
     maxPos: boundary.get("maxPos"),
     minPos: boundary.get("minPos"),
     name: boundary.get("name"),
-    points: boundary.get("points"),
+    points: boundary.get("points")["pointsArray"] || [],
     ptCnt: boundary.get("ptCnt"),
     scale: boundary.get("scale"),
     createdAt: boundary.get("createdAt"),
@@ -136,15 +136,25 @@ const parseAreaFromNameAndCoordinates = (
     return null
   }
 
-  let parseArea = new ParseArea(areaData)
+  let parseArea = new ParseArea()
   if (parseArea == null) {
     return null
   }
 
-  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
   if (id != null) {
-    parseArea.set("id", id)
+    parseArea.id = id
   }
+
+  parseArea.set("centroid", new Parse.GeoPoint(areaData.centroid))
+  parseArea.set("identifier", areaData.identifier)
+  parseArea.set("maxIdx", areaData.maxIdx)
+  parseArea.set("maxPos", areaData.maxPos)
+  parseArea.set("minPos", areaData.minPos)
+  parseArea.set("name", areaData.name)
+  parseArea.set("points", { pointsArray: areaData.points })
+  parseArea.set("ptCnt", areaData.points.length)
+  parseArea.set("scale", areaData.scale)
+
   return parseArea
 }
 

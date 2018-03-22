@@ -2,7 +2,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { FlatList, View } from "react-native"
-import { dataSelectors } from "../../state/data"
+import { tagSelectors } from "../../state/tag"
 import { headerLeft, headerRight, headerTitle } from "../../nav"
 import TagListItem from "./TagListItem"
 import ItemSeparator from "../ListItemSeparator"
@@ -23,7 +23,7 @@ const mapStateToProps = (state: State, ownProps: Props): Props => {
   return {
     ...ownProps,
     // Tags sorted by region. Lowest region is "out"
-    data: dataSelectors.getTags(state).sort((a, b) => b.region - a.region),
+    data: tagSelectors.getTags(state).sort((a, b) => b.region - a.region),
     onPressItem: (tag: Tag) => {
       ownProps.navigation.navigate("map", { tag, mode: "tag" })
     }

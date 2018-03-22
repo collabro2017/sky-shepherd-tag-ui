@@ -8,10 +8,11 @@ const fillColor = colors.statusGreenAlpha50
 const strokeColor = colors.logoBlue
 const strokeWidth = 3
 
-export default function Polygon(props: Props) {
+export default function Polygon({ identifier, coordinates }: Props) {
   return (
     <MapViewPolygon
-      coordinates={props.coordinates}
+      // key={identifier}
+      coordinates={coordinates}
       fillColor={fillColor}
       strokeColor={strokeColor}
       strokeWidth={strokeWidth}
@@ -20,5 +21,6 @@ export default function Polygon(props: Props) {
 }
 
 type Props = {
-  coordinates: Coordinate[]
+  coordinates: Coordinate[],
+  identifier: string
 }

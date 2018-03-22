@@ -7,7 +7,7 @@ import type { Coordinate } from "../../../types"
 
 export default function AreaCoordinateMarker(props: Props) {
   return (
-    <Marker anchor={{ x: 0.5, y: 0.5 }} {...props}>
+    <Marker draggable anchor={{ x: 0.5, y: 0.5 }} {...props}>
       <View style={styles.mapAreaCoordinateMarker} />
     </Marker>
   )

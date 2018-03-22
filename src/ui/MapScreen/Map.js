@@ -139,6 +139,7 @@ class Map extends Component<Props, MapComponentState> {
     const shouldUpdate =
       !isEqual(this.props, nextProps) ||
       !isEqual(this.state.area, nextState.area)
+    // console.log({ mapShouldUpdate: shouldUpdate })
     return shouldUpdate
   }
 
@@ -148,7 +149,11 @@ class Map extends Component<Props, MapComponentState> {
         <MapView
           initialRegion={this.state.region}
           mapType={this.props.mapType}
-          onLongPress={this.props.onLongPress}
+          onLongPress={
+            this.props.mode !== "create" && this.props.mode !== "edit"
+              ? this.props.onLongPress
+              : undefined
+          }
           onPress={this.props.onPress}
           onRegionChangeComplete={this._onRegionChangeComplete}
           ref={(ref: ?MapViewType) => (this._map = ref)}
@@ -161,6 +166,7 @@ class Map extends Component<Props, MapComponentState> {
             mode={this.props.mode}
             areaChanges={this.props.areaChanges}
             tag={this.props.tag}
+            modifyAreaCoordinate={this.props.modifyAreaCoordinate}
             onAreaMarkerPress={this._onAreaMarkerPress}
             onTagMarkerPress={this._onTagMarkerPress}
           />
@@ -179,6 +185,7 @@ type Props = {
   navigateToArea: Area => void,
   navigateToTag: Tag => void,
   areaChanges: ?AreaChanges,
+  modifyAreaCoordinate: number => PressEvent => void,
   onLongPress: PressEvent => void,
   onPress: PressEvent => void,
   saveRegion: RegionHandler,
