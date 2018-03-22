@@ -53,8 +53,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): Props => {
     navigateToTag: (tag: Tag) => {
       ownProps.navigation.navigate("map", { mode: "tag", tag })
     },
-    onAreaChangesMarkerDragEnd: (index): PressEventHandler => {
+    modifyAreaCoordinate: (index): PressEventHandler => {
       return ({ nativeEvent: { coordinate } }: PressEvent) => {
+        console.log("MapScreen handling area changes marker " + index + " drag")
         dispatch(mapActions.modifyAreaChangesCoordinate(index, coordinate))
       }
     },
@@ -136,7 +137,7 @@ class MapScreen extends Component<Props> {
           navigateToArea={this.props.navigateToArea}
           navigateToTag={this.props.navigateToTag}
           areaChanges={this.props.areaChanges}
-          onAreaChangesMarkerDragEnd={this.props.onAreaChangesMarkerDragEnd}
+          modifyAreaCoordinate={this.props.modifyAreaCoordinate}
           onLongPress={this._onLongPress}
           onPress={this._onPress}
           saveRegion={this.props.saveRegion}
@@ -158,7 +159,7 @@ type Props = {
   navigateToArea: Area => void,
   navigateToTag: Tag => void,
   navigation: NavigationScreenProp<*>,
-  onAreaChangesMarkerDragEnd: number => PressEventHandler,
+  modifyAreaCoordinate: number => PressEventHandler,
   onAreaNameChanged: string => void,
   onLongPress: MapScreen => PressEventHandler,
   onPress: MapScreen => PressEventHandler,

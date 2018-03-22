@@ -165,7 +165,7 @@ class Map extends Component<Props, MapComponentState> {
             mode={this.props.mode}
             areaChanges={this.props.areaChanges}
             tag={this.props.tag}
-            onAreaChangesMarkerDragEnd={this.props.onAreaChangesMarkerDragEnd}
+            modifyAreaCoordinate={this.props.modifyAreaCoordinate}
             onAreaMarkerPress={this._onAreaMarkerPress}
             onTagMarkerPress={this._onTagMarkerPress}
           />
@@ -184,7 +184,7 @@ type Props = {
   navigateToArea: Area => void,
   navigateToTag: Tag => void,
   areaChanges: ?AreaChanges,
-  onAreaChangesMarkerDragEnd: number => PressEvent => void,
+  modifyAreaCoordinate: number => PressEvent => void,
   onLongPress: PressEvent => void,
   onPress: PressEvent => void,
   saveRegion: RegionHandler,

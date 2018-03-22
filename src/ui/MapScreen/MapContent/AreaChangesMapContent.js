@@ -13,7 +13,7 @@ const coordinatesKey = (coordinates: Coordinate[]): string =>
 
 export default function AreaChangesMapContent({
   areaChanges,
-  onMarkerDragEnd
+  modifyAreaCoordinate
 }: Props) {
   // Google Maps crashes if a polygon has no coordinates
   if (areaChanges != null && areaChanges.coordinates.length > 0) {
@@ -28,10 +28,7 @@ export default function AreaChangesMapContent({
           <AreaCoordinateMarker
             coordinate={coordinate}
             key={coordinateKey(coordinate)}
-            onDragEnd={() => {
-              console.log("drag end " + index)
-              return onMarkerDragEnd(index)
-            }}
+            onDragEnd={modifyAreaCoordinate(index)}
           />
         ))}
       </View>
@@ -43,5 +40,5 @@ export default function AreaChangesMapContent({
 
 type Props = {
   areaChanges: ?AreaChanges,
-  onMarkerDragEnd: number => PressEvent => void
+  modifyAreaCoordinate: number => PressEvent => void
 }

@@ -17,7 +17,7 @@ export default function MapContent(props: Props) {
     mode,
     areaChanges,
     onAreaMarkerPress,
-    onAreaChangesMarkerDragEnd,
+    modifyAreaCoordinate,
     onTagMarkerPress,
     tag
   } = props
@@ -27,7 +27,7 @@ export default function MapContent(props: Props) {
       return (
         <AreaChangesMapContent
           areaChanges={areaChanges}
-          onMarkerDragEnd={onAreaChangesMarkerDragEnd}
+          modifyAreaCoordinate={modifyAreaCoordinate}
         />
       )
     default:
@@ -48,7 +48,7 @@ type Props = {
   areas: Area[],
   mode: MapMode,
   areaChanges: ?AreaChanges,
-  onAreaChangesMarkerDragEnd: number => PressEvent => void,
+  modifyAreaCoordinate: number => PressEvent => void,
   onAreaMarkerPress: Area => () => void,
   onTagMarkerPress: Tag => () => void,
   tag: ?Tag
