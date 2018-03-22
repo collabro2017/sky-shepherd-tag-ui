@@ -136,8 +136,11 @@ const setCoordinateAtIndex = (
   coordinate: Coordinate,
   index: number
 ): Coordinate[] => {
-  coordinates[index] = coordinate
-  return coordinates
+  return [
+    ...coordinates.slice(0, index),
+    coordinate,
+    ...coordinates.slice(index + 1)
+  ]
 }
 
 const reducer = (
