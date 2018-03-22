@@ -217,7 +217,15 @@ const reducer = (
             // Tag was selected to show on the map
             const tag = action.params.tag
             const lastMode: MapMode = nextLastMode(state, "tag")
-            return { ...state, tag, lastMode, mode: "tag", areaChanges: null }
+            const area = tag.area
+            return {
+              ...state,
+              area,
+              tag,
+              lastMode,
+              mode: "tag",
+              areaChanges: null
+            }
           } else if (action.params != null) {
             // Nothing selected, just viewing the map
             const mode = action.params.mode || state.mode
