@@ -38,7 +38,7 @@ const persistConfig = {
   storage,
   // migrate: createMigrate(migrations, { debug: true }),
   migrate: createMigrate(migrations),
-  version: 1
+  version: 2
 }
 
 const reducer = persistReducer(persistConfig, rootReducer)

@@ -118,7 +118,7 @@ const areaFromParse = (boundary: Object): Area => {
     maxPos: boundary.get("maxPos"),
     minPos: boundary.get("minPos"),
     name: boundary.get("name"),
-    points: boundary.get("points"),
+    points: boundary.get("points")["pointsArray"] || [],
     ptCnt: boundary.get("ptCnt"),
     scale: boundary.get("scale"),
     createdAt: boundary.get("createdAt"),

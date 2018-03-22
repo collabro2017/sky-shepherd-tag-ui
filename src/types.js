@@ -30,9 +30,7 @@ export type AreaData = {
   maxPos: Point,
   minPos: Point,
   name: string,
-  points: {
-    pointsArray: Point[]
-  },
+  points: Point[],
   ptCnt: number,
   scale: number
 }
@@ -44,9 +42,7 @@ export type Area = {
   maxPos: Point,
   minPos: Point,
   name: string,
-  points: {
-    pointsArray: Point[]
-  },
+  points: Point[],
   ptCnt: number,
   scale: number,
   id: string,
