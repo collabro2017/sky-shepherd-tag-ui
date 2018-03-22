@@ -25,6 +25,14 @@ const actions = {
     payload: coordinate
   }),
 
+  modifyAreaChangesCoordinate: (
+    index: number,
+    coordinate: Coordinate
+  ): MapAction => ({
+    type: "AREA_CHANGES_MODIFY_COORDINATE",
+    payload: { index, coordinate }
+  }),
+
   regionChanged: (region: Region): MapAction => ({
     type: "MAP_REGION_CHANGED",
     payload: { region }
@@ -123,6 +131,15 @@ const areaChanges = (area: ?Area): AreaChanges => {
   }
 }
 
+const setCoordinateAtIndex = (
+  coordinates: Coordinate[],
+  coordinate: Coordinate,
+  index: number
+): Coordinate[] => {
+  coordinates[index] = coordinate
+  return coordinates
+}
+
 const reducer = (
   state: MapState = initialMapState,
   action: MapAction
@@ -153,6 +170,20 @@ const reducer = (
           coordinates: [
             ...(state.areaChanges != null ? state.areaChanges.coordinates : []),
             action.payload
+          ]
+        }
+      }
+    case "AREA_CHANGES_MODIFY_COORDINATE":
+      return {
+        ...state,
+        areaChanges: {
+          ...state.areaChanges,
+          coordinates: [
+            ...setCoordinateAtIndex(
+              state.areaChanges ? state.areaChanges.coordinates || [] : [],
+              action.payload.coordinate,
+              action.payload.index
+            )
           ]
         }
       }

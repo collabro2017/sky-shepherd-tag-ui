@@ -3,7 +3,7 @@ import React from "react"
 import { View } from "react-native"
 import Polygon from "./Polygon"
 import AreaCoordinateMarker from "./AreaCoordinateMarker"
-import type { AreaChanges } from "../../../types"
+import type { AreaChanges, Coordinate, PressEvent } from "../../../types"
 
 const coordinateKey = ({ latitude, longitude }: Coordinate): string =>
   "(" + latitude.toString() + "," + longitude.toString() + ")"
@@ -11,7 +11,10 @@ const coordinateKey = ({ latitude, longitude }: Coordinate): string =>
 const coordinatesKey = (coordinates: Coordinate[]): string =>
   "[" + coordinates.map(coordinateKey).join(",") + "]"
 
-export default function AreaChangesMapContent({ areaChanges }: Props) {
+export default function AreaChangesMapContent({
+  areaChanges,
+  onMarkerDragEnd
+}: Props) {
   // Google Maps crashes if a polygon has no coordinates
   if (areaChanges != null && areaChanges.coordinates.length > 0) {
     const { coordinates } = areaChanges
@@ -21,10 +24,14 @@ export default function AreaChangesMapContent({ areaChanges }: Props) {
           coordinates={coordinates}
           identifier={coordinatesKey(coordinates)}
         />
-        {coordinates.map(coordinate => (
+        {coordinates.map((coordinate, index) => (
           <AreaCoordinateMarker
             coordinate={coordinate}
             key={coordinateKey(coordinate)}
+            onDragEnd={() => {
+              console.log("drag end " + index)
+              return onMarkerDragEnd(index)
+            }}
           />
         ))}
       </View>
@@ -35,5 +42,6 @@ export default function AreaChangesMapContent({ areaChanges }: Props) {
 }
 
 type Props = {
-  areaChanges: ?AreaChanges
+  areaChanges: ?AreaChanges,
+  onMarkerDragEnd: number => PressEvent => void
 }

@@ -122,6 +122,10 @@ export type MapAction =
   | { type: "AREA_CREATE", payload: {} }
   | { type: "AREA_CHANGES_CANCEL" }
   | { type: "AREA_CHANGES_ADD_COORDINATE", payload: Coordinate }
+  | {
+      type: "AREA_CHANGES_MODIFY_COORDINATE",
+      payload: { index: number, coordinate: Coordinate }
+    }
   | { type: "AREA_CHANGES_UPDATE_NAME", payload: string }
   | {
       type: "Navigation/NAVIGATE",
